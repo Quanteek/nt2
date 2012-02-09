@@ -8,5 +8,8 @@
 ##############################################################################
 
 nt2_module_use_modules(unit sdk core)
+SET( SOURCES
+     gemm.cpp
+   )
 
-add_subdirectory(blas)
+nt2_module_add_tests(algebra.blas.unit ${SOURCES})

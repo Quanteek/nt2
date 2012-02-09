@@ -9,17 +9,18 @@
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_BLAS1_HPP_INCLUDED
 #define NT2_TOOLBOX_ALGEBRA_BLAS_BLAS1_HPP_INCLUDED
 
+#define F77NAME(x) x##_
+
 extern "C"
 {
   // Real, double precision  
   double F77NAME(dasum)(const long int *n, const double *dx, const long int *incx);
-  
-  
+    
   void F77NAME(daxpy)(const long int *n, const double *da, const double *dx, 
                       const long int *incx, double *dy, const long int *incy);
   
-  void F77NAME(dcopy)(const long int *n, double *dx, const long int *incx, double *dy, 
-                      const long int *incy);
+  void F77NAME(dcopy)(const long int *n, double *dx, const long int *incx, 
+                      double *dy, const long int *incy);
   
   
   double F77NAME(ddot)(const long int *n, const double *dx, const long int *incx, 
@@ -27,17 +28,20 @@ extern "C"
   
   double F77NAME(dnrm2)(const long int *n, const double *dx, const long int *incx); 
   
-  void F77NAME(drot)(const long int *n, double *dx, const long int *incx, double *dy, 
-                     const long int *incy, const double *c, const double *s);
+  void F77NAME(drot)(const long int *n, double *dx, const long int *incx, 
+                     double *dy, const long int *incy, const double *c, 
+                     const double *s);
   
   void F77NAME(drotg)(double *da, double *db, double *c, double *s);
   
-  void F77NAME(dscal)(const long int *n, double *da, double *dx, const long int *incx);
+  void F77NAME(dscal)(const long int *n, double *da, double *dx, 
+                      const long int *incx);
   
-  void F77NAME(dswap)(const long int *n, double *dx, const long int *incx, double *dy, 
-                      const long int *incy);
+  void F77NAME(dswap)(const long int *n, double *dx, const long int *incx, 
+                      double *dy, const long int *incy);
   
-  long int F77NAME(idamax)(const long int *n, const double *dx, const long int *incx);
+  long int F77NAME(idamax)(const long int *n, const double *dx, 
+                           const long int *incx);
   
   // Real, single precision
   
@@ -74,8 +78,8 @@ extern "C"
   //complex < float >
   
   float F77NAME(cdotc)(NT2_WRAP_COMPLEX *c, const long int *n, 
-                       const NT2_WRAP_COMPLEX *cx, 
-                       const long int *incx, const NT2_WRAP_COMPLEX *cy, const long int *incy);
+                       const NT2_WRAP_COMPLEX *cx, const long int *incx, 
+                       const NT2_WRAP_COMPLEX *cy, const long int *incy);
   
   float F77NAME(cdotu)(NT2_WRAP_COMPLEX *c, const long int *n, 
                        const NT2_WRAP_COMPLEX *cx, const long int *incx, 
@@ -89,17 +93,20 @@ extern "C"
   void F77NAME(ccopy)(const long int *n, NT2_WRAP_COMPLEX *dx, const long int *incx, 
                       NT2_WRAP_COMPLEX *dy, const long int *incy);
   
-  float  F77NAME(scasum)(const long int *n, const NT2_WRAP_COMPLEX *dx, const long int *incx);
+  float  F77NAME(scasum)(const long int *n, const NT2_WRAP_COMPLEX *dx, 
+                         const long int *incx);
   
-  float  F77NAME(scnrm2)(const long int *n, const NT2_WRAP_COMPLEX *dx, const long int *incx); 
+  float  F77NAME(scnrm2)(const long int *n, const NT2_WRAP_COMPLEX *dx, 
+                         const long int *incx); 
   
   void F77NAME(cdscal)(const long int *n, const float *da, NT2_WRAP_COMPLEX *dx, 
                        const long int *incx);
   
-  void F77NAME(cscal)(const long int *n, const NT2_WRAP_COMPLEX *da, NT2_WRAP_COMPLEX *dx, 
-                      const long int *incx);
+  void F77NAME(cscal)(const long int *n, const NT2_WRAP_COMPLEX *da, 
+                      NT2_WRAP_COMPLEX *dx, const long int *incx);
   
-  long int F77NAME(icamax)(const long int *n, const NT2_WRAP_COMPLEX *dx, const long int *incx);
+  long int F77NAME(icamax)(const long int *n, const NT2_WRAP_COMPLEX *dx, 
+                           const long int *incx);
   
   void F77NAME(cswap)(const long int *n, NT2_WRAP_COMPLEX *dx, const long int *incx, 
                       NT2_WRAP_COMPLEX *dy, long int *incy);
@@ -108,7 +115,8 @@ extern "C"
   
   double F77NAME(zdotc)(NT2_WRAP_COMPLEX *c, const long int *n, 
                         const NT2_WRAP_COMPLEX *cx, 
-                        const long int *incx, const NT2_WRAP_COMPLEX *cy, const long int *incy);
+                        const long int *incx, const NT2_WRAP_COMPLEX *cy, 
+                        const long int *incy);
   
   double F77NAME(zdotu)(NT2_WRAP_COMPLEX *c, const long int *n, 
                         const NT2_WRAP_COMPLEX *cx, const long int *incx, 
@@ -122,17 +130,20 @@ extern "C"
   void F77NAME(zcopy)(const long int *n, NT2_WRAP_COMPLEX *dx, const long int *incx, 
                       NT2_WRAP_COMPLEX *dy, const long int *incy);
   
-  double  F77NAME(dzasum)(const long int *n, const NT2_WRAP_COMPLEX *dx, const long int *incx);
+  double  F77NAME(dzasum)(const long int *n, const NT2_WRAP_COMPLEX *dx, 
+                          const long int *incx);
   
-  double  F77NAME(dznrm2)(const long int *n, const NT2_WRAP_COMPLEX *dx, const long int *incx); 
+  double  F77NAME(dznrm2)(const long int *n, const NT2_WRAP_COMPLEX *dx, 
+                          const long int *incx); 
   
   void F77NAME(zdscal)(const long int *n, const double *da, NT2_WRAP_COMPLEX *dx, 
                        const long int *incx);
   
-  void F77NAME(zscal)(const long int *n, const NT2_WRAP_COMPLEX *da, NT2_WRAP_COMPLEX *dx, 
-                      const long int *incx);
+  void F77NAME(zscal)(const long int *n, const NT2_WRAP_COMPLEX *da, 
+                      NT2_WRAP_COMPLEX *dx, const long int *incx);
   
-  long int F77NAME(izamax)(const long int *n, const NT2_WRAP_COMPLEX *dx, const long int *incx);
+  long int F77NAME(izamax)(const long int *n, const NT2_WRAP_COMPLEX *dx, 
+                           const long int *incx);
   
   void F77NAME(zswap)(const long int *n, NT2_WRAP_COMPLEX *dx, const long int *incx, 
                       NT2_WRAP_COMPLEX *dy, long int *incy);
@@ -141,5 +152,6 @@ extern "C"
   
 }
 
+#undef F77NAME
 
 #endif
