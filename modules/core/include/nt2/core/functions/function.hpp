@@ -15,7 +15,7 @@
 
 namespace nt2 
 { 
-  namespace tag { struct function_ : ext::unspecified_<function_> {}; }
+  namespace tag { struct function_ : ext::unspecified_<function_> { typedef ext::unspecified_<function_> parent; }; }
   
   #define M0(z, n, t) NT2_FUNCTION_IMPLEMENTATION(nt2::tag::function_, function, n)
   BOOST_PP_REPEAT_FROM_TO(1, BOOST_PP_INC(NT2_MAX_DIMENSIONS), M0, ~)
@@ -28,6 +28,11 @@ namespace boost { namespace dispatch { namespace meta
   struct hierarchy_of<boost::proto::tag::function>
   {
     typedef nt2::tag::function_ type;
+  };
+  template<>
+  struct proto_tag<nt2::tag::function_>
+  {
+    typedef boost::proto::tag::function type;
   };
 } } }
 

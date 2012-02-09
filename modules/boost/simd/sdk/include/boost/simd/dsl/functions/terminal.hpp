@@ -17,7 +17,7 @@ namespace boost { namespace simd
 {
   namespace tag
   {
-    struct terminal_ : ext::unspecified_<terminal_> {};
+    struct terminal_ : ext::unspecified_<terminal_> { typedef ext::unspecified_<terminal_> parent; };
   }
 
   BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::terminal_, terminal, 1)
@@ -31,6 +31,11 @@ namespace boost { namespace dispatch { namespace meta
   struct hierarchy_of<boost::proto::tag::terminal>
   {
     typedef boost::simd::tag::terminal_ type;
+  };
+  template<>
+  struct proto_tag<boost::simd::tag::terminal_>
+  {
+    typedef boost::proto::tag::terminal type;
   };
 } } }
 

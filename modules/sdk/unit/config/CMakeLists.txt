@@ -7,12 +7,8 @@
 #                     http://www.boost.org/LICENSE_1_0.txt
 ################################################################################
 
-include(NT2Module)
-nt2_module_source_setup(boost.simd.detect)
-
-set(SOURCES
-    cpuid.cpp
-    get_vendor.cpp
-    detect.cpp
+SET( SOURCES
+    cache.cpp
    )
-nt2_module_add_library(boost_simd ${SOURCES})
+
+nt2_module_add_tests(sdk.config.unit ${SOURCES})

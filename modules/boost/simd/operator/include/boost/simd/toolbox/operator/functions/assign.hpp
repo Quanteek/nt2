@@ -18,7 +18,7 @@ namespace boost { namespace simd
 {
   namespace tag
   {
-    struct assign_ : ext::elementwise_<assign_> {};
+    struct assign_ : ext::elementwise_<assign_> { typedef ext::elementwise_<assign_> parent; };
   }
   
   BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_SELF(tag::assign_ , assign , 2 )
@@ -31,6 +31,11 @@ namespace boost { namespace dispatch { namespace meta
   struct hierarchy_of<boost::proto::tag::assign>
   {
     typedef boost::simd::tag::assign_ type;
+  };
+  template<>
+  struct proto_tag<boost::simd::tag::assign_>
+  {
+    typedef boost::proto::tag::assign type;
   };
 } } }
 

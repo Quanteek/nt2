@@ -76,7 +76,7 @@ namespace boost { namespace simd
      * \brief Define the tag compare_greater_equal_ of functor compare_greater_equal 
      *        in namespace boost::simd::tag for toolbox boost.simd.operator
     **/
-    struct compare_greater_equal_ : ext::reduction_<compare_greater_equal_> {};
+    struct compare_greater_equal_ : ext::reduction_<compare_greater_equal_> { typedef ext::reduction_<compare_greater_equal_> parent; };
   }
 
   BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::compare_greater_equal_, compare_greater_equal , 2 )
@@ -89,6 +89,11 @@ namespace boost { namespace dispatch { namespace meta
   struct hierarchy_of<boost::proto::tag::greater_equal>
   {
     typedef boost::simd::tag::compare_greater_equal_ type;
+  };
+  template<>
+  struct proto_tag<boost::simd::tag::compare_greater_equal_>
+  {
+    typedef boost::proto::tag::greater_equal type;
   };
 } } }
 
