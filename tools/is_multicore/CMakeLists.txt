@@ -6,11 +6,16 @@
 #                 See accompanying file LICENSE.txt or copy at
 #                     http://www.boost.org/LICENSE_1_0.txt
 ################################################################################
+cmake_minimum_required(VERSION 2.6)
 
-include(nt2.blas)
+set(NT2_SOURCE_ROOT ${CMAKE_SOURCE_DIR}/../..)
+set(CMAKE_MODULE_PATH ${NT2_SOURCE_ROOT}/cmake)
+find_package(NT2 REQUIRED COMPONENTS boost.simd.detect)
+include_directories(${NT2_INCLUDE_DIR})
+link_directories(${NT2_LIBRARY_DIR})
+link_libraries(${NT2_LIBRARIES})
 
-set(NT2_ALGEBRA_DEPENDENCIES_FOUND ${NT2_BLAS_FOUND}) 
-set(NT2_ALGEBRA_DEPENDENCIES_LIBRARIES ${NT2_BLAS_LIBRARIES})
-set(NT2_ALGEBRA_LINK_FLAGS ${NT2_BLAS_LINK_FLAGS})
-
-set(NT2_ALGEBRA_DEPENDENCIES_EXTRA sdk core openmp)
+add_executable(is_multicore is_multicore.cpp)
+set_target_properties(is_multicore
+                      PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}
+                     )

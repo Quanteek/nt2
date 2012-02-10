@@ -7,9 +7,10 @@
 ###                     http://www.boost.org/LICENSE_1_0.txt
 ##############################################################################
 
-nt2_module_use_modules(unit sdk core)
 SET( SOURCES
      gemm.cpp
+     gemm_t.cpp
+     gemv.cpp
    )
 
 nt2_module_add_tests(algebra.blas.unit ${SOURCES})

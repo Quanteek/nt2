@@ -6,8 +6,8 @@
 //                 See accompanying file LICENSE.txt or copy at                 
 //                     http://www.boost.org/LICENSE_1_0.txt                     
 //==============================================================================
-#ifndef NT2_TOOLBOX_ALGEBRA_FUNCTIONS_BLAS_GEMM_HPP_INCLUDED
-#define NT2_TOOLBOX_ALGEBRA_FUNCTIONS_BLAS_GEMM_HPP_INCLUDED
+#ifndef NT2_TOOLBOX_ALGEBRA_FUNCTIONS_BLAS_GEMM_T_HPP_INCLUDED
+#define NT2_TOOLBOX_ALGEBRA_FUNCTIONS_BLAS_GEMM_T_HPP_INCLUDED
 
 #include <nt2/table.hpp>
 #include <nt2/core/container/category.hpp>
@@ -22,7 +22,7 @@ namespace nt2 { namespace ext
 /////////////////////////////////////////////////////////////////////////////
 // Implementation when type A0 is table_<double_>
 /////////////////////////////////////////////////////////////////////////////
-  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::gemm_, tag::cpu_
+  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::gemm_t_, tag::cpu_
                             , (A0)(S0)(A1)(S1)(A2)(S2)
                             , ((table_< double_<A0>, S0 > ))
                               ((table_< double_<A1>, S1 > ))
@@ -36,13 +36,13 @@ namespace nt2 { namespace ext
     BOOST_FORCEINLINE result_type operator()(A0& a0, A1 const& a1, A2 const& a2)
     {
       const char transa = 'N';
-      const char transb = 'N';
+      const char transb = 'T';
       const long int m = nt2::size(a1)(1);
-      const long int n = nt2::size(a2)(2);
+      const long int n = nt2::size(a2)(1);
       const long int k = nt2::size(a1)(2);
       const double alpha = 1.0; 
       const long int lda = boost::simd::memory::align_on(m, lead_t_a1::value);
-      const long int ldb = boost::simd::memory::align_on(k, lead_t_a2::value);
+      const long int ldb = boost::simd::memory::align_on(n, lead_t_a2::value);
       const double beta = 0.0; 
       const long int ldc = boost::simd::memory::align_on(m, lead_t_a1::value);
       F77NAME(dgemm)(&transa,&transb,&m,&n,&k,&alpha,a1.begin(),&lda,a2.begin(),&ldb,&beta,a0.begin(),&ldc);
@@ -52,7 +52,7 @@ namespace nt2 { namespace ext
 /////////////////////////////////////////////////////////////////////////////
 // Implementation when type A0 is table_<float_>
 /////////////////////////////////////////////////////////////////////////////
-  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::gemm_, tag::cpu_
+  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::gemm_t_, tag::cpu_
                             , (A0)(S0)(A1)(S1)(A2)(S2)
                             , ((table_< single_<A0>, S0 > ))
                               ((table_< single_<A1>, S1 > ))
@@ -66,13 +66,13 @@ namespace nt2 { namespace ext
     BOOST_FORCEINLINE result_type operator()(A0& a0, A1 const& a1, A2 const& a2)
     {
       const char transa = 'N';
-      const char transb = 'N';
+      const char transb = 'T';
       const long int m = nt2::size(a1)(1);
-      const long int n = nt2::size(a2)(2);
+      const long int n = nt2::size(a2)(1);
       const long int k = nt2::size(a1)(2);
       const float alpha = 1.0; 
       const long int lda = boost::simd::memory::align_on(m, lead_t_a1::value);
-      const long int ldb = boost::simd::memory::align_on(k, lead_t_a2::value);
+      const long int ldb = boost::simd::memory::align_on(n, lead_t_a2::value);
       const float beta = 0.0; 
       const long int ldc = boost::simd::memory::align_on(m, lead_t_a1::value);
       F77NAME(sgemm)(&transa,&transb,&m,&n,&k,&alpha,a1.begin(),&lda,a2.begin(),&ldb,&beta,a0.begin(),&ldc);
