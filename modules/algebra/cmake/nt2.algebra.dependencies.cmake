@@ -7,10 +7,10 @@
 #                     http://www.boost.org/LICENSE_1_0.txt
 ################################################################################
 
-find_package(BLAS)
+include(nt2.blas)
 
-set(BLAS_FOUND TRUE)
-set(NT2_ALGEBRA_DEPENDENCIES_FOUND ${BLAS_FOUND}) 
-set(NT2_ALGEBRA_DEPENDENCIES_LIBRARIES ${BLAS_LIBRARIES})
+set(NT2_ALGEBRA_DEPENDENCIES_FOUND ${NT2_BLAS_FOUND}) 
+set(NT2_ALGEBRA_DEPENDENCIES_LIBRARIES ${NT2_BLAS_LIBRARIES})
+set(NT2_ALGEBRA_LINK_FLAGS ${NT2_BLAS_LINK_FLAGS})
 
-set(NT2_ALGEBRA_DEPENDENCIES_EXTRA core)
+set(NT2_ALGEBRA_DEPENDENCIES_EXTRA sdk core openmp)

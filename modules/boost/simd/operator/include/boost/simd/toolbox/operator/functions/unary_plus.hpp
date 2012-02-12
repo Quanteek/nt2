@@ -66,7 +66,7 @@ namespace boost { namespace simd
      * \brief Define the tag unary_plus_ of functor unary_plus 
      *        in namespace boost::simd::tag for toolbox boost.simd.operator
     **/
-    struct unary_plus_ : ext::elementwise_<unary_plus_>{};
+    struct unary_plus_ : ext::elementwise_<unary_plus_> { typedef ext::elementwise_<unary_plus_> parent; };
   }
 
   BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::unary_plus_ , unary_plus  , 1 )
@@ -80,6 +80,11 @@ namespace boost { namespace dispatch { namespace meta
   struct hierarchy_of<boost::proto::tag::unary_plus>
   {
     typedef boost::simd::tag::unary_plus_ type;
+  };
+  template<>
+  struct proto_tag<boost::simd::tag::unary_plus_>
+  {
+    typedef boost::proto::tag::unary_plus type;
   };
 } } }
 

@@ -7,8 +7,6 @@
 ###                     http://www.boost.org/LICENSE_1_0.txt
 ##############################################################################
 
-SET( SOURCES
-     mtimes.cpp
-   )
+nt2_module_use_modules(unit sdk core)
 
-nt2_module_add_tests(algebra.all.unit ${SOURCES})
+add_subdirectory(blas)

@@ -9,14 +9,14 @@
 /*!
  * \file
 **/
-#ifndef NT2_TOOLBOX_ALGEBRA_FUNCTIONS_MTIMES_HPP_INCLUDED
-#define NT2_TOOLBOX_ALGEBRA_FUNCTIONS_MTIMES_HPP_INCLUDED
+#ifndef NT2_TOOLBOX_ALGEBRA_FUNCTIONS_GEMM_HPP_INCLUDED
+#define NT2_TOOLBOX_ALGEBRA_FUNCTIONS_GEMM_HPP_INCLUDED
 
 #include <nt2/include/functor.hpp>
 
 /*!
  * \ingroup algebra
- * \defgroup algebra_mtimes mtimes
+ * \defgroup algebra_gemm gemm
  *
  * \par Description
  * Matrix multiplication
@@ -24,7 +24,7 @@
  * \par Header file
  * 
  * \code
- * #include <nt2/include/functions/mtimes.hpp>
+ * #include <nt2/include/functions/gemm.hpp>
  * \endcode
  * 
  * 
@@ -34,16 +34,16 @@
  * namespace nt2
  * {
  *   template <class A0,class A1>
- *     meta::call<tag::mtimes_(A0,A1)>::type
- *     mtimes(const A0 & a0, const A1 & a1);
+ *     meta::call<tag::gemm_(A0,A1,A2)>::type
+ *     gemm(A0& a0, const A1 & a1, const A2 & a2);
  * }
  * \endcode
  *
- * \param a0 first parameter of the matrix product
- * 
- * \param a1 second parameter of the matrix product
+ * \param a0 first parameter of the matrix product in which the result is returned
  *
- * \return a value of the same type as the parameter
+ * \param a1 second parameter of the matrix product
+ * 
+ * \param a2 third parameter of the matrix product
  *  
  * \par Notes
  * Call the dedicated blas routine available on the target.
@@ -54,12 +54,12 @@
 namespace nt2 { namespace tag
   {         
     /*!
-     * \brief Define the tag mtimes_ of functor acos 
+     * \brief Define the tag gemm_ of functor acos 
      *        in namespace nt2::tag for toolbox algebra
     **/
-    struct mtimes_ : ext::unspecified_<mtimes_> { typedef ext::unspecified_<mtimes_> parent; };
+    struct gemm_ : ext::unspecified_<gemm_> { typedef ext::unspecified_<gemm_> parent; };
   }
-  NT2_FUNCTION_IMPLEMENTATION(tag::mtimes_, mtimes, 2)
+  NT2_FUNCTION_IMPLEMENTATION_SELF(tag::gemm_, gemm, 3)
 }
 
 #endif

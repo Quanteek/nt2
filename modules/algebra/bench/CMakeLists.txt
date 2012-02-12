@@ -8,7 +8,7 @@
 ##############################################################################
 
 SET( SOURCES
-     mtimes.cpp
+     gemm.cpp
    )
 
 nt2_module_add_tests(algebra.all.bench ${SOURCES})

@@ -9,6 +9,8 @@
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_BLAS2_HPP_INCLUDED
 #define NT2_TOOLBOX_ALGEBRA_BLAS_BLAS2_HPP_INCLUDED
 
+#define F77NAME(x) x##_
+
 extern "C"
 {
   // Real, double precision
@@ -139,5 +141,9 @@ extern "C"
   
   void F77NAME(sspr2)(const char* uplo, const long int* N, const float* alpha, const float* dx, 
                       const long int* incx, const float* dy, const long int* incy, float* AP);
+
+}
+
+#undef F77NAME
 
 #endif

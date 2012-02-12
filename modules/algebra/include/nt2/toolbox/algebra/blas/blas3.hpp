@@ -9,6 +9,8 @@
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_BLAS3_HPP_INCLUDED
 #define NT2_TOOLBOX_ALGEBRA_BLAS_BLAS3_HPP_INCLUDED
 
+#define F77NAME(x) x##_
+
 extern "C"
 {
 // Real, single precision
@@ -140,8 +142,8 @@ extern "C"
   
   void F77NAME(zsymm)(const char *side, const char *uplo, const long int *m, 
                       const long int *n, const NT2_WRAP_COMPLEX *alpha, 
-                      const NT2_WRAP_COMPLEX *A, const long int *lda, c
-                      onst NT2_WRAP_COMPLEX *B, const long int *ldb, 
+                      const NT2_WRAP_COMPLEX *A, const long int *lda,
+                      const NT2_WRAP_COMPLEX *B, const long int *ldb, 
                       const NT2_WRAP_COMPLEX *beta, NT2_WRAP_COMPLEX *C, 
                       const long int *ldc);
   
@@ -157,5 +159,8 @@ extern "C"
                        const NT2_WRAP_COMPLEX *B, const long int *ldb,
                        const NT2_WRAP_COMPLEX *beta, NT2_WRAP_COMPLEX *C, 
                        const long int *ldc);
+}
+
+#undef F77NAME
 
 #endif
