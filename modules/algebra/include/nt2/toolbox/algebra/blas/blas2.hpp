@@ -142,8 +142,101 @@ extern "C"
   void F77NAME(sspr2)(const char* uplo, const long int* N, const float* alpha, const float* dx, 
                       const long int* incx, const float* dy, const long int* incy, float* AP);
 
-}
+  // complex, double precision
+#define NT2_WRAP_COMPLEX void*
 
+  void F77NAME(zgemv)(const char* trans, const long int* M, const long int* N, 
+                      const NT2_WRAP_COMPLEX alpha, const NT2_WRAP_COMPLEX A, const long int* lda, 
+                      const NT2_WRAP_COMPLEX dx, const long int* incx, const NT2_WRAP_COMPLEX beta, 
+                      NT2_WRAP_COMPLEX dy, const long int* incy);
+  
+  void F77NAME(zgbmv)(const char* trans, const long int* M, const long int* N, 
+                      const long int* kl, const long int* ku, const NT2_WRAP_COMPLEX alpha, 
+                      const NT2_WRAP_COMPLEX A, const long int* lda, const NT2_WRAP_COMPLEX dx, 
+                      const long int* incx, const NT2_WRAP_COMPLEX beta, NT2_WRAP_COMPLEX dy, 
+                      const long int* incy);
+  
+  void F77NAME(zhemv)(const char* uplo, const long int* N, const NT2_WRAP_COMPLEX alpha, 
+                      const NT2_WRAP_COMPLEX A, const long int* lda, const NT2_WRAP_COMPLEX dx, 
+                      const long int* incx, const NT2_WRAP_COMPLEX beta, NT2_WRAP_COMPLEX dy, 
+                      const long int* incy);
+  
+  void F77NAME(zhbmv)(const char* uplo, const long int* N, const long int* k, 
+                      const NT2_WRAP_COMPLEX alpha, const NT2_WRAP_COMPLEX A, const long int* lda, 
+                      const NT2_WRAP_COMPLEX dx, const long int* incx, const NT2_WRAP_COMPLEX beta, 
+                      NT2_WRAP_COMPLEX dy, const long int* incy);
+  
+  void F77NAME(zhpmv)(const char* uplo, const long int* N, const NT2_WRAP_COMPLEX alpha,
+                      const NT2_WRAP_COMPLEX AP, const NT2_WRAP_COMPLEX dx, const long int* incx, 
+                      const NT2_WRAP_COMPLEX beta, NT2_WRAP_COMPLEX dy, const long int* incy);
+  
+  void F77NAME(ztrmv)(const char* uplo, const char* trans, const char* diag,
+                      const long int* N, const NT2_WRAP_COMPLEX A, const long int* lda, 
+                      const NT2_WRAP_COMPLEX dx, const long int* incx);
+  
+  void F77NAME(ztbmv)(const char* uplo, const char* trans, const char* diag, 
+                      const long int* N, const long int* K, const NT2_WRAP_COMPLEX A, 
+                      const long int* lda, NT2_WRAP_COMPLEX dx, const long int* incx);
+  
+  void F77NAME(ztrsv)(const char* uplo, const char* trans, const char* diag, 
+                      const long int* N, const NT2_WRAP_COMPLEX A, const long int* lda, 
+                      NT2_WRAP_COMPLEX dx, const long int* incx);
+
+  void F77NAME(ztbsv)(const char* uplo, const char* trans, const char* diag, 
+                      const long int* N, const long int* K, const NT2_WRAP_COMPLEX A, 
+                      const long int* lda, NT2_WRAP_COMPLEX dx, const long int* incx);
+  
+  void F77NAME(ztpsv)(const char* uplo, const char* trans, const char* diag, 
+                      const long int* N, NT2_WRAP_COMPLEX Ap, NT2_WRAP_COMPLEX dx, 
+                      const long int* incx);
+  // complex, simple precision
+  void F77NAME(cgemv)(const char* trans, const long int* M, const long int* N, 
+                      const NT2_WRAP_COMPLEX alpha, const NT2_WRAP_COMPLEX A, const long int* lda, 
+                      const NT2_WRAP_COMPLEX dx, const long int* incx, const NT2_WRAP_COMPLEX beta, 
+                      NT2_WRAP_COMPLEX dy, const long int* incy);
+  
+  void F77NAME(cgbmv)(const char* trans, const long int* M, const long int* N, 
+                      const long int* kl, const long int* ku, const NT2_WRAP_COMPLEX alpha, 
+                      const NT2_WRAP_COMPLEX A, const long int* lda, const NT2_WRAP_COMPLEX dx, 
+                      const long int* incx, const NT2_WRAP_COMPLEX beta, NT2_WRAP_COMPLEX dy, 
+                      const long int* incy);
+  
+  void F77NAME(chemv)(const char* uplo, const long int* N, const NT2_WRAP_COMPLEX alpha, 
+                      const NT2_WRAP_COMPLEX A, const long int* lda, const NT2_WRAP_COMPLEX dx, 
+                      const long int* incx, const NT2_WRAP_COMPLEX beta, NT2_WRAP_COMPLEX dy, 
+                      const long int* incy);
+  
+  void F77NAME(chbmv)(const char* uplo, const long int* N, const long int* k, 
+                      const NT2_WRAP_COMPLEX alpha, const NT2_WRAP_COMPLEX A, const long int* lda, 
+                      const NT2_WRAP_COMPLEX dx, const long int* incx, const NT2_WRAP_COMPLEX beta, 
+                      NT2_WRAP_COMPLEX dy, const long int* incy);
+  
+  void F77NAME(chpmv)(const char* uplo, const long int* N, const NT2_WRAP_COMPLEX alpha,
+                      const NT2_WRAP_COMPLEX AP, const NT2_WRAP_COMPLEX dx, const long int* incx, 
+                      const NT2_WRAP_COMPLEX beta, NT2_WRAP_COMPLEX dy, const long int* incy);
+  
+  void F77NAME(ctrmv)(const char* uplo, const char* trans, const char* diag,
+                      const long int* N, const NT2_WRAP_COMPLEX A, const long int* lda, 
+                      const NT2_WRAP_COMPLEX dx, const long int* incx);
+  
+  void F77NAME(ctbmv)(const char* uplo, const char* trans, const char* diag, 
+                      const long int* N, const long int* K, const NT2_WRAP_COMPLEX A, 
+                      const long int* lda, NT2_WRAP_COMPLEX dx, const long int* incx);
+  
+  void F77NAME(ctrsv)(const char* uplo, const char* trans, const char* diag, 
+                      const long int* N, const NT2_WRAP_COMPLEX A, const long int* lda, 
+                      NT2_WRAP_COMPLEX dx, const long int* incx);
+
+  void F77NAME(ctbsv)(const char* uplo, const char* trans, const char* diag, 
+                      const long int* N, const long int* K, const NT2_WRAP_COMPLEX A, 
+                      const long int* lda, NT2_WRAP_COMPLEX dx, const long int* incx);
+  
+  void F77NAME(ctpsv)(const char* uplo, const char* trans, const char* diag, 
+                      const long int* N, NT2_WRAP_COMPLEX Ap, NT2_WRAP_COMPLEX dx, 
+                      const long int* incx);
+
+}
+#undef NT2_WRAP_COMPLEX
 #undef F77NAME
 
 #endif
