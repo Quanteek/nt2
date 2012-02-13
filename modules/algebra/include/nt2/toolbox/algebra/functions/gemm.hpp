@@ -59,7 +59,7 @@ namespace nt2 { namespace tag
     **/
     struct gemm_ : ext::unspecified_<gemm_> { typedef ext::unspecified_<gemm_> parent; };
   }
-  NT2_FUNCTION_IMPLEMENTATION_SELF(tag::gemm_, gemm, 3)
+  NT2_FUNCTION_IMPLEMENTATION_SELF(tag::gemm_, gemm, 6)
 }
 
 #endif
