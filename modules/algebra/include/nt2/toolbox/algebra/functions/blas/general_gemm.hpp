@@ -126,7 +126,7 @@ namespace nt2 {
 //     };
 //   }
   
-  template < class T,  class A0,  class A1,  class A2,  class A3>
+  template < class T,  class A0,  class A1,  class A2,  class A3,  class A4>
   inline void gemm(A0& a0, A1 const& a1, A2 const& a2,A3 const& a3,A4 const&  a4)
   {
     typedef typename A0::value_type value_type; 
