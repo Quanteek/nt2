@@ -25,9 +25,9 @@ NT2_TEST_CASE_TPL ( gemm, NT2_REAL_TYPES)
   using nt2::meta::make_container; 
   using nt2::of_size_;
   using nt2::gemm;
-  typedef typename make_container<nt2::tag::table_, T, of_size_<17,5>  >::type table_type_a;
-  typedef typename make_container<nt2::tag::table_, T, of_size_<5,17>  >::type table_type_b;
-  typedef typename make_container<nt2::tag::table_, T, of_size_<17,17> >::type table_type_r;
+  typedef typename make_container<nt2::tag::table_, T, of_size_<17, 5>  >::type table_type_a;
+  typedef typename make_container<nt2::tag::table_, T, of_size_<5, 17>  >::type table_type_b;
+  typedef typename make_container<nt2::tag::table_, T, of_size_<17, 17> >::type table_type_r;
   table_type_a a;
   table_type_b b;
   table_type_r r;
@@ -37,6 +37,10 @@ NT2_TEST_CASE_TPL ( gemm, NT2_REAL_TYPES)
   std::size_t dim2_a = size(a)(2);
   std::size_t dim1_b = size(b)(1);
   std::size_t dim2_b = size(b)(2);
+  std::size_t dim1_r = size(r)(1);
+  std::size_t dim2_r = size(r)(2);
+  std::size_t dim1_r_ = size(r)(1);
+  std::size_t dim2_r_ = size(r)(2);
   T tmp;
 
   for(std::size_t i = 1; i <= dim1_a; i++)
@@ -57,7 +61,7 @@ NT2_TEST_CASE_TPL ( gemm, NT2_REAL_TYPES)
     for(std::size_t j = 1; j <= dim2_b; j++)
     {
       pos1 = boost::fusion::make_vector(i,j);
-      r[pos1] = r_[pos1] = 0.0;
+      r[pos1] = r_[pos1] = 0;
     }
 
   for(std::size_t i = 1; i <= dim1_a; i++)
@@ -72,9 +76,9 @@ NT2_TEST_CASE_TPL ( gemm, NT2_REAL_TYPES)
         r[pos2] += tmp*b[pos3];
       }
     }
-  
+
   // Call blas
-  gemm(r_, a, b);
+  nt2::gemm<nt2::gemm_status<'N','N'> >(r_, a, b);
 
   for(std::size_t i = 1; i <= dim1_a; i++)
     for(std::size_t j = 1; j <= dim2_b; j++)
@@ -83,4 +87,27 @@ NT2_TEST_CASE_TPL ( gemm, NT2_REAL_TYPES)
       NT2_TEST_EQUAL(r[pos1], r_[pos1]);
     }
 
+  nt2::gemm<nt2::gemm_status<'N','T'> >(r_, a, a);
+  for(std::size_t i = 1; i <= dim1_a; i++)
+    for(std::size_t j = 1; j <= dim2_b; j++)
+    {
+      pos1 = boost::fusion::make_vector(i,j);
+      NT2_TEST_EQUAL(r[pos1], r_[pos1]);
+    }
+
+  nt2::gemm<nt2::gemm_status<'T','T'> >(r_, b, a);
+  for(std::size_t i = 1; i <= dim1_a; i++)
+    for(std::size_t j = 1; j <= dim2_b; j++)
+    {
+      pos1 = boost::fusion::make_vector(i,j);
+      NT2_TEST_EQUAL(r[pos1], r_[pos1]);
+    }
+
+  nt2::gemm<nt2::gemm_status<'T','N'> >(r_, b, b);
+  for(std::size_t i = 1; i <= dim1_a; i++)
+    for(std::size_t j = 1; j <= dim2_b; j++)
+    {
+      pos1 = boost::fusion::make_vector(i,j);
+      NT2_TEST_EQUAL(r[pos1], r_[pos1]);
+    }
 }
