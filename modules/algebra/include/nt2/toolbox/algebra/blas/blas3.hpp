@@ -9,7 +9,9 @@
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_BLAS3_HPP_INCLUDED
 #define NT2_TOOLBOX_ALGEBRA_BLAS_BLAS3_HPP_INCLUDED
 
-#define F77NAME(x) x##_
+#include <boost/preprocessor/cat.hpp>
+
+#define F77NAME(x) BOOST_PP_CAT(x,_)
 
 extern "C"
 {

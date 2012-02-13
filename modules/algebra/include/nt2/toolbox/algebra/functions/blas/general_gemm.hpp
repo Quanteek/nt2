@@ -16,17 +16,16 @@
 #include <boost/simd/sdk/memory/align_on.hpp>
 #include <nt2/include/constants/zero.hpp>
 #include <nt2/include/constants/one.hpp>
-
-#define F77NAME(x) x##_
+#include <boost/preprocessor/cat.hpp>
 
 namespace nt2 {
-  struct N : boost::mpl::int_<'N'> {};
-  struct T : boost::mpl::int_<'T'> {};
-  struct NN { typedef  N tA; typedef  N tB; };
-  struct TN { typedef  T tA; typedef  N tB; };
-  struct NT { typedef  N tA; typedef  T tB; };
-  struct TT { typedef  T tA; typedef  T tB; };
-  
+  template<char T0, char T1>
+  struct gemm_status
+  {
+    static const char tA = T0;
+    static const char tB = T1;
+  };
+
   namespace ext
   {
     
@@ -38,7 +37,7 @@ namespace nt2 {
                      const long int *ldb, const T *be, T *c,            \
                      const long int *ldc)                               \
     {                                                                   \
-      F77NAME(PREFIX ## gemm)(ta,tb,m,n,k,al,a,lda,b,ldb,be,c,ldc);     \
+      BOOST_PP_CAT(PREFIX,BOOST_PP_CAT(gemm,_))(ta,tb,m,n,k,al,a,lda,b,ldb,be,c,ldc); \
     }                                                                   \
 
     NT2_GEMM(double, d)
@@ -71,8 +70,8 @@ namespace nt2 {
                                                )
       {
         typedef typename A0::value_type value_type; 
-        const char transa = targ_t::tA::value;
-        const char transb = targ_t::tB::value; 
+        const char transa = targ_t::tA;
+        const char transb = targ_t::tB; 
         const long int m = nt2::size(a1)(transa=='T'?2:1); 
         const long int n = nt2::size(a2)(transb=='T'?1:2); 
         const long int k = nt2::size(a1)(transa=='T'?1:2);
@@ -86,45 +85,6 @@ namespace nt2 {
       }
     };
   }
-
-//   NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::general_gemm_, tag::cpu_, 
-//                               (A0)(S0)(A1)(S1)(A2)(S2)(A3)(A4)(A5), 
-//                               ((table_< complex_<floating_<A0> >, S0 > ))
-//                               ((table_< complex_<floating_<A1> >, S1 > ))
-//                               ((table_< complex_<floating_<A2> >, S2 > ))
-//                               (unspecified_ < A5 > ) //TO DO Specify
-//                               (scalar_ < complex_<arithmetic_<A3 > > > )
-//                               (scalar_ < complex_<arithmetic_<A4 > > > )
-//                               )
-//     {
-//       typedef int result_type;
-//       typedef typename A0::parent::lead_t lead_t_a0;
-//       typedef typename A1::parent::lead_t lead_t_a1;
-//       typedef typename A2::parent::lead_t lead_t_a2;
-//       typedef A5 targ_t;
-      
-//       BOOST_FORCEINLINE result_type operator()(A0& a0,
-//                                                A1 const& a1, A2 const& a2,
-//                                                A5 const& a5, 
-//                                                A3 const& a3, A4 const& a4
-//                                                )
-//       {
-//         typedef typename A0::value_type value_type; 
-//         const char transa = targ_t::tA::value;
-//         const char transb = targ_t::tB::value; 
-//         const long int m = nt2::size(a1)(transa=='T'?2:1); 
-//         const long int n = nt2::size(a2)(transb=='T'?1:2); 
-//         const long int k = nt2::size(a1)(transa=='T'?1:2);
-//         const value_type alpha = a3; 
-//         const long int lda = boost::simd::memory::align_on(size(a1, 1), lead_t_a1::value);
-//         const long int ldb = boost::simd::memory::align_on(size(a2, 1), lead_t_a2::value);
-//         const value_type beta = a4; 
-//         const long int ldc = boost::simd::memory::align_on(size(a0, 1), lead_t_a1::value);
-//         gemm(&transa,&transb,&m,&n,&k,&alpha,a1.begin(),&lda,a2.begin(),&ldb,&beta,a0.begin(),&ldc);
-//         return 0; 
-//       }
-//     };
-//   }
   
   template < class T,  class A0,  class A1,  class A2,  class A3,  class A4>
   inline void gemm(A0& a0, A1 const& a1, A2 const& a2,A3 const& a3,A4 const&  a4)
@@ -146,6 +106,5 @@ namespace nt2 {
     general_gemm(a0, a1, a2, T(), One<value_type>(), Zero<value_type>()); 
   }
 }
-#undef F77NAME
 
 #endif
