@@ -11,7 +11,6 @@ SET( SOURCES
      gemm.cpp
      gemm_t.cpp
 #     gemv.cpp
-     general_gemm.cpp
      general_gemv.cpp    
    )
 

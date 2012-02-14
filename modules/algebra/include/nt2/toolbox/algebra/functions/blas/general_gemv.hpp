@@ -14,7 +14,7 @@
 #include <nt2/include/functions/size.hpp>
 #include <nt2/toolbox/algebra/blas/blas2.hpp>
 #include <boost/simd/sdk/memory/align_on.hpp>
-#include <nt2/include/functions/general_gemm.hpp>
+#include <nt2/include/functions/gemm.hpp>
 
 #define F77NAME(x) x##_
 

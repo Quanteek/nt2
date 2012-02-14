@@ -14,7 +14,7 @@
 
 #include <nt2/table.hpp>
 #include <nt2/include/functions/general_gemv.hpp>
-#include <nt2/include/functions/general_gemm.hpp>   
+#include <nt2/include/functions/gemm.hpp>   
 #include <nt2/include/functions/size.hpp>
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/make_vector.hpp>
@@ -22,8 +22,7 @@
 #include <nt2/sdk/unit/module.hpp>
 
 #define PRINT(NAME)                                      \
-  /*
-std::cout << " matrix "<< #NAME <<  std::endl;           \
+  std::cout << " matrix "<< #NAME <<  std::endl;         \
   for(std::size_t i = 1; i <= dim1_##NAME; i++)          \
     {                                                    \
       for(std::size_t j = 1; j <= dim2_##NAME; j++)      \
@@ -33,45 +32,47 @@ std::cout << " matrix "<< #NAME <<  std::endl;           \
         }                                                \
       std::cout <<std::endl;                             \
     }                                                    \
-  std::cout << std::endl;                                \
- */
+  std::cout << std::endl                                 \
+  /* */
 
 NT2_TEST_CASE_TPL ( general_gemv, NT2_REAL_TYPES) 
 {
   using nt2::meta::make_container; 
   using nt2::of_size_;
   using nt2::general_gemv;
-  //  typedef typename make_container<nt2::tag::table_, T, of_size_<5, 5>  >::type table_type_a;
+  typedef typename make_container<nt2::tag::table_, T, of_size_<5, 5>  >::type table_type_a;
   typedef typename make_container<nt2::tag::table_, T, of_size_<5, 1>  >::type table_type_b;
-  //  typedef typename make_container<nt2::tag::table_, T, of_size_<5, 1> >::type table_type_r;
-//   table_type_a a;
-   table_type_b b;
-//   table_type_r r;
-//   table_type_r r_;
-//   boost::fusion::vector<int,int> pos1,pos2,pos3;
+  typedef typename make_container<nt2::tag::table_, T, of_size_<5, 1> >::type table_type_r;
+  table_type_a a;
+  boost::fusion::vector<int,int> pos1,pos2,pos3;
+  table_type_b b;
+  table_type_r r;
+  table_type_r r_;
+
 //   std::size_t dim1_a = size(a)(1);
 //   std::size_t dim2_a = size(a)(2);
-//   std::size_t dim1_b = size(b)(1);
-//   std::size_t dim2_b = size(b)(2);
-//   std::size_t dim1_r = size(r)(1);
-//   std::size_t dim2_r = size(r)(2);
-//   std::size_t dim1_r_ = size(r)(1);
-//   std::size_t dim2_r_ = size(r)(2);
+//   std::size_t dim1_b = 5;
+//   std::size_t dim2_b = 1;
+// //   std::size_t dim1_r = size(r)(1);
+// //   std::size_t dim2_r = size(r)(2);
+// //   std::size_t dim1_r_ = size(r)(1);
+// //   std::size_t dim2_r_ = size(r)(2);
 //   T tmp;
 
 //   for(std::size_t i = 1; i <= dim1_a; i++)
 //     for(std::size_t j = 1; j <= dim2_a; j++)
+//       {
+//         pos1 = boost::fusion::make_vector(i,j);
+//         a[pos1]= i*j;
+//       }
+//   PRINT(a); 
+  
+//   for(std::size_t i = 1; i <= dim1_a; i++)
 //     {
-//       pos1 = boost::fusion::make_vector(i,j);
-//       a[pos1] = i*j;
+//       pos1 = boost::fusion::make_vector(i,1);
+//       b[pos1] = i;
 //     }
-
-//   for(std::size_t i = 1; i <= dim1_b; i++)
-//     for(std::size_t j = 1; j <= dim2_b; j++)
-//     {
-//       pos1 = boost::fusion::make_vector(i,j);
-//       b[pos1] = i*j;
-//     }
+//   PRINT(b); 
 
 //   for(std::size_t i = 1; i <= dim1_a; i++)
 //     for(std::size_t j = 1; j <= dim2_b; j++)
@@ -93,10 +94,8 @@ NT2_TEST_CASE_TPL ( general_gemv, NT2_REAL_TYPES)
 //       }
 //     }
 
-//   PRINT(a)
-//   PRINT(b)
 //   // Call blas
-//     nt2::gemm<nt2::NN>(r_, a, b);
+     nt2::gemv<'N'>(r_, a, b);
 
 //   for(std::size_t i = 1; i <= dim1_a; i++)
 //     for(std::size_t j = 1; j <= dim2_b; j++)
@@ -105,7 +104,7 @@ NT2_TEST_CASE_TPL ( general_gemv, NT2_REAL_TYPES)
 //       NT2_TEST_EQUAL(r[pos1], r_[pos1]);
 //     }
 //   PRINT(r)
-//   PRINT(r_)
+    //  PRINT(r_)
 
 //    nt2::gemm<nt2::NT>(r_, a, a);
 //   for(std::size_t i = 1; i <= dim1_a; i++)
