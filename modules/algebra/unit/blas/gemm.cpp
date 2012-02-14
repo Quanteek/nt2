@@ -64,6 +64,8 @@ NT2_TEST_CASE_TPL ( gemm, NT2_REAL_TYPES)
       r[pos1] = r_[pos1] = 0;
     }
 
+  
+
   for(std::size_t i = 1; i <= dim1_a; i++)
     for(std::size_t k = 1; k <= dim2_a; k++)
     {
@@ -78,7 +80,7 @@ NT2_TEST_CASE_TPL ( gemm, NT2_REAL_TYPES)
     }
 
   // Call blas
-  nt2::gemm<nt2::gemm_status<'N','N'> >(r_, a, b);
+  nt2::gemm(nt2::gemm_status<'N','N'>(), a, b, r_);
 
   for(std::size_t i = 1; i <= dim1_a; i++)
     for(std::size_t j = 1; j <= dim2_b; j++)
@@ -87,7 +89,7 @@ NT2_TEST_CASE_TPL ( gemm, NT2_REAL_TYPES)
       NT2_TEST_EQUAL(r[pos1], r_[pos1]);
     }
 
-  nt2::gemm<nt2::gemm_status<'N','T'> >(r_, a, a);
+  nt2::gemm(nt2::gemm_status<'N','T'>(), a, a, r_);
   for(std::size_t i = 1; i <= dim1_a; i++)
     for(std::size_t j = 1; j <= dim2_b; j++)
     {
@@ -95,7 +97,7 @@ NT2_TEST_CASE_TPL ( gemm, NT2_REAL_TYPES)
       NT2_TEST_EQUAL(r[pos1], r_[pos1]);
     }
 
-  nt2::gemm<nt2::gemm_status<'T','T'> >(r_, b, a);
+  nt2::gemm(nt2::gemm_status<'T','T'>() ,b, a, r_);
   for(std::size_t i = 1; i <= dim1_a; i++)
     for(std::size_t j = 1; j <= dim2_b; j++)
     {
@@ -103,7 +105,7 @@ NT2_TEST_CASE_TPL ( gemm, NT2_REAL_TYPES)
       NT2_TEST_EQUAL(r[pos1], r_[pos1]);
     }
 
-  nt2::gemm<nt2::gemm_status<'T','N'> >(r_, b, b);
+  nt2::gemm(nt2::gemm_status<'T','N'>(), b, b, r_);
   for(std::size_t i = 1; i <= dim1_a; i++)
     for(std::size_t j = 1; j <= dim2_b; j++)
     {

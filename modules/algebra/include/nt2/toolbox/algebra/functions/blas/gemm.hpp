@@ -21,6 +21,7 @@
 #include <iostream>
 
 namespace nt2 {
+
   namespace details {
     template < class T > long int padding(const T & a)
     {
@@ -58,28 +59,32 @@ namespace nt2 {
 
 #undef NT2_GEMM
  
-  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::gemm_, tag::cpu_, 
-                              (A0)(S0)(A1)(S1)(A2)(S2)(A3)(A4)(A5), 
+  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::gemm_, tag::cpu_
+                            , (A0)(S0)(A1)(S1)(A2)(S2)(A3)(A4)(A5) 
+                            , (unspecified_ < A5 > )
                               ((table_< floating_<A0>, S0 > ))
                               ((table_< floating_<A1>, S1 > ))
                               ((table_< floating_<A2>, S2 > ))
-                              (unspecified_ < A5 > ) //TO DO Specify
                               (scalar_ < arithmetic_<A3 > > )
                               (scalar_ < arithmetic_<A4 > > )
+                
                               )
     {
       typedef void result_type;
-      typedef A5 targ_t;
+      typedef typename A0::parent::lead_t lead_t_a0;
+      typedef typename A1::parent::lead_t lead_t_a1;
+      typedef typename A2::parent::lead_t lead_t_a2;
       
-      BOOST_FORCEINLINE result_type operator()(A0& a0,
-                                               A1 const& a1, A2 const& a2,
-                                               A5 const& a5, 
-                                               A3 const& a3, A4 const& a4
-                                               )
+      BOOST_FORCEINLINE result_type operator()( A5 const& a5
+                                              , A0 const& a0, A1 const& a1
+                                              , A2& a2
+                                              , A3 const& a3, A4 const& a4
+                                              )
       {
         typedef typename A0::value_type value_type; 
-        const char transa = targ_t::tA;
-        const char transb = targ_t::tB; 
+
+        const char transa = a5.tA;
+        const char transb = a5.tB; 
         const long int m = nt2::size(a1)(transa=='T'?2:1); 
         const long int n = nt2::size(a2)(transb=='T'?1:2); 
         const long int k = nt2::size(a1)(transa=='T'?1:2);
@@ -96,26 +101,19 @@ namespace nt2 {
       }
     };
   }
-  
-  template < class T,  class A0,  class A1,  class A2,  class A3,  class A4>
-  inline void gemm(A0& a0, A1 const& a1, A2 const& a2,A3 const& a3,A4 const&  a4)
-  {
-    typedef typename A0::value_type value_type; 
-    gemm(a0, a1, a2, T(), a3, a4); 
-  }
 
-  template < class T,  class A0,  class A1,  class A2,  class A3>
-  inline void gemm(A0& a0, A1 const& a1, A2 const& a2,A3 const& a3)
+  template < class A5,  class A0,  class A1,  class A2,  class A3>
+  inline void gemm(A5 const& a5, A0 const& a0, A1 const& a1, A2& a2, A3 const& a3)
   {
     typedef typename A0::value_type value_type; 
-    gemm(a0, a1, a2, T(), a3, Zero<value_type>()); 
+    gemm(a5, a0, a1, a2, a3, Zero<value_type>()); 
   }
   
-  template < class T,  class A0,  class A1,  class A2>
-  inline void gemm(A0& a0, A1 const& a1, A2 const& a2)
+  template < class A5,  class A0,  class A1,  class A2>
+  inline void gemm(A5 const& a5, A0 const& a0, A1 const& a1, A2& a2)
   {
     typedef typename A0::value_type value_type; 
-    gemm(a0, a1, a2, T(), One<value_type>(), Zero<value_type>()); 
+    gemm(a5, a0, a1, a2, One<value_type>(), Zero<value_type>()); 
   }
 }
 

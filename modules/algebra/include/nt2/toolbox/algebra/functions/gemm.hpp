@@ -54,12 +54,23 @@
 namespace nt2 { namespace tag
   {         
     /*!
-     * \brief Define the tag gemm_ of functor acos 
+     * \brief Define the tag gemm_ of functor gemm
      *        in namespace nt2::tag for toolbox algebra
     **/
     struct gemm_ : ext::unspecified_<gemm_> { typedef ext::unspecified_<gemm_> parent; };
   }
-  NT2_FUNCTION_IMPLEMENTATION_SELF(tag::gemm_, gemm, 6)
+
+  template<class A0, class A1, class A2, class A3, class A4, class A5>
+  BOOST_FORCEINLINE 
+  typename nt2::meta::
+  call<nt2::tag::gemm_( A5 const&, A0 const&, A1 const&
+                      , A2&      , A3 const&
+                      , A4 const&)
+      >::type
+  gemm(A5 const& a5, A0 const& a0, A1 const& a1, A2& a2, A3 const& a3, A4 const& a4)
+  {
+    return typename nt2::make_functor<tag::gemm_, A0>::type()(a5, a0, a1, a2, a3, a4);
+  }
 }
 
 #endif
