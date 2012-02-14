@@ -85,19 +85,19 @@ namespace nt2 {
 
         const char transa = a5.tA;
         const char transb = a5.tB; 
-        const long int m = nt2::size(a1)(transa=='T'?2:1); 
-        const long int n = nt2::size(a2)(transb=='T'?1:2); 
-        const long int k = nt2::size(a1)(transa=='T'?1:2);
+        const long int m = nt2::size(a0)(transa=='T'?2:1); 
+        const long int n = nt2::size(a1)(transb=='T'?1:2); 
+        const long int k = nt2::size(a0)(transa=='T'?1:2);
 
-        const long int kb = nt2::size(a2)(transb=='T'?2:1);
+        const long int kb = nt2::size(a1)(transb=='T'?2:1);
         BOOST_ASSERT( ( k == kb ) );//inner dimensions must match
 
         const value_type alpha = a3; 
-        const long int lda = nt2::details::padding(a1);
-        const long int ldb = nt2::details::padding(a2);
+        const long int lda = nt2::details::padding(a0);
+        const long int ldb = nt2::details::padding(a1);
         const value_type beta = a4; 
-        const long int ldc = nt2::details::padding(a0);
-        gemm(&transa,&transb,&m,&n,&k,&alpha,a1.begin(),&lda,a2.begin(),&ldb,&beta,a0.begin(),&ldc);
+        const long int ldc = nt2::details::padding(a2);
+        gemm(&transa,&transb,&m,&n,&k,&alpha,a0.begin(),&lda,a1.begin(),&ldb,&beta,a2.begin(),&ldc);
       }
     };
   }

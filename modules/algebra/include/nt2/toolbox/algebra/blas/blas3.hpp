@@ -9,7 +9,6 @@
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_BLAS3_HPP_INCLUDED
 #define NT2_TOOLBOX_ALGEBRA_BLAS_BLAS3_HPP_INCLUDED
 
-#include <boost/preprocessor/cat.hpp>
 #include <nt2/toolbox/algebra/blas/f77_wrapper.hpp>
 
 extern "C"
