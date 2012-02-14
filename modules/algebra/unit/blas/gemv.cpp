@@ -19,6 +19,8 @@
 #include <boost/fusion/include/make_vector.hpp>
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
+#include <nt2/sdk/details/type_id.hpp>
+#include <iostream>
 
 NT2_TEST_CASE_TPL ( gemv, NT2_REAL_TYPES) 
 {
@@ -28,12 +30,14 @@ NT2_TEST_CASE_TPL ( gemv, NT2_REAL_TYPES)
   typedef typename make_container<nt2::tag::table_, T, of_size_<17,5>  >::type table_type_a;
   typedef typename make_container<nt2::tag::table_, T, of_size_<5> >::type table_type_v;
   typedef typename make_container<nt2::tag::table_, T, of_size_<5> >::type table_type_r;
+
   table_type_a a;
   table_type_v b;
   table_type_r r;
   table_type_r r_;
   boost::fusion::vector<int,int> pos1;
   boost::fusion::vector<int> pos2;
+  boost::fusion::vector<int> pos3;
   std::size_t dim1_a = size(a)(1);
   std::size_t dim2_a = size(a)(2);
   T tmp;
@@ -51,7 +55,7 @@ NT2_TEST_CASE_TPL ( gemv, NT2_REAL_TYPES)
     b[pos2] = j;
   }
 
- for(std::size_t j = 1; j <= dim2_a; j++)
+  for(std::size_t j = 1; j <= dim2_a; j++)
   {
     pos2 = boost::fusion::make_vector(j);
     r[pos2] = r_[pos2] = 0.0;
@@ -60,9 +64,10 @@ NT2_TEST_CASE_TPL ( gemv, NT2_REAL_TYPES)
   for(std::size_t i = 1; i <= dim1_a; i++)
     for(std::size_t k = 1; k <= dim2_a; k++)
     {
+      pos3 = boost::fusion::make_vector(i);
       pos2 = boost::fusion::make_vector(k);
       pos1 = boost::fusion::make_vector(i,k);
-      r[pos2] += a[pos1]*b[pos2];
+      r[pos3] += a[pos1]*b[pos2];
     } 
   
   // Call blas
