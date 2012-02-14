@@ -10,8 +10,7 @@
 #define NT2_TOOLBOX_ALGEBRA_BLAS_BLAS3_HPP_INCLUDED
 
 #include <boost/preprocessor/cat.hpp>
-
-#define NT2_F77NAME(x) BOOST_PP_CAT(x,_)
+#include <nt2/toolbox/algebra/blas/f77_wrapper.hpp>
 
 extern "C"
 {
@@ -162,7 +161,5 @@ extern "C"
                        const NT2_WRAP_COMPLEX *beta, NT2_WRAP_COMPLEX *C, 
                        const long int *ldc);
 }
-
-#undef NT2_F77NAME
 
 #endif

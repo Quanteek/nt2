@@ -9,7 +9,7 @@
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_BLAS1_HPP_INCLUDED
 #define NT2_TOOLBOX_ALGEBRA_BLAS_BLAS1_HPP_INCLUDED
 
-#define NT2_F77NAME(x) x##_
+#include <nt2/toolbox/algebra/blas/f77_wrapper.hpp>
 
 extern "C"
 {
@@ -151,7 +151,5 @@ extern "C"
 #undef NT2_WRAP_COMPLEX
   
 }
-
-#undef NT2_F77NAME
 
 #endif
