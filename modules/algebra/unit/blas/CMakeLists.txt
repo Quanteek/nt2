@@ -9,7 +9,7 @@
 
 SET( SOURCES
      gemm.cpp
-#     gemv.cpp
+     gemv.cpp
    )
 
 nt2_module_add_tests(algebra.blas.unit ${SOURCES})
