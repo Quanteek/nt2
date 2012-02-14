@@ -17,6 +17,8 @@
 #include <nt2/include/constants/zero.hpp>
 #include <nt2/include/constants/one.hpp>
 #include <boost/preprocessor/cat.hpp>
+#include <boost/assert.hpp>
+#include <iostream>
 
 namespace nt2 {
   namespace details {
@@ -67,9 +69,6 @@ namespace nt2 {
                               )
     {
       typedef void result_type;
-//       typedef typename A0::parent::lead_t lead_t_a0;
-//       typedef typename A1::parent::lead_t lead_t_a1;
-//       typedef typename A2::parent::lead_t lead_t_a2;
       typedef A5 targ_t;
       
       BOOST_FORCEINLINE result_type operator()(A0& a0,
@@ -84,11 +83,15 @@ namespace nt2 {
         const long int m = nt2::size(a1)(transa=='T'?2:1); 
         const long int n = nt2::size(a2)(transb=='T'?1:2); 
         const long int k = nt2::size(a1)(transa=='T'?1:2);
+
+        const long int kb = nt2::size(a2)(transb=='T'?2:1);
+        BOOST_ASSERT( ( k == kb ) );//inner dimensions must match
+
         const value_type alpha = a3; 
-        const long int lda = nt2::details::padding(a1);//boost::simd::memory::align_on(size(a1, 1), lead_t_a1::value);
-        const long int ldb = nt2::details::padding(a2);//boost::simd::memory::align_on(size(a2, 1), lead_t_a2::value);
+        const long int lda = nt2::details::padding(a1);
+        const long int ldb = nt2::details::padding(a2);
         const value_type beta = a4; 
-        const long int ldc = nt2::details::padding(a0);//boost::simd::memory::align_on(size(a0, 1), lead_t_a1::value);
+        const long int ldc = nt2::details::padding(a0);
         gemm(&transa,&transb,&m,&n,&k,&alpha,a1.begin(),&lda,a2.begin(),&ldb,&beta,a0.begin(),&ldc);
       }
     };
