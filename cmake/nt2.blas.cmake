@@ -117,6 +117,7 @@ set(NT2_BLAS_FOUND FALSE)
       
     endif()
   endif()
+
   if(NOT NT2_BLAS_FOUND)
     message("-- Warning: If Blas is available on the target,")
     message("-- please specify the location and the vendor")

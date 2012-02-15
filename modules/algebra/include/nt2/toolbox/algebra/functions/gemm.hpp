@@ -33,18 +33,24 @@
  * \code
  * namespace nt2
  * {
- *   template <class A0,class A1>
- *     meta::call<tag::gemm_(A0,A1,A2)>::type
- *     gemm(A0& a0, const A1 & a1, const A2 & a2);
+ *   template <class A0,class A1,class A1, class A2, class A3, class A4, class A5>
+ *     meta::call<tag::gemm_(A5,A0,A1,A2,A3,A4)>::type
+ *     gemm(A5 const& a5, A0 const& a0, A1 const& a1, A2 & a2, A3 const& a3, A4 const& a4);
  * }
  * \endcode
  *
- * \param a0 first parameter of the matrix product in which the result is returned
+ * \param a0 first parameter of the matrix product
  *
  * \param a1 second parameter of the matrix product
  * 
- * \param a2 third parameter of the matrix product
+ * \param a2 third parameter of the matrix product in which the result is returned
  *  
+ * \param a3 fourth parameter of the matrix product, alpha parameter
+ *
+ * \param a4 fifth parameter of the matrix product, beta parameter
+ *
+ * \param a5 specifies the transpose or none-transpose parameter with the class gemm_status
+ *
  * \par Notes
  * Call the dedicated blas routine available on the target.
  * \par

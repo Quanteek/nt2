@@ -13,22 +13,13 @@
 #include <nt2/core/container/category.hpp>
 #include <nt2/include/functions/size.hpp>
 #include <nt2/toolbox/algebra/blas/blas3.hpp>
-#include <boost/simd/sdk/memory/align_on.hpp>
+#include <nt2/toolbox/algebra/details/padding.hpp>
 #include <nt2/include/constants/zero.hpp>
 #include <nt2/include/constants/one.hpp>
 #include <boost/preprocessor/cat.hpp>
-#include <boost/assert.hpp>
-#include <iostream>
+#include <nt2/sdk/error/assert.hpp>
 
 namespace nt2 {
-
-  namespace details {
-    template < class T > long int padding(const T & a)
-    {
-      typedef typename T::parent::lead_t lead_t_a;
-      return  boost::simd::memory::align_on(size(a, 1), lead_t_a::value);
-    }
-  }
 
   template<char T0, char T1>
   struct gemm_status
@@ -90,7 +81,7 @@ namespace nt2 {
         const long int k = nt2::size(a0)(transa=='T'?1:2);
 
         const long int kb = nt2::size(a1)(transb=='T'?2:1);
-        BOOST_ASSERT( ( k == kb ) );//inner dimensions must match
+        BOOST_ASSERT_MSG((k == kb), "Inner dimensions of the inputs must match");//inner dimensions must match
 
         const value_type alpha = a3; 
         const long int lda = nt2::details::padding(a0);

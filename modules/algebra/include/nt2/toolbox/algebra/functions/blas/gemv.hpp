@@ -6,75 +6,91 @@
 //                 See accompanying file LICENSE.txt or copy at                 
 //                     http://www.boost.org/LICENSE_1_0.txt                     
 //==============================================================================
-#ifndef NT2_TOOLBOX_ALGEBRA_FUNCTIONS_BLAS_GEMV_HPP_INCLUDED
-#define NT2_TOOLBOX_ALGEBRA_FUNCTIONS_BLAS_GEMV_HPP_INCLUDED
+#ifndef NT2_TOOLBOX_ALGEBRA_FUNCTIONS_BLAS_GENERAL_GEMV_HPP_INCLUDED
+#define NT2_TOOLBOX_ALGEBRA_FUNCTIONS_BLAS_GENERAL_GEMV_HPP_INCLUDED
 
 #include <nt2/table.hpp>
 #include <nt2/core/container/category.hpp>
 #include <nt2/include/functions/size.hpp>
 #include <nt2/toolbox/algebra/blas/blas2.hpp>
-#include <boost/simd/sdk/memory/align_on.hpp>
-
-#define F77NAME(x) x##_
-
-namespace nt2 { namespace ext
+#include <nt2/toolbox/algebra/details/padding.hpp>
+#include <nt2/include/constants/zero.hpp>
+#include <nt2/include/constants/one.hpp>
+#include <nt2/include/functions/isvector.hpp>
+#include <boost/preprocessor/cat.hpp>
+#include <boost/assert.hpp>
+namespace nt2
 {
-/////////////////////////////////////////////////////////////////////////////
-// Implementation when type A0 is table_<double_>
-/////////////////////////////////////////////////////////////////////////////
-  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::gemv_, tag::cpu_
-                            , (A0)(S0)(A1)(S1)(A2)(S2)
-                            , ((table_< double_<A0>, S0 > ))
-                              ((table_< double_<A1>, S1 > ))
-                              ((table_< double_<A2>, S2 > ))
-                            )
+  namespace ext
   {
-    typedef void result_type;
-    typedef typename A1::parent::lead_t lead_t_a1;
+    
+#define NT2_GEMV(T, PREFIX)                                             \
+    inline void gemv(const char *ta, const long int *m,                 \
+                     const long int *n,                                 \
+                     const T *al,                                       \
+                     const T *a, const long int *lda,                   \
+                     const T *x, const long int *incx,                  \
+                     const T *be,                                       \
+                     T *y, const long int *incy)                        \
+    {                                                                   \
+      BOOST_PP_CAT(PREFIX,BOOST_PP_CAT(gemv,_))(ta,m,n,al,a,lda,x,incx,be,y, incy);       \
+    }                                                                   \
+        
+    NT2_GEMV(double, d)
+    NT2_GEMV(float,  s)
+    NT2_GEMV(std::complex<double>, z)
+    NT2_GEMV(std::complex<float>, c)
 
-    BOOST_FORCEINLINE result_type operator()(A0& a0, A1 const& a1, A2 const& a2)
+#undef NT2_GEMV
+      
+    /////////////////////////////////////////////////////////////////////////////
+    // Implementation when table_ are floating_
+    /////////////////////////////////////////////////////////////////////////////
+      NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::gemv_, tag::cpu_
+                                , (A0)(S0)(A1)(S1)(A2)(S2)(A3)(A4)(A5)
+                                , (unspecified_ < A5 > )
+                                  ((table_< floating_<A0>, S0 > ))
+                                  ((table_< floating_<A1>, S1 > ))
+                                  ((table_< floating_<A2>, S2 > ))
+                                  (scalar_ < arithmetic_<A3 > > )
+                                  (scalar_ < arithmetic_<A4 > > )
+                                  )
     {
-      const char transa  = 'N';
-      const long int m   = nt2::size(a1)(1);
-      const long int n   = nt2::size(a1)(2);
-      const double alpha = 1.0; 
-      const long int lda = boost::simd::memory::align_on(m, lead_t_a1::value);
-      const long int x   = 1;
-      const double beta  = 0.0; 
-      const long int y   = 1;
-      F77NAME(dgemv)(&transa,&m,&n,&alpha,a1.begin(),&lda,a2.begin(),&x,&beta,a0.begin(),&y);
-    }
-  };
+      typedef void result_type;
+      BOOST_FORCEINLINE result_type operator()( A5 const& transa
+                                              , A0 const& a, A1 const& x, A2& y
+                                              , A3 const& al, A4 const& be
+                                              )
+      {
+        BOOST_ASSERT_MSG( (is_vector(x) && is_vector(y))
+                        , "Matrix-vector product must be called with 1D table for A1 and A2");
+        typedef typename A0::value_type value_type; 
+        const long int m   = nt2::size(a)(transa=='T'?2:1);
+        const long int n   = nt2::size(a)(transa=='T'?1:2);
+        const value_type alpha = al; 
+        const long int lda = nt2::details::padding(a);
+        const value_type beta  = be;
+        const long int incx = 1; //inx;
+        const long int incy = 1; //iny;
+        gemv(&transa,&m,&n,&alpha,a.begin(),&lda,x.begin(),&incx,&beta,y.begin(),&incy);
+      }
+    };
+    
+  }
 
-/////////////////////////////////////////////////////////////////////////////
-// Implementation when type A0 is table_<float_>
-/////////////////////////////////////////////////////////////////////////////
-  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::gemv_, tag::cpu_
-                            , (A0)(S0)(A1)(S1)(A2)(S2)
-                            , ((table_< single_<A0>, S0 > ))
-                              ((table_< single_<A1>, S1 > ))
-                              ((table_< single_<A2>, S2 > ))
-                            )
+  template < class A5,  class A0,  class A1,  class A2,  class A3>
+  inline void gemv(A5 const& a5, A0 const& a0, A1 const& a1, A2& a2,A3 const& a3)
   {
-    typedef void result_type;
-    typedef typename A1::parent::lead_t lead_t_a1;
+    typedef typename A0::value_type value_type; 
+    gemv(a5, a0, a1, a2, a3, Zero<value_type>());
+  }
   
-    BOOST_FORCEINLINE result_type operator()(A0& a0, A1 const& a1, A2 const& a2)
-    {
-      const char transa  = 'N';
-      const long int m   = nt2::size(a1)(1);
-      const long int n   = nt2::size(a1)(2);
-      const float alpha  = 1.0; 
-      const long int lda = boost::simd::memory::align_on(m, lead_t_a1::value);
-      const long int x   = 1;
-      const float beta   = 0.0; 
-      const long int y   = 1;
-      F77NAME(sgemv)(&transa,&m,&n,&alpha,a1.begin(),&lda,a2.begin(),&x,&beta,a0.begin(),&y);
-    }
-  };
-
-} }
-
-#undef F77NAME
+  template < class A5,  class A0,  class A1,  class A2>
+  inline void gemv(A5 const& a5, A0 const& a0, A1 const& a1, A2& a2)
+  {
+    typedef typename A0::value_type value_type; 
+    gemv(a5, a0, a1, a2, One<value_type>(), Zero<value_type>());
+  }
+}
 
 #endif

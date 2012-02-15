@@ -19,8 +19,6 @@
 #include <boost/fusion/include/make_vector.hpp>
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
-#include <nt2/sdk/details/type_id.hpp>
-#include <iostream>
 
 NT2_TEST_CASE_TPL ( gemv, NT2_REAL_TYPES) 
 {
@@ -71,7 +69,7 @@ NT2_TEST_CASE_TPL ( gemv, NT2_REAL_TYPES)
     } 
   
   // Call blas
-  gemv(r_, a, b);
+  gemv('N', a, b, r_);
 
   for(std::size_t j = 1; j <= dim2_a; j++)
   {
