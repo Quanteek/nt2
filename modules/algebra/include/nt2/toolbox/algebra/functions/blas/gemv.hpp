@@ -12,6 +12,7 @@
 #include <nt2/table.hpp>
 #include <nt2/core/container/category.hpp>
 #include <nt2/include/functions/size.hpp>
+#include <nt2/include/functions/numel.hpp>
 #include <nt2/toolbox/algebra/blas/blas2.hpp>
 #include <nt2/toolbox/algebra/details/padding.hpp>
 #include <nt2/include/constants/zero.hpp>
@@ -19,6 +20,7 @@
 #include <nt2/include/functions/isvector.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/assert.hpp>
+
 namespace nt2
 {
   namespace ext
@@ -62,16 +64,21 @@ namespace nt2
                                               , A3 const& al, A4 const& be
                                               )
       {
-        BOOST_ASSERT_MSG( (is_vector(x) && is_vector(y))
-                        , "Matrix-vector product must be called with 1D table for A1 and A2");
+        BOOST_ASSERT_MSG( (is_vector(x) && is_vector(y)), 
+                          "Matrix-vector product y = a*x must be called with 1D table for x and y");
+        BOOST_ASSERT_MSG( (nt2::numel(x) == nt2::numel(y)),  
+                           "Matrix-vector product y = a*x must be called with x and y of same size");
         typedef typename A0::value_type value_type; 
         const long int m   = nt2::size(a)(transa=='T'?2:1);
         const long int n   = nt2::size(a)(transa=='T'?1:2);
+        BOOST_ASSERT_MSG( (n == nt2::numel(x)), 
+                          "Matrix-vector product y = a*x the number of columns of a must be equal to the numel of x ");
+        
         const value_type alpha = al; 
         const long int lda = nt2::details::padding(a);
         const value_type beta  = be;
-        const long int incx = 1; //inx;
-        const long int incy = 1; //iny;
+        const long int incx = 1; 
+        const long int incy = 1; 
         gemv(&transa,&m,&n,&alpha,a.begin(),&lda,x.begin(),&incx,&beta,y.begin(),&incy);
       }
     };

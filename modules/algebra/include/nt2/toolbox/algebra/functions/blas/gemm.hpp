@@ -62,9 +62,6 @@ namespace nt2 {
                               )
     {
       typedef void result_type;
-      typedef typename A0::parent::lead_t lead_t_a0;
-      typedef typename A1::parent::lead_t lead_t_a1;
-      typedef typename A2::parent::lead_t lead_t_a2;
       
       BOOST_FORCEINLINE result_type operator()( A5 const& a5
                                               , A0 const& a0, A1 const& a1
@@ -80,8 +77,8 @@ namespace nt2 {
         const long int n = nt2::size(a1)(transb=='T'?1:2); 
         const long int k = nt2::size(a0)(transa=='T'?1:2);
 
-        const long int kb = nt2::size(a1)(transb=='T'?2:1);
-        BOOST_ASSERT_MSG((k == kb), "Inner dimensions of the inputs must match");//inner dimensions must match
+        //        const long int kb = nt2::size(a1)(transb=='T'?2:1);
+        BOOST_ASSERT_MSG( (k == nt2::size(a1, transb=='T'?2:1)), "Inner dimensions of the inputs must match");
 
         const value_type alpha = a3; 
         const long int lda = nt2::details::padding(a0);
