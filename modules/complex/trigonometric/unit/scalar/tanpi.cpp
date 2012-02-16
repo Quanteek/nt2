@@ -6,14 +6,15 @@
 ///                 See accompanying file LICENSE.txt or copy at
 ///                     http://www.boost.org/LICENSE_1_0.txt
 //////////////////////////////////////////////////////////////////////////////
-#define NT2_UNIT_MODULE "nt2 cospionential toolbox - cospi/scalar Mode"
+#define NT2_UNIT_MODULE "nt2 complex toolbox - tanpi/scalar Mode"
 
 //////////////////////////////////////////////////////////////////////////////
-// unit test behavior of cospionential components in scalar mode
+// unit test behavior of tanpi  components in scalar mode
 //////////////////////////////////////////////////////////////////////////////
 /// created by jt the 08/12/2010
 /// 
-#include <nt2/include/functions/cospi.hpp>
+#include <nt2/include/functions/tanpi.hpp>
+#include <nt2/include/functions/tan.hpp>
 #include <nt2/include/functions/ulpdist.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <nt2/sdk/functor/meta/call.hpp>
@@ -29,19 +30,19 @@
 #include <nt2/sdk/unit/module.hpp>
 #include <nt2/sdk/memory/buffer.hpp>
 #include <nt2/toolbox/constant/constant.hpp>
-#include <nt2/include/constants/pi.hpp>
+#include <nt2/include/constants/deginrad.hpp>
 #include <complex>
 
 
 
-NT2_TEST_CASE_TPL ( cospi_real__1_0,  NT2_REAL_TYPES)
+NT2_TEST_CASE_TPL ( tanpi_real__1_0,  NT2_REAL_TYPES)
 {
   
-  using nt2::cospi;
-  using nt2::tag::cospi_;
+  using nt2::tanpi;
+  using nt2::tag::tanpi_;
   typedef std::complex<T> cT; 
   typedef typename nt2::meta::as_integer<T>::type iT;
-  typedef typename nt2::meta::call<cospi_(cT)>::type r_t;
+  typedef typename nt2::meta::call<tanpi_(cT)>::type r_t;
   typedef typename nt2::meta::scalar_of<r_t>::type ssr_t;
   typedef typename nt2::meta::upgrade<T>::type u_t;
   typedef typename nt2:: meta::as_complex<T>::type wished_r_t;
@@ -55,15 +56,15 @@ NT2_TEST_CASE_TPL ( cospi_real__1_0,  NT2_REAL_TYPES)
 
 
   // specific values tests
-  NT2_TEST_ULP_EQUAL(nt2::cospi(cT(nt2::Inf<T>())), cT(nt2::Nan<T>()), 2);
-  NT2_TEST_ULP_EQUAL(nt2::cospi(cT(nt2::Minf<T>())), cT(nt2::Nan<T>()), 2);
-  NT2_TEST_ULP_EQUAL(nt2::cospi(cT(0.431, 0.431)),std::cos(nt2::Pi<T>()*cT(0.431, 0.431)), 2);
-  NT2_TEST_ULP_EQUAL(nt2::cospi(cT(0.431, 0.628)),std::cos(nt2::Pi<T>()*cT(0.431, 0.628)), 2);
-  NT2_TEST_ULP_EQUAL(nt2::cospi(cT(0.628, 0.431)),std::cos(nt2::Pi<T>()*cT(0.628, 0.431)), 2);
-  NT2_TEST_ULP_EQUAL(nt2::cospi(cT(0.628, 0.628)),std::cos(nt2::Pi<T>()*cT(0.628, 0.628)), 2);
-  NT2_TEST_ULP_EQUAL(nt2::cospi(cT(0, 0.431)),std::cos(nt2::Pi<T>()*cT(0.0, 0.431)), 2);
-  NT2_TEST_ULP_EQUAL(nt2::cospi(cT(0, 0.628)),std::cos(nt2::Pi<T>()*cT(0.0, 0.628)), 2);
-  NT2_TEST_ULP_EQUAL(nt2::cospi(cT(0.628, 0)),std::cos(nt2::Pi<T>()*cT(0.628, 0.0)), 2);
+  NT2_TEST_ULP_EQUAL(nt2::tanpi(cT(nt2::Inf<T>())), cT(nt2::Nan<T>()), 2);
+  NT2_TEST_ULP_EQUAL(nt2::tanpi(cT(nt2::Minf<T>())), cT(nt2::Nan<T>()), 2);
+  NT2_TEST_ULP_EQUAL(nt2::tanpi(cT(1, 1)),nt2::tan(nt2::Pi<T>()*cT(1.0, 1.0)), 2);
+  NT2_TEST_ULP_EQUAL(nt2::tanpi(cT(1, 0.25)),nt2::tan(nt2::Pi<T>()*cT(1.0, 0.25)), 2);
+  NT2_TEST_ULP_EQUAL(nt2::tanpi(cT(0.25, 1)),nt2::tan(nt2::Pi<T>()*cT(0.25, 1.0)), 2);
+  NT2_TEST_ULP_EQUAL(nt2::tanpi(cT(0.25, 0.25)),nt2::tan(nt2::Pi<T>()*cT(0.25, 0.25)), 2);
+  NT2_TEST_ULP_EQUAL(nt2::tanpi(cT(0, 1)),nt2::tan(nt2::Pi<T>()*cT(0.0, 1.0)), 2);
+  NT2_TEST_ULP_EQUAL(nt2::tanpi(cT(0, 0.25)),nt2::tan(nt2::Pi<T>()*cT(0.0, 0.25)), 2);
+  NT2_TEST_ULP_EQUAL(nt2::tanpi(cT(0.25, 0)),nt2::tan(nt2::Pi<T>()*cT(0.25, 0.0)), 2);
 
   const int N = 20; 
   cT inputs[N] =
@@ -73,11 +74,15 @@ NT2_TEST_CASE_TPL ( cospi_real__1_0,  NT2_REAL_TYPES)
       cT(nt2::Zero<T>(),nt2::Nan<T>()), cT(nt2::Inf<T>(),nt2::Nan<T>()), cT(nt2::Minf<T>(),nt2::Nan<T>()), cT(nt2::Nan<T>(),nt2::Nan<T>()),
       cT(nt2::Zero<T>(),nt2::One<T>()), cT(nt2::Inf<T>(),nt2::One<T>()), cT(nt2::Minf<T>(),nt2::One<T>()), cT(nt2::Nan<T>(),nt2::One<T>()),  
     }; 
-  
+                                                                           
   for(int i=0; i < N; i++)
    {
-     NT2_TEST_ULP_EQUAL(nt2::cospi(-inputs[i]), nt2::cospi(inputs[i]), 3);  
-     NT2_TEST_ULP_EQUAL(nt2::cospi(inputs[i]), nt2::cos(nt2::Pi<T>()*inputs[i]), 3); 
+     std::cout << "-------------------" << std::endl; 
+     std::cout << "inputs  "<< inputs[i] << std::endl; 
+     NT2_TEST_ULP_EQUAL(nt2::tanpi(-inputs[i]), -nt2::tanpi(inputs[i]), 3);  
+     NT2_TEST_ULP_EQUAL(nt2::tanpi(inputs[i]), nt2::mul_minus_i(nt2::tanh(nt2::mul_i(nt2::Pi<T>()*inputs[i]))), 3); 
+     std::cout << "=================== " << std::endl; 
    }
-} // end of test for floating_
+
+ } // end of test for floating_
 
