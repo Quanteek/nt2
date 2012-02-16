@@ -11,6 +11,7 @@
 
 #include <nt2/table.hpp>
 #include <nt2/core/container/category.hpp>
+#include <nt2/include/functions/extent.hpp>
 #include <nt2/include/functions/size.hpp>
 #include <nt2/toolbox/algebra/blas/blas3.hpp>
 #include <nt2/toolbox/algebra/details/padding.hpp>
@@ -63,7 +64,7 @@ namespace nt2 {
     {
       typedef void result_type;
       
-      BOOST_FORCEINLINE result_type operator()( A5 const& a5
+      BOOST_FORCEINLINE result_type operator()( A5 const& 
                                               , A0 const& a0, A1 const& a1
                                               , A2& a2
                                               , A3 const& a3, A4 const& a4
@@ -71,16 +72,16 @@ namespace nt2 {
       {
         typedef typename A0::value_type value_type; 
 
-        const char transa = a5.tA;
-        const char transb = a5.tB; 
-        const long int m = nt2::size(a0)(transa=='T'?2:1); 
-        const long int n = nt2::size(a1)(transb=='T'?1:2); 
-        const long int k = nt2::size(a0)(transa=='T'?1:2);
+        const char transa = A5::tA; 
+        const char transb = A5::tB; 
+        const long int m = nt2::extent(a0)[transa=='N'?0:1]; // nt2::size(a0)(transa=='T'?2:1); 
+        const long int n = nt2::extent(a1)[transb=='N'?1:0]; // nt2::size(a1)(transb=='T'?1:2); 
+        const long int k = nt2::extent(a0)[transa=='N'?1:0]; // nt2::size(a0)(transa=='T'?1:2);
 
-        //        const long int kb = nt2::size(a1)(transb=='T'?2:1);
-        BOOST_ASSERT_MSG( (k == nt2::size(a1, transb=='T'?2:1)), "Inner dimensions of the inputs must match");
-
-        const value_type alpha = a3; 
+        BOOST_ASSERT_MSG( (k == nt2::size(a1, transb=='N'?1:2)),
+                          "In matrix-vector product C = al*A*B+ be*C (gemm) inner dimensions of A and B must match");
+                          
+                          const value_type alpha = a3; 
         const long int lda = nt2::details::padding(a0);
         const long int ldb = nt2::details::padding(a1);
         const value_type beta = a4; 
@@ -89,7 +90,7 @@ namespace nt2 {
       }
     };
   }
-
+  //call with status
   template < class A5,  class A0,  class A1,  class A2,  class A3>
   inline void gemm(A5 const& a5, A0 const& a0, A1 const& a1, A2& a2, A3 const& a3)
   {
@@ -102,6 +103,28 @@ namespace nt2 {
   {
     typedef typename A0::value_type value_type; 
     gemm(a5, a0, a1, a2, One<value_type>(), Zero<value_type>()); 
+  }
+
+  //templated on status
+  template < char transa,  char transb,  class A0,  class A1,  class A2,  class A3,  class A4>
+  inline void gemm(A0 const& a0, A1 const& a1, A2& a2, A3 const& a3, A4 const& a4)
+  {
+    typedef typename A0::value_type value_type; 
+    gemm(gemm_status<transa, transb>(), a0, a1, a2, a3, a4); 
+  }
+
+  template < char transa,  char transb,  class A0,  class A1,  class A2,  class A3>
+  inline void gemm(A0 const& a0, A1 const& a1, A2& a2, A3 const& a3)
+  {
+    typedef typename A0::value_type value_type; 
+    gemm(gemm_status<transa, transb>(), a0, a1, a2, a3, Zero<value_type>()); 
+  }
+  
+  template < char transa,  char transb, class A0,  class A1,  class A2>
+  inline void gemm(A0 const& a0, A1 const& a1, A2& a2)
+  {
+    typedef typename A0::value_type value_type; 
+    gemm(gemm_status<transa, transb>(), a0, a1, a2, One<value_type>(), Zero<value_type>()); 
   }
 }
 
