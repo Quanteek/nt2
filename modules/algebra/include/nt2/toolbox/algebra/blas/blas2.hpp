@@ -113,7 +113,7 @@ extern "C"
                       const long int* lda, const float* dx, const long int* incx);
   
   void NT2_F77NAME(strsv)(const char* uplo, const char* trans, const char* diag, 
-                      const long int* N, const float* A, float* dx, 
+                      const long int* N, const float* A, const long int* lda, float* dx, 
                       const long int* incx);
   
   void NT2_F77NAME(stbsv)(const char* uplo, const char* trans, const char* diag, 

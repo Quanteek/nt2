@@ -22,13 +22,6 @@
 
 namespace nt2 {
 
-  template<char T0, char T1>
-  struct gemm_status
-  {
-    static const char tA = T0;
-    static const char tB = T1;
-  };
-
   namespace ext
   {
     
@@ -74,12 +67,14 @@ namespace nt2 {
 
         const char transa = A5::tA; 
         const char transb = A5::tB; 
-        const long int m = nt2::extent(a0)[transa=='N'?0:1]; // nt2::size(a0)(transa=='T'?2:1); 
-        const long int n = nt2::extent(a1)[transb=='N'?1:0]; // nt2::size(a1)(transb=='T'?1:2); 
-        const long int k = nt2::extent(a0)[transa=='N'?1:0]; // nt2::size(a0)(transa=='T'?1:2);
+        const long int m = nt2::extent(a0)[transa=='N'?0:1];
+        const long int n = nt2::extent(a1)[transb=='N'?1:0];
+        const long int k = nt2::extent(a0)[transa=='N'?1:0];
 
         BOOST_ASSERT_MSG( (k == nt2::size(a1, transb=='N'?1:2)),
-                          "In matrix-vector product C = al*A*B+ be*C (gemm) inner dimensions of A and B must match");
+                          "In matrix-vector product C = al*A°*B°+ be*C (gemm) inner dimensions of A° and B° must match");
+        BOOST_ASSERT_MSG( ((m == nt2::size(a2,1))&&(n == nt2::size(a2,2))),
+                          "In matrix-vector product C = al*A°*B°+ be*C (gemm) outer dimensions of A° and B° must match C ones");
                           
                           const value_type alpha = a3; 
         const long int lda = nt2::details::padding(a0);
@@ -90,42 +85,7 @@ namespace nt2 {
       }
     };
   }
-  //call with status
-  template < class A5,  class A0,  class A1,  class A2,  class A3>
-  inline void gemm(A5 const& a5, A0 const& a0, A1 const& a1, A2& a2, A3 const& a3)
-  {
-    typedef typename A0::value_type value_type; 
-    gemm(a5, a0, a1, a2, a3, Zero<value_type>()); 
-  }
-  
-  template < class A5,  class A0,  class A1,  class A2>
-  inline void gemm(A5 const& a5, A0 const& a0, A1 const& a1, A2& a2)
-  {
-    typedef typename A0::value_type value_type; 
-    gemm(a5, a0, a1, a2, One<value_type>(), Zero<value_type>()); 
-  }
 
-  //templated on status
-  template < char transa,  char transb,  class A0,  class A1,  class A2,  class A3,  class A4>
-  inline void gemm(A0 const& a0, A1 const& a1, A2& a2, A3 const& a3, A4 const& a4)
-  {
-    typedef typename A0::value_type value_type; 
-    gemm(gemm_status<transa, transb>(), a0, a1, a2, a3, a4); 
-  }
-
-  template < char transa,  char transb,  class A0,  class A1,  class A2,  class A3>
-  inline void gemm(A0 const& a0, A1 const& a1, A2& a2, A3 const& a3)
-  {
-    typedef typename A0::value_type value_type; 
-    gemm(gemm_status<transa, transb>(), a0, a1, a2, a3, Zero<value_type>()); 
-  }
-  
-  template < char transa,  char transb, class A0,  class A1,  class A2>
-  inline void gemm(A0 const& a0, A1 const& a1, A2& a2)
-  {
-    typedef typename A0::value_type value_type; 
-    gemm(gemm_status<transa, transb>(), a0, a1, a2, One<value_type>(), Zero<value_type>()); 
-  }
 }
 
 #endif
