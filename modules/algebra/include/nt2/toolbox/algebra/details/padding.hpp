@@ -16,7 +16,9 @@ namespace nt2 { namespace details
   template < class T > long int padding(const T & a)
   {
     typedef typename T::parent::lead_t lead_t_a;
-    return  boost::simd::memory::align_on(size(a, 1), lead_t_a::value);
+    long int tmp = boost::simd::memory::align_on(size(a, 1), lead_t_a::value);
+//     std::cout << tmp << "  " << sizeof(typename T::value_type) << std::endl; ;
+    return tmp; 
   }
 
 } }
