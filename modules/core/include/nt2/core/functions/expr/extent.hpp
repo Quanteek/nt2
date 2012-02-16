@@ -18,8 +18,8 @@
 namespace nt2 { namespace ext
 {
   NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::extent_, tag::cpu_
-                            , (A0)(T)
-                            , ((expr_< unspecified_<A0>, nt2::container::domain, T >))
+                            , (A0)
+                            , (ast_<A0>)
                             )
   {
     typedef typename A0::extent_type result_type;
@@ -31,10 +31,9 @@ namespace nt2 { namespace ext
   };
 
   NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::extent_, tag::cpu_
-                            , (A0)
+                            , (A0)(Tag)
                             , ((expr_ < unspecified_<A0>
-                                      , nt2::container::domain
-                                      , boost::simd::tag::terminal_
+                                      , Tag, boost::mpl::long_<0>
                                       >
                               ))
                             )
