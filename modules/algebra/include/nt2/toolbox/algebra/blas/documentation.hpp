@@ -52,7 +52,7 @@
  * -- long int pointers containing matrices dimensions or extent
  *
  * Our routines will have name consisting of the two characters defining the kind
- * of performed operation and will use much less parameters than the original ones
+ * of performed operation prefixed with b_ (as blas) and will use much less parameters than the original ones
  *
  * * The data pointers will be nt2 containers which are aware of their shape and of their
  *   dimensions and extents,  suppressing the need of passing dimensions as supplementary long ints
@@ -62,7 +62,9 @@
  *   know the properties at compile time (but disallowing to chose to change dynamically the property, 
  *   we think this is rarely needed and can be replaced by testing and branching if not avoidable)
  *
- * So for example,  the functions gemm,  gbmm, hemm, hbmm, symm, sbmm
+ * ---------------------------------------------------------------------------------------------------
+ *
+ * So for instance, the functions gemm,  gbmm, hemm, hbmm, symm, sbmm
  * which all compute in various cases
  *                                C <- alpha*A°*B°+beta*C
  * with FORTRAN definition call analog to the C
@@ -102,11 +104,33 @@
  *
  * in the simpler case
  *
- * Note:
+ * Notes:
  * It must be noted that the fact that a matrix is triangular, symetric 
  * or hermitian can not be always known from the matrix shape. The routines do not
  * assume the matrix is really such but that only a part of the martix is significative
  * and the other never accessed.
  * For instance, a triangular matrix is never detected at compile time,
  * but it can be said to be such, which is different.
+
+ TO DO
+ J'en viens à la conclusion qu'une matrice devrait savoir si elle est stockée normalement ou comme transposée
+ typiquement gemm sait calculer A°*B° ou le ° est N T ou C
+ mais symm ou A est symtrique ne sait calculer que AB et BA
+ mais comme BA est le transposé de AB'
+ symm sait calculer AB' mais sous forme transposée...
+ en général on n'a pas besoin d'avoir une matrice dans un sens ou un autre
+ mais juste de savoir qu'elle est dans un sens ou un autre et en profiter pour faire le bon
+ calcul: on n'aurait jamais à vraiment transposer de matrices sauf si on veut sauf si on veut
+ forcer la chose pour passer la matrices à des routines externes moins intelligentes.
+
+ Cependant reste un pb c'est le dimensionnement des matrices de retour si on fait C = A*B'
+ avec A mxm et B nxn 
+ 1 ) si on détecte que A est symetrique,  il faudrait calculer dans C la matrice BA qui est
+ la transposé du résultat et dire qu'elle est stockée en mode transpose et ses dimensions seraient
+ nxm
+ 2 )si on détecte que A est generale, il faudrait calculer dans C la matrice AB' effective qui est
+ de dimension mxn
+ Ca pose un pb + gros encore si c'est C =  aAB'+bC qu'on veut faire
+ parce que là on ne veut pas transposer C !
+ peut faut-il decider de transposer ou pas B suivant les dimensions de C ?! 
  **/
