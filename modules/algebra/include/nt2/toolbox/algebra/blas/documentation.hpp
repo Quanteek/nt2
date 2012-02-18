@@ -90,7 +90,6 @@
  *          char SIDE   = 'L'>
  * struct blas_status
  * {
- *   static const int  type   = TYPE; 
  *   static const char uplo   = UPLO;
  *   static const char transa = TRANSA;
  *   static const char transb = TRANSB; 
@@ -103,4 +102,11 @@
  *
  * in the simpler case
  *
+ * Note:
+ * It must be noted that the fact that a matrix is triangular, symetric 
+ * or hermitian can not be always known from the matrix shape. The routines do not
+ * assume the matrix is really such but that only a part of the martix is significative
+ * and the other never accessed.
+ * For instance, a triangular matrix is never detected at compile time,
+ * but it can be said to be such, which is different.
  **/
