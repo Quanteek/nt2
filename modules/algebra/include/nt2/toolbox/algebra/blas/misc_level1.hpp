@@ -8,6 +8,7 @@
  ******************************************************************************/
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_MISC_LEVEL1_HPP_INCLUDED
 #define NT2_TOOLBOX_ALGEBRA_BLAS_MISC_LEVEL1_HPP_INCLUDED
+#include <nt2/toolbox/algebra/blas/blas1.hpp>
 
 // SUBROUTINE _SWAP ( N,         X, INCX, Y, INCY )                              S, D, C, Z
 // SUBROUTINE _COPY ( N,         X, INCX, Y, INCY )                              S, D, C, Z

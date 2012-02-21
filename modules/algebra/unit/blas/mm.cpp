@@ -91,7 +91,7 @@ NT2_TEST_CASE_TPL ( mm, NT2_REAL_TYPES)
         }
     
     // Call blas
-    nt2::mm(nt2::blas_status<nt2::blas_types::general>(), a, b, r_);
+    nt2::mm(nt2::b_status<>(), a, b, r_);
     
     for(std::size_t i = 1; i <= dim1_r; i++)
       for(std::size_t j = 1; j <= dim2_r; j++)
@@ -110,7 +110,7 @@ NT2_TEST_CASE_TPL ( mm, NT2_REAL_TYPES)
         }
     std::cout << " ==================================================== " << std::endl; 
     // Call blas
-    nt2::mm(nt2::blas_status<nt2::blas_types::symetric>(), a, b, r_);
+    nt2::mm(nt2::b_status<>(),a, b, r_);
     
     for(std::size_t i = 1; i <= dim1_r; i++)
       for(std::size_t j = 1; j <= dim2_r; j++)

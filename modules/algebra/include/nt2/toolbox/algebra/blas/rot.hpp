@@ -8,6 +8,7 @@
  ******************************************************************************/
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_ROT_HPP_INCLUDED
 #define NT2_TOOLBOX_ALGEBRA_BLAS_ROT_HPP_INCLUDED
+#include <nt2/toolbox/algebra/blas/blas1.hpp>
 
 // SUBROUTINE _ROTG (                                      A, B, C, S )          S, D
 // SUBROUTINE _ROTMG(                              D1, D2, A, B,        PARAM )  S, D

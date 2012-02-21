@@ -8,6 +8,7 @@
  ******************************************************************************/
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_SV_HPP_INCLUDED
 #define NT2_TOOLBOX_ALGEBRA_BLAS_SV_HPP_INCLUDED
+#include <nt2/toolbox/algebra/blas/blas2.hpp>
 
 // all sv call:  trsv  tbsv etc.
 // for data types float, double and related complex 

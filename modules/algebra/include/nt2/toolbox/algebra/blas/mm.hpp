@@ -7,7 +7,7 @@
  *                     http://www.boost.org/LICENSE_1_0.txt
  ******************************************************************************/
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_MM_HPP_INCLUDED
-#define NT2_TOOLBOX_ALGEBRA_BLAS_MM_B_HPP_INCLUDED
+#define NT2_TOOLBOX_ALGEBRA_BLAS_MM_HPP_INCLUDED
 #include <nt2/toolbox/algebra/blas/blas3.hpp>
 
 namespace nt2
@@ -78,9 +78,9 @@ namespace nt2
 
 #undef NT2_MM
 
+    /*
 #define NT2_MM(T, PREFIX)                                               \
-    inline void trmm(                                                   \
-                     const char *side, const char *uplo,                \
+    inline void trmm(const char *side, const char *uplo,                \
                      const char *transa,                                \
                      const long int *m,                                 \
                      const long int *n,                                 \
@@ -89,14 +89,14 @@ namespace nt2
     {
       BOOST_PP_CAT(PREFIX,BOOST_PP_CAT(trmm,_))(side,uplo,transa,m,n,al,a,lda,b,ldb); \
     }                                                                   \
-    /**/
 
     NT2_MM(double, d) 
     NT2_MM(float,  s) 
     NT2_MM(std::complex<double>, z)
     NT2_MM(std::complex<float>, c)
-
-#undef NT2_MM          
+    
+    #undef NT2_MM
+    */
   }
 }
 

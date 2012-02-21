@@ -8,6 +8,7 @@
  ******************************************************************************/
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_R_HPP_INCLUDED
 #define NT2_TOOLBOX_ALGEBRA_BLAS_R_HPP_INCLUDED
+#include <nt2/toolbox/algebra/blas/blas1.hpp>
 
 // _GER  (                    M, N, ALPHA, X, INCX, Y, INCY, A, LDA ) S, D
 // _GERU (                    M, N, ALPHA, X, INCX, Y, INCY, A, LDA ) C, Z (TRANSPOSE)
