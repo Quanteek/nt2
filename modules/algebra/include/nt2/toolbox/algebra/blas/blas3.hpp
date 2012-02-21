@@ -45,6 +45,7 @@ extern "C"
                        const long int *lda, const float *B, const long int *ldb,
                        const float *beta, float *C, const long int *ldc);
 
+
 // Real, double precison
   void NT2_F77NAME(dgemm)(const char *transa, const char *transb, const long int *m, 
                       const long int *n, const long int *k, const double *alpha, 

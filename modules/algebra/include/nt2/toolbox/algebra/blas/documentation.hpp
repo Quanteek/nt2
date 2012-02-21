@@ -12,6 +12,19 @@
  * The aim of this part is to encapsulate the blas functions
  * in a generic manner suited to C++
  *
+ * blas{1, 2, 3}.hpp contains extern C declaration for blas functions of
+ * corresponding levels blas functions sharing the same "name" but different
+ * types parameters are overloaded (see the rationale above) for C++ purposes,
+ * respectively in different files the name of which correspond to the
+ * performed operation:
+ *
+ * For blas 3:
+ *     mm.hpp,  rk.hpp, r2k.hpp, sm.hpp
+ * for blas 2:
+ *     mv.hpp,  sv.hpp,  r.hpp, ru.hpp, rc.hpp,  r2.hpp
+ * for blas 1:
+ *
+ * --------------------------------------------------------------------------------------
  * rationale
  * blas functions consits of name and parameters
  *
@@ -28,8 +41,8 @@
  *    In fact g, b, p correspond to a storage scheme: general, band, packed
  *            s,  h, t to a property of the matrix  :symetric, hermitian, triangular
  * The storage define how the elemnt are accessed in memory
- * The property tell what are the elements not accessed: except the g case,
- * almost half of the elements are unnessary to completely define the matrix
+ * The property tells what are the elements not accessed: except in the g case,
+ * almost half of the elements are unnecessary to completely define the matrix
  *
  * -- finally one part devoted to define the kind of performed operation
  *    for instance mm means matrix matrix multiplication and mv means matrix vector
@@ -112,25 +125,4 @@
  * For instance, a triangular matrix is never detected at compile time,
  * but it can be said to be such, which is different.
 
- TO DO
- J'en viens à la conclusion qu'une matrice devrait savoir si elle est stockée normalement ou comme transposée
- typiquement gemm sait calculer A°*B° ou le ° est N T ou C
- mais symm ou A est symtrique ne sait calculer que AB et BA
- mais comme BA est le transposé de AB'
- symm sait calculer AB' mais sous forme transposée...
- en général on n'a pas besoin d'avoir une matrice dans un sens ou un autre
- mais juste de savoir qu'elle est dans un sens ou un autre et en profiter pour faire le bon
- calcul: on n'aurait jamais à vraiment transposer de matrices sauf si on veut sauf si on veut
- forcer la chose pour passer la matrices à des routines externes moins intelligentes.
-
- Cependant reste un pb c'est le dimensionnement des matrices de retour si on fait C = A*B'
- avec A mxm et B nxn 
- 1 ) si on détecte que A est symetrique,  il faudrait calculer dans C la matrice BA qui est
- la transposé du résultat et dire qu'elle est stockée en mode transpose et ses dimensions seraient
- nxm
- 2 )si on détecte que A est generale, il faudrait calculer dans C la matrice AB' effective qui est
- de dimension mxn
- Ca pose un pb + gros encore si c'est C =  aAB'+bC qu'on veut faire
- parce que là on ne veut pas transposer C !
- peut faut-il decider de transposer ou pas B suivant les dimensions de C ?! 
  **/

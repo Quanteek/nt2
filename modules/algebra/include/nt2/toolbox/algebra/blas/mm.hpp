@@ -6,15 +6,18 @@
  *                 See accompanying file LICENSE.txt or copy at
  *                     http://www.boost.org/LICENSE_1_0.txt
  ******************************************************************************/
-#ifndef NT2_TOOLBOX_ALGEBRA_BLAS_BLAS3_B_HPP_INCLUDED
-#define NT2_TOOLBOX_ALGEBRA_BLAS_BLAS3_B_HPP_INCLUDED
+#ifndef NT2_TOOLBOX_ALGEBRA_BLAS_MM_HPP_INCLUDED
+#define NT2_TOOLBOX_ALGEBRA_BLAS_MM_B_HPP_INCLUDED
 #include <nt2/toolbox/algebra/blas/blas3.hpp>
 
 namespace nt2
 {
   namespace details
   {
-    //all mm call: gemm symm hemm for data types float, double and related complex 
+    //all mm call: gemm symm hemm trmm for data types float, double and related complex 
+    // gemm C <- al*op(A)*op(B)+be*C (op t h n according ta and tb)
+    // symm and hemm C <- al*A*B +be+C or   al*B*A +be+C (A sy or he and according side) 
+    // trmm B <- al*op(A)*B or  B <- al*B*op(A) (op t h n) A triangular accessed according uplo
     
 #define NT2_MM(T, PREFIX)                                               \
     inline void gemm(const char *ta, const char *tb, const long int *m, \
@@ -74,6 +77,26 @@ namespace nt2
     NT2_MM(std::complex<float>, c)
 
 #undef NT2_MM
+
+#define NT2_MM(T, PREFIX)                                               \
+    inline void trmm(                                                   \
+                     const char *side, const char *uplo,                \
+                     const char *transa,                                \
+                     const long int *m,                                 \
+                     const long int *n,                                 \
+                     const T *al, const T *a, const long int *lda,      \
+                     T *b, const long int *ldb)                         \
+    {
+      BOOST_PP_CAT(PREFIX,BOOST_PP_CAT(trmm,_))(side,uplo,transa,m,n,al,a,lda,b,ldb); \
+    }                                                                   \
+    /**/
+
+    NT2_MM(double, d) 
+    NT2_MM(float,  s) 
+    NT2_MM(std::complex<double>, z)
+    NT2_MM(std::complex<float>, c)
+
+#undef NT2_MM          
   }
 }
 
