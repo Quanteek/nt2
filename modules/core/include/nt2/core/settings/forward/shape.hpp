@@ -19,6 +19,8 @@ namespace nt2
    **/
   //============================================================================
   struct rectangular_;
+  struct symetric_;
+  struct hermitian_;
 
   namespace tag 
   { 
