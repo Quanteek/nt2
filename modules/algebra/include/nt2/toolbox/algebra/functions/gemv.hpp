@@ -33,18 +33,37 @@
  * \code
  * namespace nt2
  * {
- *   template <class A0,class A1>
- *     meta::call<tag::gemv_(A0,A1,A2)>::type
- *     gemv(A0& a0, const A1 & a1, const A2 & a2);
+ *   template <class A0,class A1,class A2,class A3,class A4>
+ *   void gemm(const gemv_status& gs,
+ *             A0& a, A1 const& x, A2 & y,
+ *             A3 const& alpha = 1, A4 const& beta = 0);
+ *
+ *   template <char transa,char transx,class A0,class A1,class A2,class A3,class A4>
+ *   void gemm(A0& a, A1 const& x, A2 & y,
+ *             A3 const& alpha = 1, A4 const& beta = 0);
  * }
  * \endcode
  *
- * \param a0 first parameter of the matrix vector product in which the result is returned
- * 
- * \param a1 second parameter of the matrix product, first matrix
+ * In template case:
  *
- * \param a2 second parameter of the matrix product, second matrix which is transposed
+ * \param transa the transpose or no-transpose status of A: 'N' or 'T' or 'H'
+ *
+ * \param transx the transpose or no-transpose status of x: 'N', never conjugated
+ *
+ * In call with status case: the first parameter gs is simply nt2::gemv_status<transa,transx>()
+ *
+ * Other parameters are the same for both type of calls:
+ *
+ * \param a the matrix A
+ * 
+ * \param b the vector x
  *  
+ * \param y the column vector product result and input
+ *
+ * \param alpha the alpha scalar parameter
+ *
+ * \param beta  the beta scalar parameter
+ *
  * \par Notes
  * Call the dedicated blas routine available on the target.
  * \par
@@ -54,13 +73,59 @@
 namespace nt2 { namespace tag
   {         
     /*!
-     * \brief Define the tag gemv_ of functor acos 
+     * \brief Define the tag gemv_ of functor gemv 
      *        in namespace nt2::tag for toolbox algebra
     **/
     struct gemv_ : ext::unspecified_<gemv_> { typedef ext::unspecified_<gemv_> parent; };
   }
 
-  NT2_FUNCTION_IMPLEMENTATION_SELF(tag::gemv_, gemv, 3)
+  template<char T0, char T1>
+  struct gemv_status
+  {
+    static const char tA = T0;
+    static const char tx = T1;
+  };
+
+  template<class A0, class A1, class A2, class A3, class A4, class A5>
+  BOOST_FORCEINLINE void
+  gemv(A5 const& a5, A0 const& a0, A1 const& a1, A2& a2, A3 const& a3, A4 const& a4)
+  {
+    return typename nt2::make_functor<tag::gemv_, A0>::type()(a5, a0, a1, a2, a3, a4);
+  }
+ 
+  template < class A5, class A0, class A1, class A2, class A3>
+  BOOST_FORCEINLINE void gemv(A5 const& a5, A0 const& a0, A1 const& a1, A2& a2, A3 const& a3)
+  {
+    typedef typename A0::value_type value_type; 
+    gemv(a5, a0, a1, a2, a3, Zero<value_type>());
+  }
+  
+  template < class A5, class A0, class A1, class A2>
+  BOOST_FORCEINLINE void gemv(A5 const& a5, A0 const& a0, A1 const& a1, A2& a2)
+  {
+    typedef typename A0::value_type value_type; 
+    gemv(a5, a0, a1, a2, One<value_type>(), Zero<value_type>());
+  }
+  template < char transa, char transx, class A0, class A1, class A2, class A3, class A4>
+  BOOST_FORCEINLINE void gemv(A0 const& a0, A1 const& a1, A2& a2, A3 const& a3, A4 const& a4)
+  {
+    gemv(gemv_status<transa, transx>(), a0, a1, a2, a3, a4);
+  }
+  
+  template < char transa, char transx, class A0, class A1, class A2, class A3>
+  BOOST_FORCEINLINE void gemv(A0 const& a0, A1 const& a1, A2& a2, A3 const& a3)
+  {
+    typedef typename A0::value_type value_type; 
+    gemv(gemv_status<transa, transx>(), a0, a1, a2, a3, Zero<value_type>());
+  }
+  
+  template <char transa, char transx, class A0, class A1, class A2>
+  BOOST_FORCEINLINE void gemv(A0 const& a0, A1 const& a1, A2& a2)
+  {
+    typedef typename A0::value_type value_type; 
+    gemv(gemv_status<transa, transx>(), a0, a1, a2, One<value_type>(), Zero<value_type>());
+  }
+  
 }
 
 #endif

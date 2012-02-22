@@ -8,6 +8,10 @@
 //==============================================================================
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_F77_WRAPPER_HPP_INCLUDED
 #define NT2_TOOLBOX_ALGEBRA_BLAS_F77_WRAPPER_HPP_INCLUDED
+////////////////////////////////////////////////////////////////////////////////
+// This macro can be ifdefed to produce the correct symbol output for the
+// FORTRAN library in use, adding or not the underscore to FORTRAN routine names
+////////////////////////////////////////////////////////////////////////////////
 
 #define NT2_F77NAME(x) BOOST_PP_CAT(x,_)
 

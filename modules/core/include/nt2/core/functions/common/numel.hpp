@@ -6,29 +6,30 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#ifndef BOOST_SIMD_DSL_FUNCTIONS_GENERIC_COMPILE_HPP_INCLUDED
-#define BOOST_SIMD_DSL_FUNCTIONS_GENERIC_COMPILE_HPP_INCLUDED
+#ifndef NT2_CORE_FUNCTIONS_COMMON_NUMEL_HPP_INCLUDED
+#define NT2_CORE_FUNCTIONS_COMMON_NUMEL_HPP_INCLUDED
 
-#include <boost/simd/dsl/functions/compile.hpp>
-#include <boost/simd/include/functions/run.hpp>
-#include <boost/simd/sdk/functor/hierarchy.hpp>
-#include <boost/simd/sdk/functor/preprocessor/call.hpp>
+#include <nt2/core/functions/numel.hpp>
+#include <nt2/include/functions/numel.hpp>
+#include <nt2/include/functions/extent.hpp>
 
-namespace boost { namespace simd { namespace ext
+namespace nt2 { namespace ext
 {
-  BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::compile_, tag::formal_
+  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::numel_, tag::cpu_
                             , (A0)
                             , (unspecified_<A0>)
                             )
   {
-    typedef typename dispatch::make_functor<tag::run_, A0>::type result_type;
-    
-    BOOST_DISPATCH_FORCE_INLINE result_type
-    operator()(A0 const&) const
+    typedef std::size_t result_type;
+
+    BOOST_DISPATCH_FORCE_INLINE
+    result_type operator()(const A0& a0) const
     {
-      return result_type();
+      typename meta::call<tag::extent_(A0 const&)>::type ex = nt2::extent(a0);
+      return nt2::numel(ex);
+
     }
   };
-} } }
+} }
 
 #endif

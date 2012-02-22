@@ -19,8 +19,6 @@
 #include <boost/fusion/include/make_vector.hpp>
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
-#include <nt2/sdk/details/type_id.hpp>
-#include <iostream>
 
 NT2_TEST_CASE_TPL ( gemv, NT2_REAL_TYPES) 
 {
@@ -29,7 +27,7 @@ NT2_TEST_CASE_TPL ( gemv, NT2_REAL_TYPES)
   using nt2::gemv;
   typedef typename make_container<nt2::tag::table_, T, of_size_<17,5>  >::type table_type_a;
   typedef typename make_container<nt2::tag::table_, T, of_size_<5> >::type table_type_v;
-  typedef typename make_container<nt2::tag::table_, T, of_size_<5> >::type table_type_r;
+  typedef typename make_container<nt2::tag::table_, T, of_size_<17> >::type table_type_r;
 
   table_type_a a;
   table_type_v b;
@@ -71,7 +69,7 @@ NT2_TEST_CASE_TPL ( gemv, NT2_REAL_TYPES)
     } 
   
   // Call blas
-  gemv(r_, a, b);
+  gemv(nt2::gemv_status<'N', 'N'>(), a, b, r_);
 
   for(std::size_t j = 1; j <= dim2_a; j++)
   {

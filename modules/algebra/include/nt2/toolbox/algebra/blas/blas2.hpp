@@ -8,7 +8,6 @@
 //==============================================================================
 #ifndef NT2_TOOLBOX_ALGEBRA_BLAS_BLAS2_HPP_INCLUDED
 #define NT2_TOOLBOX_ALGEBRA_BLAS_BLAS2_HPP_INCLUDED
-
 #include <nt2/toolbox/algebra/blas/f77_wrapper.hpp>
 
 extern "C"
@@ -113,7 +112,7 @@ extern "C"
                       const long int* lda, const float* dx, const long int* incx);
   
   void NT2_F77NAME(strsv)(const char* uplo, const char* trans, const char* diag, 
-                      const long int* N, const float* A, float* dx, 
+                      const long int* N, const float* A, const long int* lda, float* dx, 
                       const long int* incx);
   
   void NT2_F77NAME(stbsv)(const char* uplo, const char* trans, const char* diag, 

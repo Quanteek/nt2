@@ -45,6 +45,7 @@ extern "C"
                        const long int *lda, const float *B, const long int *ldb,
                        const float *beta, float *C, const long int *ldc);
 
+
 // Real, double precison
   void NT2_F77NAME(dgemm)(const char *transa, const char *transb, const long int *m, 
                       const long int *n, const long int *k, const double *alpha, 
@@ -63,13 +64,13 @@ extern "C"
                       double *B, const long int *ldb);
   
   void NT2_F77NAME(dsymm)(const char *side, const char *uplo, const long int *m, 
-                      const long int *n, double *alpha, const double *A, 
+                      const long int *n, const double *alpha, const double *A, 
                       const long int *lda, const double *B, 
-                      const long int *ldb, double *beta, double *C, 
+                      const long int *ldb, const double *beta, double *C, 
                       const long int *ldc);
   
   void NT2_F77NAME(dsyrk)(const char *uplo, const char *transa, const long int *n, 
-                      const long int *k, double *alpha, const double *A, 
+                      const long int *k, const double *alpha, const double *A, 
                       const long int *lda, const double *beta, double *C, 
                       const long int *ldc);
   
@@ -101,6 +102,13 @@ extern "C"
                       const long int *ldb);
   
   void NT2_F77NAME(csymm)(const char *side, const char *uplo, const long int *m, 
+                      const long int *n, const NT2_WRAP_COMPLEX *alpha, 
+                      const NT2_WRAP_COMPLEX *A, const long int *lda, 
+                      const NT2_WRAP_COMPLEX *B, const long int *ldb, 
+                      const NT2_WRAP_COMPLEX *beta, NT2_WRAP_COMPLEX *C, 
+                      const long int *ldc);
+
+  void NT2_F77NAME(chemm)(const char *side, const char *uplo, const long int *m, 
                       const long int *n, const NT2_WRAP_COMPLEX *alpha, 
                       const NT2_WRAP_COMPLEX *A, const long int *lda, 
                       const NT2_WRAP_COMPLEX *B, const long int *ldb, 
@@ -140,6 +148,13 @@ extern "C"
                       const long int *lda, const NT2_WRAP_COMPLEX *B, 
                       const long int *ldb);
   
+  void NT2_F77NAME(zhemm)(const char *side, const char *uplo, const long int *m, 
+                      const long int *n, const NT2_WRAP_COMPLEX *alpha, 
+                      const NT2_WRAP_COMPLEX *A, const long int *lda, 
+                      const NT2_WRAP_COMPLEX *B, const long int *ldb, 
+                      const NT2_WRAP_COMPLEX *beta, NT2_WRAP_COMPLEX *C, 
+                      const long int *ldc);
+
   void NT2_F77NAME(zsymm)(const char *side, const char *uplo, const long int *m, 
                       const long int *n, const NT2_WRAP_COMPLEX *alpha, 
                       const NT2_WRAP_COMPLEX *A, const long int *lda,

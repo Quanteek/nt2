@@ -11,6 +11,7 @@ nt2_module_use_modules(unit sdk core)
 
 SET( SOURCES
      gemm.cpp
+     gemv.cpp
    )
 
 nt2_module_add_tests(algebra.all.bench ${SOURCES})
