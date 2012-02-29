@@ -76,6 +76,29 @@ namespace nt2 { namespace container { namespace ext
 
 } } }
 
+namespace nt2 { namespace details
+{
+  template<class Base, class Expr>
+  BOOST_DISPATCH_FORCE_INLINE
+  typename boost::enable_if_c< Base::proto_arity_c == 0
+                             , typename Expr::extent_type
+                             >::type
+  size_recompute(Base const& this_, Expr const& old)
+  {
+    return nt2::extent(this_.child0);
+  }
+
+  template<class Base, class Expr>
+  BOOST_DISPATCH_FORCE_INLINE
+  typename boost::disable_if_c< Base::proto_arity_c == 0
+                              , typename Expr::extent_type
+                              >::type
+  size_recompute(Base const&, Expr const& old)
+  {
+    return old.extent();
+  }
+} }
+
 namespace nt2 { namespace container
 {
   template<class Expr, class ResultType>
@@ -102,6 +125,8 @@ namespace nt2 { namespace container
 
     typedef typename meta::settings_of<ResultType>::type            settings_type;
     typedef typename meta::option<settings_type, tag::index_>::type index_type;
+    typedef typename meta::option<settings_type, tag::storage_order_>::type storage_order_type;
+    typedef typename meta::option<settings_type, tag::alignment_>::type alignment_type;
 
     //==========================================================================
     // Compute storage type for size
@@ -118,6 +143,13 @@ namespace nt2 { namespace container
     template<class Sz>
     BOOST_DISPATCH_FORCE_INLINE
     expression(Expr const& x, Sz const& sz) : parent(x), size_(sz) {}
+
+    BOOST_DISPATCH_FORCE_INLINE
+    expression(expression const& xpr)
+     : parent(xpr.proto_base())
+     , size_(details::size_recompute(parent::proto_base(), xpr))
+    {
+    }
 
     //==========================================================================
     // Assignment operator force evaluation - LHS non-terminal version

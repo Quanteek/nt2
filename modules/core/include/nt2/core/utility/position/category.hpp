@@ -6,37 +6,29 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#ifndef BOOST_DISPATCH_META_PRINT_HPP_INCLUDED
-#define BOOST_DISPATCH_META_PRINT_HPP_INCLUDED
+#ifndef NT2_CORE_UTILITY_POSITION_CATEGORY_HPP_INCLUDED
+#define NT2_CORE_UTILITY_POSITION_CATEGORY_HPP_INCLUDED
 
-#include <boost/config.hpp>
-
-/*!
- * \file
- * \brief Defines and implements the \ref boost::dispatch::meta::print \metafunction
- */
-
-#if defined(__GNUC__) && !defined(BOOST_CLANG) && !defined(BOOST_INTEL) && !defined(__CUDACC__)
+#include <nt2/core/settings/forward/alignment.hpp>
 
 namespace boost { namespace dispatch { namespace meta
 {
-  template<class T>
-  struct print
+  template<class Seq, class A>
+  struct position_ : boost::dispatch::meta::fusion_sequence_<Seq>
   {
-    typedef T type;
-    unsigned : 80;
+    typedef boost::dispatch::meta::fusion_sequence_<Seq> parent;
+  };
+  
+  template<class Seq>
+  struct position_< Seq, nt2::aligned_ > : position_< Seq, nt2::unaligned_ >
+  {
+    typedef position_< Seq, nt2::unaligned_ > parent;
   };
 } } }
 
-#else
-
-#include <boost/mpl/print.hpp>
-namespace boost { namespace dispatch { namespace meta
+namespace nt2 { namespace ext
 {
-  using boost::mpl::print;
-} } }
+  using boost::dispatch::meta::position_;
+} }
 
 #endif
-
-#endif
-
