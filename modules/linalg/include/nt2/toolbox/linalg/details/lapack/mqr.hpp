@@ -1,5 +1,5 @@
 /*******************************************************************************
- *         Copyright 2003-2012 LASMEA UMR 6602 CNRS/U.B.P
+ *         Copyright 2003-2012 LASMEA UMR 6602 CNRS/U.B.P 
  *         Copyright 2009-2012 LRI    UMR 8623 CNRS/Univ Paris Sud XI
  *
  *          Distributed under the Boost Software License, Version 1.0.
@@ -20,25 +20,25 @@ namespace nt2
     {
       #define NT2_COMPLEX void
       void NT2_F77NAME(cunmqr)(const char* side, const char* trans, const long int* m,
-			       const long int* n, const long int* k,
-			       const NT2_COMPLEX* a, const long int* lda, const NT2_COMPLEX* tau,
-			       NT2_COMPLEX* c, const long int* ldc, NT2_COMPLEX* work,
-			       const long int* lwork, long int* info);
+                               const long int* n, const long int* k,
+                               const NT2_COMPLEX* a, const long int* lda, const NT2_COMPLEX* tau,
+                               NT2_COMPLEX* c, const long int* ldc, NT2_COMPLEX* work,
+                               const long int* lwork, long int* info);
       void NT2_F77NAME(dormqr)(const char* side, const char* trans, const long int* m,
-			       const long int* n, const long int* k,
-			       const double* a, const long int* lda, const double* tau,
-			       double* c, const long int* ldc, double* work,
-			       const long int* lwork, long int* info);
+                               const long int* n, const long int* k,
+                               const double* a, const long int* lda, const double* tau,
+                               double* c, const long int* ldc, double* work,
+                               const long int* lwork, long int* info);
       void NT2_F77NAME(sormqr)(const char* side, const char* trans, const long int* m,
-			       const long int* n, const long int* k,
-			       const float* a, const long int* lda, const float* tau,
-			       float* c, const long int* ldc, float* work,
-			       const long int* lwork, long int* info);
+                               const long int* n, const long int* k,
+                               const float* a, const long int* lda, const float* tau,
+                               float* c, const long int* ldc, float* work,
+                               const long int* lwork, long int* info);
       void NT2_F77NAME(zunmqr)(const char* side, const char* trans, const long int* m,
-			       const long int* n, const long int* k,
-			       const NT2_COMPLEX* a, const long int* lda, const NT2_COMPLEX* tau,
-			       NT2_COMPLEX* c, const long int* ldc, NT2_COMPLEX* work,
-			       const long int* lwork, long int* info);
+                               const long int* n, const long int* k,
+                               const NT2_COMPLEX* a, const long int* lda, const NT2_COMPLEX* tau,
+                               NT2_COMPLEX* c, const long int* ldc, NT2_COMPLEX* work,
+                               const long int* lwork, long int* info);
       #undef NT2_COMPLEX
     }
 
@@ -74,11 +74,11 @@ namespace nt2
                   long int* info)                                       \
   {                                                                     \
     workspace < T > w;                                                  \
-    F77NAME( NAME )(side, trans, m, n, k, a, lda, tau, c, ldc,		\
-		    w.getw(), w.query(), info);				\
-    w.resizew(w.neededsize());						\
-    F77NAME( NAME )(side, trans, m, n, k, a, lda, tau, c, ldc,		\
-		    w.getw(), &w.neededsize(), info);			\
+    F77NAME( NAME )(side, trans, m, n, k, a, lda, tau, c, ldc,          \
+                    w.getw(), w.query(), info);                         \
+    w.resizew(w.neededsize());                                          \
+    F77NAME( NAME )(side, trans, m, n, k, a, lda, tau, c, ldc,          \
+                    w.getw(), &w.neededsize(), info);                   \
   }                                                                     \
 
   NT2_MQR(ormqr, double)

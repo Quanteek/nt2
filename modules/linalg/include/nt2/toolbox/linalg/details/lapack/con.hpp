@@ -32,7 +32,7 @@ namespace nt2
                            COMPLEX* work, double* rwork, long int* info);
       #undef NT2_COMPLEX      
     }
-    
+     
 #define LPP_GECON(NAME, T, TBASE)               \
     inline void gecon(const char* norm,         \
                       const long int* n,        \
