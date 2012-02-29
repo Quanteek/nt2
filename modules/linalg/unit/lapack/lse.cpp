@@ -29,10 +29,10 @@ NT2_TEST_CASE_TPL ( lse, NT2_REAL_TYPES)
   const int M = 5;
   const int P = 7; 
   typedef typename make_container<nt2::tag::table_, T, of_size_<M, M>  >::type table_type_a;
-  typedef typename make_container<nt2::tag::table_, T, of_size_<M, 2>  >::type table_type_b;
-  typedef typename make_container<nt2::tag::table_, T, of_size_<M, 2>  >::type table_type_c;
-  typedef typename make_container<nt2::tag::table_, T, of_size_<M, 2>  >::type table_type_d;
-  typedef typename make_container<nt2::tag::table_, T, of_size_<M, 2>  >::type table_type_x;
+  typedef typename make_container<nt2::tag::table_, T, of_size_<M, 1>  >::type table_type_b;
+  typedef typename make_container<nt2::tag::table_, T, of_size_<M, 1>  >::type table_type_c;
+  typedef typename make_container<nt2::tag::table_, T, of_size_<M, 1>  >::type table_type_d;
+  typedef typename make_container<nt2::tag::table_, T, of_size_<M, 1>  >::type table_type_x;
   table_type_a a;
   table_type_b b;
   table_type_c c;
