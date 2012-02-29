@@ -142,7 +142,23 @@
  * TZ   trapezoidal
  * #UN  (complex) unitary
  * UP   (complex) unitary, packed storage
-  
+
+ Must be added types to hold the diagonal,  bidiagonal and tridiagonal matrices
+
+ In Lapack (ecerpt from the lapack doc
+ ----------
+   An unsymmetric tridiagonal matrix of order n is stored in three one-dimensional arrays,
+   one of length n containing the diagonal elements,
+   and two of length n-1 containing the subdiagonal and superdiagonal elements in elements 1:n-1.
+
+  A symmetric tridiagonal or bidiagonal matrix is stored in two one-dimensional arrays,
+  one of length n containing the diagonal elements,
+  and one of length n-1 containing the off-diagonal elements.
+  (EISPACK routines store the off-diagonal elements in elements 2:n of a vector of length n.)
+ ----------
+
+ This must be replaced by some supplementary shapes 
+
  TO DO
  J'en viens à la conclusion qu'une matrice devrait savoir si elle est stockée normalement ou comme transposée
  typiquement gemm sait calculer A°*B° ou le ° est N T ou C

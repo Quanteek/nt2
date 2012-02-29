@@ -44,7 +44,7 @@
  * {
  *   template <class A0,class A1,class A2,class A3,class A4>
  *   void b_mm(const gem_status& gs,
- *             A0& c, A1 const& a, A2 & b,
+ *             A0& c, A1 const& a, const A2& b,
  *             A3 const& alpha = 1, A4 const& beta = 0);
  * }
  * \endcode

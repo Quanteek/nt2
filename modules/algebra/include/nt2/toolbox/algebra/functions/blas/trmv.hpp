@@ -83,6 +83,7 @@ namespace nt2
                            of A must be equal to the number of columns of x° ");
         
         const long int lda = nt2::details::padding(a);
+        std::cout << "nt2::details::padding(x) "<<  nt2::details::padding(x) << std::endl; 
         const long int incx = 1; //(transx == 'N') ? 1 : nt2::details::padding(x)/sizeof(value_type); 
         trmv(&upload,&transa,&diag,&n,a.begin(),&lda,x.begin(),&incx);
       }
