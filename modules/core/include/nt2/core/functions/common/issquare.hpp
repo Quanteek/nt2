@@ -29,8 +29,8 @@ namespace nt2 { namespace ext
       std::size_t nz = nt2::numel(ex);
 
       return  (nz > 0)
-        &&  (details::safe_at_c<0>(ex)*details::safe_at_c<1>(ex) == nz)
-        &&  (details::safe_at_c<0>(ex) == details::safe_at_c<1>(ex));
+        &&  (nt2::meta::safe_at_c<0>(ex)*nt2::meta::safe_at_c<1>(ex) == nz)
+        &&  (nt2::meta::safe_at_c<0>(ex) == nt2::meta::safe_at_c<1>(ex));
     }
   };
 } }
