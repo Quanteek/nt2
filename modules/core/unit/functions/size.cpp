@@ -84,6 +84,22 @@ NT2_TEST_CASE( size_size )
   NT2_TEST_EQUAL( nt2::size( nt2::size( nt2::size(x) ) , 1), 1);
   NT2_TEST_EQUAL( nt2::size( nt2::size( nt2::size(x) ) , 2), 2);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// size of static table 2D
+////////////////////////////////////////////////////////////////////////////////
+NT2_TEST_CASE( size_static_table2D )
+{
+  using nt2::of_size_;
+  using nt2::table;
+  table < float, nt2::settings(of_size_<5, 2>) > x; 
+   
+  NT2_TEST_EQUAL( std::size_t(nt2::size(x)(1)), 5);
+  NT2_TEST_EQUAL( std::size_t(nt2::size(x)(2)), 2);
+  
+  NT2_TEST_EQUAL( nt2::size(x, 1), 5);
+  NT2_TEST_EQUAL( nt2::size(x, 2), 2);
+}
 ////////////////////////////////////////////////////////////////////////////////
 // size of container
 ////////////////////////////////////////////////////////////////////////////////
@@ -92,9 +108,9 @@ NT2_TEST_CASE( size_cont )
   using nt2::meta::make_container; 
   using nt2::of_size_;
   using nt2::table;
-  typedef typename make_container<nt2::tag::table_, float, of_size_<5>  >::type cont;
+  typedef typename make_container<nt2::tag::table_, float, of_size_<5> >::type cont;
   cont x; 
-  
+   
   NT2_TEST_EQUAL( std::size_t(nt2::size(x)(1)), 5);
   NT2_TEST_EQUAL( std::size_t(nt2::size(x)(2)), 1);
   
@@ -102,3 +118,18 @@ NT2_TEST_CASE( size_cont )
   NT2_TEST_EQUAL( nt2::size(x, 2), 1);
   
 }
+////////////////////////////////////////////////////////////////////////////////
+// size of static table 1D
+////////////////////////////////////////////////////////////////////////////////
+NT2_TEST_CASE( size_static_table )
+{
+  using nt2::of_size_;
+  using nt2::table;
+  table < float, nt2::settings(of_size_<5>) > x; 
+   
+  NT2_TEST_EQUAL( std::size_t(nt2::size(x)(1)), 5);
+  NT2_TEST_EQUAL( std::size_t(nt2::size(x)(2)), 1);
+  
+  NT2_TEST_EQUAL( nt2::size(x, 1), 5);
+  NT2_TEST_EQUAL( nt2::size(x, 2), 1);
+}  
