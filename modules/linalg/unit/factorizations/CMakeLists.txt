@@ -7,8 +7,8 @@
 ###                     http://www.boost.org/LICENSE_1_0.txt
 ##############################################################################
 
-nt2_module_use_modules(unit sdk core)
+SET( SOURCES
+  svd.cpp
+   )
 
-add_subdirectory(blas)
-add_subdirectory(lapack)
-add_subdirectory(factorizations)
+nt2_module_add_tests(linalg.factorizations.unit ${SOURCES})
