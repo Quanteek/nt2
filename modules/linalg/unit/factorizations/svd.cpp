@@ -26,6 +26,6 @@ NT2_TEST_CASE_TPL ( svd, NT2_REAL_TYPES)
   using nt2::of_size_;
   typedef typename make_container<nt2::tag::table_, T, of_size_<5, 5>  >::type table_t;
   table_t b;
-  nt2::svd_f<T> f = svd(b); 
+  nt2::svd_f<table_t> f = svd(b); 
 }
 
