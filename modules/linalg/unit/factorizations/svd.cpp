@@ -41,7 +41,7 @@ NT2_TEST_CASE_TPL ( svd, NT2_REAL_TYPES)
      }
   
   nt2::svd_f<table_t> f = svd(b);
-//   table_t u = f.getu();
+  table_t u = f.getu();
 //   table_t vt= f.getvt();
 //     table_t wt= f.getsingular(); 
 }
