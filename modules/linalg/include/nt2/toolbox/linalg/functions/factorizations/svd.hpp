@@ -30,6 +30,8 @@
 // #include <nt2/include/functions/range.hpp>
 // #include <nt2/include/functions/first_index.hpp>
 // #include <nt2/include/functions/last_height_index.hpp>
+#include <iostream>
+
 
 //==============================================================================
 // svd actual functor forward declaration
@@ -44,7 +46,7 @@ namespace nt2 { namespace ext
 {
   NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::svd_, tag::cpu_, 
                               (A)(S0),
-                              ((table_< unspecified_<A>, S0>))
+                              ((expr_< table_<unspecified_<A>,S0>,nt2::tag::terminal_,boost::mpl::long_<0> >))
                               )
   {
     typedef nt2::svd_f<A> result_type; 
@@ -76,7 +78,7 @@ namespace nt2
       ma(a),
       m(size(a, 1)),
       n(size(a, 2)),
-      lda(nt2::details::padding(a)),
+      lda(nt2::details::padding(boost::proto::value(a))),
       wrk(inw)
     {
       allocate(); 
@@ -91,7 +93,7 @@ namespace nt2
       ma(a),
       m(size(a, 1)),
       n(size(a, 2)),
-      lda(nt2::details::padding(a)),
+      lda(nt2::details::padding(boost::proto::value(a))),
       wrk(w_)        
     {
       allocate(); 
@@ -105,7 +107,7 @@ namespace nt2
 //       ma(a),
 //       m(size(a, 1)),
 //       n(size(a, 2)),
-//       lda(nt2::details::padding(a)),
+//       lda(nt2::details::padding(boost::proto::value(a))),
 //       wrk(w_)        
 //     {
 //       allocate(); 
@@ -118,7 +120,7 @@ namespace nt2
 //       ma(a),
 //       m(size(a, 1)),
 //       n(size(a, 2)),
-//       lda(nt2::details::padding(a)),
+//       lda(nt2::details::padding(boost::proto::value(a))),
 //       wrk(inw)
 //     {
 //       allocate(); 
@@ -131,7 +133,7 @@ namespace nt2
     // /////////////////////////////////////////////////////////////////////////////
     tab_t       getu ()      const { return u; }
     tab_t       getvt()      const { return vt;}
-    btab_t      getsingular()const { return w; }
+    btab_t      getsingular()const { std::cout << "in getsingular " << std::endl; return w; }
     //    btab_t      getw()       const { return nt2::expand(nt2::diag(w), ucol, size(vt, 1));}
     long int    getinfo()    const { return info; }
     
@@ -237,7 +239,7 @@ namespace nt2
 //         type_t* map= ma.begin();
 //         type_t* mu = boost::proto::value(u).begin();
 //         type_t* mvt= boost::proto::value(vt).begin();
-         nt2::details::gesvd(&jobz, &jobz, &m, &n, ma.begin(), &lda,
+        nt2::details::gesvd(&jobz, &jobz, &m, &n, boost::proto::value(ma).begin(), &lda,
                              boost::proto::value(w).begin(),
                              boost::proto::value(u).begin(), &ldu,
                              boost::proto::value(vt).begin(), &ldvt,

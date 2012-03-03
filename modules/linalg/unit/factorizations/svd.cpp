@@ -24,25 +24,27 @@ template < class TAB>
 void pt(const TAB & t){}
 NT2_TEST_CASE_TPL ( svd, NT2_REAL_TYPES) 
 {
-  using nt2::meta::make_container; 
-  using nt2::of_size_;
-  //  container< tag::table_, T, id_<0>, S>
-  typedef typename make_container<nt2::tag::table_, T, of_size_<5, 5>  >::type table_t;
-  table_t b;
+  typedef nt2::table<T> table_t; 
+  table_t b(nt2::of_size(4, 4));
+  
   std::size_t dim1_b = size(b)(1);
   std::size_t dim2_b = size(b)(2);
-  boost::fusion::vector<int,int> pos;
-
-   for(std::size_t i = 1; i <= dim1_b; i++)
-     for(std::size_t j = 1; j <= dim2_b; j++)
-     {
-       pos =  boost::fusion::make_vector(i,j);  
-       b[pos] = (i == j);
-     }
   
+  for(std::size_t i = 1; i <= dim1_b; i++)
+    for(std::size_t j = 1; j <= dim2_b; j++)
+      {
+        b(i, j)= T(i == j);
+      }
   nt2::svd_f<table_t> f = svd(b);
   table_t u = f.getu();
-//   table_t vt= f.getvt();
-//     table_t wt= f.getsingular(); 
+  //   table_t vt= f.getvt();
+  
+//   nt2::table<T> w = f.getsingular();
+//   std::cout << nt2::numel(w) << std::endl;
+//   for(std::size_t i = 1; i < nt2::numel(w); i++)
+//     std::cout << w(i) << ", "; 
+//   std::cout << w(nt2::numel(w)) << std::endl; ; 
+  
 }
 
+                                 
