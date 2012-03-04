@@ -75,10 +75,11 @@ namespace nt2
     template < class XPR > svd_f(const XPR& a_, char jobz_ = 'A'):
       jobz(jobz_),
       a(a_),
-      ma(a),
+      ma(a), 
       m(size(a, 1)),
       n(size(a, 2)),
-      lda(nt2::details::padding(boost::proto::value(a))),
+      //      lda(leading_size(a)), //nt2::details::padding(boost::proto::value(a))),
+      lda(boost::proto::value(a).leading_size()), 
       wrk(inw)
     {
       allocate(); 

@@ -8,16 +8,16 @@
 //==============================================================================
 #ifndef NT2_TOOLBOX_LINALG_DETAILS_UTILITY_DETAILS_PADDING_HPP_INCLUDED
 #define NT2_TOOLBOX_LINALG_DETAILS_UTILITY_DETAILS_PADDING_HPP_INCLUDED
-#include <boost/simd/sdk/memory/align_on.hpp>
+//#include <boost/simd/sdk/memory/align_on.hpp>
 
 namespace nt2 { namespace details 
 {
   template < class T > long int padding(const T & a)
   {
-    typedef typename T::parent::lead_t lead_t_a;
-    long int tmp = boost::simd::memory::align_on(size(a, 1), lead_t_a::value);
+//     typedef typename T::parent::lead_t lead_t_a;
+//     long int tmp = boost::simd::memory::align_on(size(a, 1), lead_t_a::value);
 //     std::cout << tmp << "  " << sizeof(typename T::value_type) << std::endl; ;
-    return tmp; 
+    return a.leading_size(); 
   }
 
 } }
