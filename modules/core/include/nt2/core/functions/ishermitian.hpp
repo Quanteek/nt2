@@ -6,14 +6,14 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#ifndef NT2_CORE_FUNCTIONS_ISSQUARE_HPP_INCLUDED
-#define NT2_CORE_FUNCTIONS_ISSQUARE_HPP_INCLUDED
+#ifndef NT2_CORE_FUNCTIONS_ISHERMITIAN_HPP_INCLUDED
+#define NT2_CORE_FUNCTIONS_ISHERMITIAN_HPP_INCLUDED
 
 #include <nt2/include/functor.hpp>
 
 /*!
  * \ingroup core
- * \defgroup core_issquare issquare
+ * \defgroup core_ishermitian ishermitian
  *
  * \par Description
  * Returns true or false according a0 is an "vector" container
@@ -22,7 +22,7 @@
  * \par Header file
  * 
  * \code
- * #include <nt2/include/functions/issquare.hpp>
+ * #include <nt2/include/functions/ishermitian.hpp>
  * \endcode
  * 
  * \par Alias 
@@ -34,11 +34,11 @@
  * namespace boost::simd
  * {
  *   template <class A0>
- *     bool issquare(const A0 & a0);
+ *     bool ishermitian(const A0 & a0);
  * }
  * \endcode
  *
- * \param a0 the first parameter of issquare
+ * \param a0 the first parameter of ishermitian
  * 
  * \return a bool value
  *  
@@ -48,14 +48,14 @@ namespace nt2
 {
   namespace tag
   {
-    struct issquare_ : ext::unspecified_<issquare_>
+    struct ishermitian_ : ext::unspecified_<ishermitian_>
     {
-      typedef ext::unspecified_<issquare_> parent;
+      typedef ext::unspecified_<ishermitian_> parent;
     };
   }
 
-  NT2_FUNCTION_IMPLEMENTATION(nt2::tag::issquare_, issquare, 1)
-  NT2_FUNCTION_IMPLEMENTATION(nt2::tag::issquare_, is_square, 1)
+  NT2_FUNCTION_IMPLEMENTATION(nt2::tag::ishermitian_, ishermitian, 1)
+  NT2_FUNCTION_IMPLEMENTATION(nt2::tag::ishermitian_, is_hermitian, 1)
 }
 
 #endif

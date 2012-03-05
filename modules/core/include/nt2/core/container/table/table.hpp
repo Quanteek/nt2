@@ -43,6 +43,8 @@ namespace nt2 { namespace container
     typedef typename container_type::extent_type                  extent_type;
     typedef typename container_type::index_type                   index_type;
     typedef typename container_type::allocator_type               allocator_type;
+    typedef typename container_type::pointer                      pointer;
+    typedef typename container_type::const_pointer                const_pointer;
 
     //==========================================================================
     //  table default constructor
@@ -52,10 +54,7 @@ namespace nt2 { namespace container
     //==========================================================================
     //  table constructor from its allocator
     //==========================================================================
-    table( allocator_type const& a )
-     : parent(container_type(a))
-    {
-    }
+    table( allocator_type const& a ) : parent(container_type(a)) {}
 
     //==========================================================================
     // table constructor from a single initializer.
@@ -88,6 +87,12 @@ namespace nt2 { namespace container
     // Enable base expression handling of assignment
     //==========================================================================
     using parent::operator=;
+
+    //==========================================================================
+    // Access to raw data
+    //==========================================================================
+    pointer       raw()       { return boost::proto::value(*this).raw(); }
+    const_pointer raw() const { return boost::proto::value(*this).raw(); }
   };
 } }
 

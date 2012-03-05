@@ -154,9 +154,15 @@ namespace nt2 { namespace memory
 
       make_links();
       inner_up_ = data_.lower() + inner_ - 1;
-      
+
       return *this;
     }
+
+    //==========================================================================
+    // Raw data block
+    //==========================================================================
+    pointer       raw()       { return data_.raw(); }
+    const_pointer raw() const { return data_.raw(); }
 
     //==========================================================================
     /**

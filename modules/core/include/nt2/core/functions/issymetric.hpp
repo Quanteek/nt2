@@ -6,14 +6,14 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#ifndef NT2_CORE_FUNCTIONS_ISSQUARE_HPP_INCLUDED
-#define NT2_CORE_FUNCTIONS_ISSQUARE_HPP_INCLUDED
+#ifndef NT2_CORE_FUNCTIONS_ISSYMETRIC_HPP_INCLUDED
+#define NT2_CORE_FUNCTIONS_ISSYMETRIC_HPP_INCLUDED
 
 #include <nt2/include/functor.hpp>
 
 /*!
  * \ingroup core
- * \defgroup core_issquare issquare
+ * \defgroup core_issymetric issymetric
  *
  * \par Description
  * Returns true or false according a0 is an "vector" container
@@ -22,7 +22,7 @@
  * \par Header file
  * 
  * \code
- * #include <nt2/include/functions/issquare.hpp>
+ * #include <nt2/include/functions/issymetric.hpp>
  * \endcode
  * 
  * \par Alias 
@@ -34,11 +34,11 @@
  * namespace boost::simd
  * {
  *   template <class A0>
- *     bool issquare(const A0 & a0);
+ *     bool issymetric(const A0 & a0);
  * }
  * \endcode
  *
- * \param a0 the first parameter of issquare
+ * \param a0 the first parameter of issymetric
  * 
  * \return a bool value
  *  
@@ -48,14 +48,14 @@ namespace nt2
 {
   namespace tag
   {
-    struct issquare_ : ext::unspecified_<issquare_>
+    struct issymetric_ : ext::unspecified_<issymetric_>
     {
-      typedef ext::unspecified_<issquare_> parent;
+      typedef ext::unspecified_<issymetric_> parent;
     };
   }
 
-  NT2_FUNCTION_IMPLEMENTATION(nt2::tag::issquare_, issquare, 1)
-  NT2_FUNCTION_IMPLEMENTATION(nt2::tag::issquare_, is_square, 1)
+  NT2_FUNCTION_IMPLEMENTATION(nt2::tag::issymetric_, issymetric, 1)
+  NT2_FUNCTION_IMPLEMENTATION(nt2::tag::issymetric_, is_symetric, 1)
 }
 
 #endif

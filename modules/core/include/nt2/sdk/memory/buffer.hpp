@@ -146,6 +146,7 @@ namespace nt2 {  namespace memory
      * Return a (const) pointer to the biased beginning of the buffer data
      **/
     //==========================================================================
+    using parent_data::raw;
     using parent_data::origin;
 
     //==========================================================================
