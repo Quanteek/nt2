@@ -79,7 +79,7 @@ namespace nt2
       #undef NT2_COMPLEX
     }
 
-#define LPP_LANGE(NAME, T, TBASE)                               \
+#define NT2_LANGE(NAME, T, TBASE)                               \
   inline TBASE lange(const char* norm,                          \
                      const long int* m,                         \
                      const long int* n,                         \
@@ -88,7 +88,7 @@ namespace nt2
                      nt2::details::workspace<T> & w)            \
   {                                                             \
     w.resizerw((((*norm) == 'i')||((*norm) == 'I'))?*n:0);      \
-    return F77NAME( NAME )(norm, m, n, a, lda, w.getrw());      \
+    return NT2_F77NAME( NAME )(norm, m, n, a, lda, w.getrw());      \
   }                                                             \
   inline TBASE lange(const char* norm,                          \
                      const long int* m,                         \
@@ -100,14 +100,14 @@ namespace nt2
     return lange(norm, m, n, a, lda, w);                        \
   }                                                             \
     
-  LPP_LANGE(slange, float, float)
-  LPP_LANGE(dlange, double, double)
-  LPP_LANGE(clange, std::complex<float> , float)
-  LPP_LANGE(zlange, std::complex<double>, double)
+  NT2_LANGE(slange, float, float)
+  NT2_LANGE(dlange, double, double)
+  NT2_LANGE(clange, std::complex<float> , float)
+  NT2_LANGE(zlange, std::complex<double>, double)
     
-#undef LPP_LANGE
+#undef NT2_LANGE
     
-  
+    }  
 }
 
 
