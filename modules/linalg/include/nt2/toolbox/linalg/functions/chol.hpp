@@ -127,7 +127,7 @@
 //==============================================================================
 namespace nt2 
 {
-  template<class A> struct chol_f;
+  template<class A> struct chol_return;
 } 
 
 namespace nt2 { namespace tag
@@ -140,7 +140,7 @@ namespace nt2 { namespace tag
   }
 
   template<class A>
-  BOOST_FORCEINLINE nt2::chol_f<A> chol(A &a)
+  BOOST_FORCEINLINE nt2::chol_return<A> chol(A &a)
   {
     return typename nt2::make_functor<tag::chol_, A>::type()(a);
   }

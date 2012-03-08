@@ -33,18 +33,32 @@ NT2_TEST_CASE_TPL ( svd, NT2_REAL_TYPES)
   for(std::size_t i = 1; i <= dim1_b; i++)
     for(std::size_t j = 1; j <= dim2_b; j++)
       {
-        b(i, j)= T(i == j);
+        b(i, j)= T((i == j)*i);
       }
-  nt2::svd_f<table_t> f = svd(b);
+  nt2::svd_return<table_t> f = svd(b);
   table_t u = f.getu();
-  //   table_t vt= f.getvt();
-  
-//   nt2::table<T> w = f.getsingular();
-//   std::cout << nt2::numel(w) << std::endl;
-//   for(std::size_t i = 1; i < nt2::numel(w); i++)
-//     std::cout << w(i) << ", "; 
-//   std::cout << w(nt2::numel(w)) << std::endl; ; 
-  
+  table_t vt= f.getvt();
+  table_t w = f.getsingular(); 
+  for(std::size_t i = 1; i <= size(u, 1); i++)
+    {
+      for(std::size_t j = 1; j <= size(u, 2); j++)
+        {
+          std::cout << u(i, j) << ", "; 
+        }
+      std::cout << std::endl; 
+    }
+  std::cout << std::endl; 
+  for(std::size_t i = 1; i <= size(vt, 1); i++)
+    {
+      for(std::size_t j = 1; j <= size(vt, 2); j++)
+        {
+          std::cout << vt(i, j) << ", "; 
+        }
+      std::cout << std::endl; 
+    }
+  std::cout << std::endl; 
+  for(std::size_t i = 1; i <= nt2::numel(w); i++)
+    std::cout << w(i) << ", "; 
 }
 
-                                 
+

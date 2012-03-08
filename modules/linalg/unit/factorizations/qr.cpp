@@ -6,7 +6,7 @@
 //                 See accompanying file LICENSE.txt or copy at                 
 //                     http://www.boost.org/LICENSE_1_0.txt                     
 //==============================================================================
-#define NT2_UNIT_MODULE "nt2 linalg toolbox - chol"
+#define NT2_UNIT_MODULE "nt2 linalg toolbox - qr"
 
 //////////////////////////////////////////////////////////////////////////////
 // unit test behavior of algebra components
@@ -14,16 +14,15 @@
 
 #include <nt2/table.hpp>
 #include <nt2/include/functions/size.hpp>
-#include <nt2/include/functions/chol.hpp>
+#include <nt2/include/functions/qr.hpp>
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/make_vector.hpp>
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
-#include <iostream>
 
 template < class TAB>
 void pt(const TAB & t){}
-NT2_TEST_CASE_TPL ( chol, NT2_REAL_TYPES) 
+NT2_TEST_CASE_TPL ( qr, NT2_REAL_TYPES) 
 {
   typedef nt2::table<T> table_t; 
   table_t b(nt2::of_size(4, 4));
@@ -34,20 +33,34 @@ NT2_TEST_CASE_TPL ( chol, NT2_REAL_TYPES)
   for(std::size_t i = 1; i <= dim1_b; i++)
     for(std::size_t j = 1; j <= dim2_b; j++)
       {
-        b(i, j)= T(1+10*(i == j));
+        b(i, j)= T((i == j)*i);
       }
-  nt2::chol_return<table_t> f = chol(b);
-  table_t u = f.getu();
-  for(std::size_t i = 1; i <= size(u, 1); i++)
+  nt2::qr_return<table_t> f = qr(b);
+  std::cout << "1" << std::endl; 
+  table_t q = f.getq();
+  std::cout << "2" << std::endl; 
+  table_t r= f.getr();
+  std::cout << "3" << std::endl; 
+  for(std::size_t i = 1; i <= size(q, 1); i++)
     {
-      for(std::size_t j = 1; j <= size(u, 2); j++)
+      for(std::size_t j = 1; j <= size(q, 2); j++)
         {
-          std::cout << u(i, j) << "\t";
+          std::cout << q(i, j) << ", "; 
         }
-      std::cout  << std::endl; 
+      std::cout << std::endl; 
     }
-  std::cout << "rcond =  "   << f.rcond() << std::endl;
-  std::cout << "negativity " << f.negativity() << std::endl;
+  std::cout << std::endl; 
+  for(std::size_t i = 1; i <= size(r, 1); i++)
+    {
+      for(std::size_t j = 1; j <= size(r, 2); j++)
+        {
+          std::cout << r(i, j) << ", "; 
+        }
+      std::cout << std::endl; 
+    }
+//   std::cout << std::endl; 
+//   for(std::size_t i = 1; i <= nt2::numel(w); i++)
+//     std::cout << w(i) << ", "; 
 }
 
-                                 
+
