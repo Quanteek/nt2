@@ -40,13 +40,15 @@ NT2_TEST_CASE_TPL( table_dimensions ,NT2_TYPES)
  nt2::table<T, nt2::C_index_> b(nt2::of_size(3, 3)); 
  //  b = transmit(a);
   b =  a;
-  int fa = nt2::first_index<1>(a);
-  int fb = nt2::first_index<1>(b); 
+  int fa1 = nt2::first_index<1>(a);
+  int fb1 = nt2::first_index<1>(b); 
+  int fa2 = nt2::first_index<2>(a);
+  int fb2 = nt2::first_index<2>(b); 
   for(int i=0; i < 3; i++)
     {
       for(int j=0; j < 3; j++)
         {
-          NT2_TEST_ULP_EQUAL(a(i+fa, j+fa), b(i+fb, j+fb), 0); 
+          NT2_TEST_ULP_EQUAL(a(i+fa1, j+fa2), b(i+fb1, j+fb2), 0); 
         }
     }
   
