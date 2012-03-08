@@ -19,16 +19,16 @@ namespace nt2
     extern "C"
     {
       #define NT2_COMPLEX void
-      void F77NAME(dorgqr)(const long int* m, const long int* n, const long int* k,
+      void NT2_F77NAME(dorgqr)(const long int* m, const long int* n, const long int* k,
                            double* a, const long int* lda, const double* tau,
                            double* work, const long int* lwork, long int* info);
-      void F77NAME(sorgqr)(const long int* m, const long int* n, const long int* k,
+      void NT2_F77NAME(sorgqr)(const long int* m, const long int* n, const long int* k,
                            float* a, const long int* lda, const float* tau,
                            float* work, const long int* lwork, long int* info);
-      void F77NAME(zungqr)(const long int* m, const long int* n, const long int* k,
+      void NT2_F77NAME(zungqr)(const long int* m, const long int* n, const long int* k,
                            NT2_COMPLEX* a, const long int* lda, const NT2_COMPLEX* tau,
                            NT2_COMPLEX* work, const long int* lwork, long int* info);
-      void F77NAME(cungqr)(const long int* m, const long int* n, const long int* k,
+      void NT2_F77NAME(cungqr)(const long int* m, const long int* n, const long int* k,
                            NT2_COMPLEX* a, const long int* lda, const NT2_COMPLEX* tau,
                            NT2_COMPLEX* work, const long int* lwork, long int* info);
       #undef NT2_COMPLEX
@@ -42,10 +42,10 @@ namespace nt2
                     long int* info,                                     \
                     nt2::details::workspace < T >  w)                   \
     {                                                                   \
-      F77NAME( NAME )(m, n, k, a, lda, tau,                             \
+      NT2_F77NAME( NAME )(m, n, k, a, lda, tau,                             \
                       w.getw(), w.query(), info);                       \
       w.resizew(w.neededsize());                                        \
-      F77NAME( NAME )(m, n, k, a, lda, tau,                             \
+      NT2_F77NAME( NAME )(m, n, k, a, lda, tau,                             \
                     w.getw(), &w.neededsize(), info);                   \
     }                                                                   \
     inline void gqr(const long int* m, const long int* n,               \
@@ -58,10 +58,10 @@ namespace nt2
       gqr(m, n, k, a, lda, tau, info, w);                               \
     }                                                                   \
         
-    NT2_GQR(orgqr, double)
-    NT2_GQR(orgqr, float)  
-    NT2_GQR(ungqr, std::complex<double>)
-    NT2_GQR(ungqr, std::complex<float>)
+    NT2_GQR(dorgqr, double)
+    NT2_GQR(sorgqr, float)  
+    NT2_GQR(zungqr, std::complex<double>)
+    NT2_GQR(cungqr, std::complex<float>)
     
 #undef NT2_GQR      
     
