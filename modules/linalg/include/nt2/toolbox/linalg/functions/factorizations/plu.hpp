@@ -1,0 +1,253 @@
+/*******************************************************************************
+ *         Copyright 2003-2012 LASMEA UMR 6602 CNRS/U.B.P
+ *         Copyright 2011-2012 LRI    UMR 8623 CNRS/Univ Paris Sud XI
+ *
+ *          Distributed under the Boost Software License, Version 1.0.
+ *                 See accompanying file LICENSE.txt or copy at
+ *                     http://www.boost.org/LICENSE_1_0.txt
+ ******************************************************************************/
+#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_FACTORIZATIONS_PLU_HPP_INCLUDED
+#define NT2_TOOLBOX_LINALG_FUNCTIONS_FACTORIZATIONS_PLU_HPP_INCLUDED
+
+#include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
+#include <nt2/toolbox/linalg/details/utility/options.hpp>
+#include <nt2/include/constants/eps.hpp>
+#include <nt2/include/functions/plu.hpp>
+#include <nt2/include/functions/of_size.hpp>
+#include <nt2/include/functions/min.hpp>
+#include <nt2/include/functions/isempty.hpp>
+#include <nt2/include/functions/leading_size.hpp>
+#include <nt2/toolbox/linalg/details/lapack/lange.hpp>
+#include <nt2/toolbox/linalg/details/lapack/gecon.hpp>
+#include <nt2/toolbox/linalg/details/lapack/getri.hpp>
+#include <nt2/toolbox/linalg/details/lapack/gesvx.hpp>
+#include <nt2/toolbox/linalg/details/lapack/getrf.hpp>
+
+#include <nt2/table.hpp>
+//#include <iostream>
+//#include <nt2/include/functions/expand.hpp>
+//#include <nt2/include/functions/diag.hpp>
+//#include <nt2/include/functions/prod.hpp>
+//#include <nt2/include/functions/triu.hpp>
+//#include <nt2/include/functions/range.hpp>
+
+
+//==============================================================================
+// plu call result forward declaration
+//==============================================================================
+namespace nt2
+{
+  template<class A> struct plu_return;
+
+} 
+
+namespace nt2 { namespace ext
+{
+  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::plu_, tag::cpu_, 
+                              (A)(S0),
+                              ((expr_< table_<unspecified_<A>,S0>,nt2::tag::terminal_,boost::mpl::long_<0> >))
+                              )
+  {
+    typedef nt2::plu_return<A> result_type; 
+    BOOST_DISPATCH_FORCE_INLINE result_type operator()(const A& a) const
+    {
+      return nt2::plu_return<A>(a);
+    }
+  };  
+} }
+
+namespace nt2 
+{
+  //============================================================================
+  // plu actual functor : precompute
+  //============================================================================
+  template<class A > struct plu_return
+  {
+    typedef typename A::value_type                     type_t;
+    typedef typename A::index_type                    index_t; 
+    typedef typename meta::as_real<type_t>::type       base_t; 
+    typedef nt2::table<type_t, nt2::matlab_index_>     ftab_t;
+    typedef nt2::table<type_t, nt2::matlab_index_>    fbtab_t;
+    typedef nt2::table<long int, nt2::matlab_index_>  iftab_t;
+    typedef nt2::table<type_t, index_t>                 tab_t;
+    typedef nt2::table<long int, index_t>              itab_t;
+    typedef nt2::table<type_t, index_t>                btab_t;
+    typedef nt2::details::workspace<type_t>       workspace_t;
+    typedef nt2::details::options                   options_t;
+    
+      template < class XPR > plu_return(const XPR & a_):
+        a(a_), 
+        lu(a_),
+        m(size(a, 1)),
+        n(size(a, 2)),
+        lda(leading_size(a)), 
+        ipiv(nt2::of_size(nt2::min(n, m), 1)), 
+        r(of_size(n, 1)),
+        c(of_size(n, 1)), 
+        rc(-1), 
+        w(inw)
+    {
+      init();
+    }
+    template < class XPR > plu_return(const XPR & a_,
+                                      workspace_t &w_):
+      a(a_), 
+      lu(a_),
+      m(size(a, 1)),
+      n(size(a, 2)),
+      lda(leading_size(a)), 
+      ipiv(nt2::of_size(nt2::min(n, m), 1)), 
+      r(of_size(n, 1)),
+      c(of_size(n, 1)), 
+      rc(-1), 
+      w(w_)
+    {
+      init();
+    }
+    
+    ~plu_return(){}
+    // /////////////////////////////////////////////////////////////////////////////
+    // accessors
+    // /////////////////////////////////////////////////////////////////////////////
+    tab_t     geta()  {return a; }
+    //   tab_t     getu()  {return triu(lu(Range(1, std::min(n, m)),_) );  }
+    //    tab_t     getl()  {return  tri1l(lu(_,Range(1, std::min(n, m)))); }
+    itab_t    getip() {return ipiv; }
+    itab_t    getp()  { //TODO optimize the call
+      if (nt2::isempty(p))
+        {
+          //          p = nt2::eye(m, m);
+          for(size_t i=1; i <= numel(ipiv); ++i){
+            tab_t c = p(i, _);
+            p(i,_) = p(ipiv(i),_);
+            p(ipiv(i),_) = c; 
+          }
+          return p; 
+        }
+      else
+        {
+          return p; //nt2::trans(p);
+        }
+    } 
+    tab_t     getpt(){//TODO optimize the call
+      if (is_empty(p))
+        {
+          //         p = nt2::eye(m, m);
+          for(size_t i=1; i <= numel(ipiv); ++i){
+            tab_t c = p(_,i);
+            p(_,i) = p(_,ipiv(i));
+            p(_,ipiv(i)) = c; 
+          }
+          return p; 
+        }
+      else
+        {
+          return trans(p);
+        }
+    } 
+      
+      long int getinfo(){return info; }
+      
+      // /////////////////////////////////////////////////////////////////////////////
+      // computations
+      // /////////////////////////////////////////////////////////////////////////////
+      base_t rcond(char c = '1')
+      {
+        if (c !=  '1' || rc == -1)
+          {
+            char norm = c;
+            base_t anorm = nt2::details::lange(&norm,  &n,  &n, lu.raw(), &lda, w); 
+            nt2::details::gecon(&norm, &n,  lu.raw(), &lda, &anorm, &rc, &info, w);
+          }
+        return rc;  
+      }
+
+      
+    size_t rank(base_t epsi = nt2::Eps<base_t>())
+      {
+        return 0; //globalSum( abs(diag(getu())) > std::max(n, m)*epsi*globalMax(abs(diag(getu()))) );
+      }
+      
+//       base_t absdet(){
+//         //        mc_t::SquareTest(__FILE__, __LINE__, a);
+//         return globalProd(abs(diag(getu())));
+//       }
+      
+//       type_t det(){
+//         //       mc_t::SquareTest(__FILE__, __LINE__, a);
+//         return globalProd(diag(getu()))*((globalSum(ipiv != ne::convert<long>(colvect((colon(1, numel(ipiv))))))%2 == 1) ? -1 : 1); 
+//       }
+      
+      tab_t inv(bool noWarn =  false)
+      {
+        tab_t i = lu;
+        base_t rc; 
+        if (!noWarn && (rc = rcond()) < nt2::Eps<base_t>())
+          {
+            std::cerr << " Warning : Na::Matrix is close to singular or badly scaled." << std::endl; 
+            std::cerr << "           Results may be inaccurate. RCOND = " << rc << "." << std::endl;
+          }
+        nt2::details::getri(&n, i.raw(), &lda, ipiv.raw(), &info, w);
+        return i; 
+      }  
+      
+      // /////////////////////////////////////////////////////////////////////////////
+      // resolutions
+      // /////////////////////////////////////////////////////////////////////////////
+      template < class XPR >
+      tab_t solve(const XPR & b, bool noWarn =  false)
+      {
+        tab_t x(size(b)), bb(b); 
+        long int nrhs =  size(b, 2);
+        long int ldb  =  leading_size(b);
+        long int ldx  =  leading_size(x); 
+        long int lda  =  leading_size(a);
+        long int ldlu =  leading_size(lu);  
+        if (isempty(berr))
+          {
+            berr.resize(of_size(nrhs, 1));
+            ferr.resize(of_size(nrhs, 1));
+          }
+        nt2::details::gesvx((char*)&options_t::opt('F'),
+                            (char*)&options_t::opt('N'),
+                            &n, &nrhs,
+                            a.raw(), &lda,
+                            lu.raw(), &ldlu,
+                            ipiv.raw(),
+                            (char*)&options_t::opt('N'), 
+                            r.raw(), c.raw(),
+                            bb.raw(), &ldb,
+                            x.raw(), &ldx,
+                            &rc,
+                            ferr.raw(),
+                            berr.raw(),
+                            &info, w);
+        if(!noWarn && (info > n || rc < nt2::Eps<base_t>())){
+          std::cerr << " Warning : Na::Matrix is close to singular or badly scaled." << std::endl; 
+          std::cerr << "           Results may be inaccurate. RCOND = " << rc << "." << std::endl;
+        }
+        //        mc_t::LapackTest(__FILE__, __LINE__, "gesvx", a, info); 
+        return x;
+      }
+      
+    private :
+      inline void init()
+      {
+        nt2::details::getrf(&m, &n, lu.raw(), &lda, ipiv.raw(), &info, w);
+        //        mc_t::LapackTest(__FILE__, __LINE__, "getrf", lu, info); 
+      }
+    tab_t                 a,lu;
+    const long int         m,n;
+    const long int         lda; 
+    itab_t                ipiv;
+    tab_t                    u;
+    tab_t                   vt;
+    btab_t       r,c,ferr,berr; 
+    long int              info; 
+    itab_t                   p; 
+    base_t                  rc;
+    workspace_t            inw; 
+    workspace_t             &w;
+  };
+} 
+#endif

@@ -13,8 +13,9 @@
 #include <nt2/include/functions/numel.hpp>
 #include <nt2/include/functions/leading_size.hpp>
 #include <nt2/toolbox/linalg/details/utility/tags.hpp>
-#include <nt2/toolbox/linalg/details/lapack/chol.hpp>
-#include <nt2/toolbox/linalg/details/lapack/con.hpp>
+#include <nt2/toolbox/linalg/details/lapack/potrf.hpp>
+#include <nt2/toolbox/linalg/details/lapack/potrs.hpp>   
+#include <nt2/toolbox/linalg/details/lapack/pocon.hpp>
 #include <nt2/toolbox/linalg/details/lapack/lange.hpp>
 
 #include <nt2/table.hpp>

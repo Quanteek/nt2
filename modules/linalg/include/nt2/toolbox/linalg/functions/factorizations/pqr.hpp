@@ -10,7 +10,7 @@
 #define NT2_TOOLBOX_LINALG_FUNCTIONS_FACTORIZATIONS_PQR_HPP_INCLUDED
 
 #include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
-#include <nt2/toolbox/linalg/details/utility/lapack_options.hpp>
+#include <nt2/toolbox/linalg/details/utility/options.hpp>
 #include <nt2/include/functions/pqr.hpp>
 #include <nt2/include/functions/of_size.hpp>
 #include <nt2/include/functions/min.hpp>
@@ -18,7 +18,7 @@
 #include <nt2/include/constants/one.hpp>
 #include <nt2/include/functions/isempty.hpp>
 #include <nt2/include/functions/leading_size.hpp>
-#include <nt2/toolbox/linalg/details/lapack/pqr.hpp>
+#include <nt2/toolbox/linalg/details/lapack/geqp3.hpp>
 #include <nt2/toolbox/linalg/details/lapack/gqr.hpp>
 #include <nt2/toolbox/linalg/details/lapack/mqr.hpp>
 #include <nt2/toolbox/linalg/details/lapack/trs.hpp>
@@ -72,8 +72,9 @@ namespace nt2
     typedef nt2::table<type_t, index_t>               tab_t;
     typedef nt2::table<type_t, index_t>              btab_t;
     typedef nt2::table<int32_t,index_t>              itab_t;
-    typedef nt2::details::lapack_options          options_t; 
-    typedef nt2::details::workspace<type_t>     workspace_t; 
+    typedef nt2::details::options                 options_t; 
+    typedef nt2::details::workspace<type_t>     workspace_t;
+    
     template < class XPR > pqr_return(const XPR& a_,
                                       workspace_t & w_):
       a(a_),
