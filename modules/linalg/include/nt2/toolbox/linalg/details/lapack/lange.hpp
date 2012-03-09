@@ -8,6 +8,8 @@
  ******************************************************************************/
 #ifndef NT2_TOOLBOX_LINALG_DETAILS_LAPACK_LANGE_HPP_INCLUDED
 #define NT2_TOOLBOX_LINALG_DETAILS_LAPACK_LANGE_HPP_INCLUDED
+#include <nt2/toolbox/linalg/details/utility/f77_wrapper.hpp>
+#include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
 /*
 **  purpose
 **  =======
