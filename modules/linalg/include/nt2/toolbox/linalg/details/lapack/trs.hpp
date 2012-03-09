@@ -18,17 +18,17 @@ namespace nt2
     {
 #define NT2_COMPLEX void
       void NT2_F77NAME(ctrtrs)(const char* uplo, const char* trans, const char* diag,
-                           const long int* n, const long int* nrhs, const NT2_COMPLEX* a, const long int* lda,
-                           NT2_COMPLEX* b, const long int* ldb, long int* info);
+                               const long int* n, const long int* nrhs, const NT2_COMPLEX* a, const long int* lda,
+                               NT2_COMPLEX* b, const long int* ldb, long int* info);
       void NT2_F77NAME(dtrtrs)(const char* uplo, const char* trans, const char* diag,
-                           const long int* n, const long int* nrhs, const double* a, const long int* lda,
-                           double* b, const long int* ldb, long int* info);
+                               const long int* n, const long int* nrhs, const double* a, const long int* lda,
+                               double* b, const long int* ldb, long int* info);
       void NT2_F77NAME(strtrs)(const char* uplo, const char* trans, const char* diag,
-                           const long int* n, const long int* nrhs, const float* a, const long int* lda,
-                           float* b, const long int* ldb, long int* info);
+                               const long int* n, const long int* nrhs, const float* a, const long int* lda,
+                               float* b, const long int* ldb, long int* info);
       void NT2_F77NAME(ztrtrs)(const char* uplo, const char* trans, const char* diag,
-                           const long int* n, const long int* nrhs, const NT2_COMPLEX* a, const long int* lda,
-                           NT2_COMPLEX* b, const long int* ldb, long int* info);
+                               const long int* n, const long int* nrhs, const NT2_COMPLEX* a, const long int* lda,
+                               NT2_COMPLEX* b, const long int* ldb, long int* info);
 #undef NT2_COMPLEX
     }
     
@@ -44,15 +44,16 @@ namespace nt2
                       const long int* ldb,      \
                       long int* info)           \
     {                                           \
-      F77NAME( NAME )(uplo,trans,diag,n,nrhs,a, \
-                      lda, b,ldb,info);         \
+      NT2_F77NAME( NAME )(uplo,trans,diag,      \
+                          n,nrhs,a,             \
+                          lda, b,ldb,info);     \
     }                                           \
 
 
     NT2_TRTRS(strtrs, float)
     NT2_TRTRS(dtrtrs, double)
-    NT2_TRTRS(strtrs, std::complex<float>)
-    NT2_TRTRS(dtrtrs, std::complex<double>)
+    NT2_TRTRS(ctrtrs, std::complex<float>)
+    NT2_TRTRS(ztrtrs, std::complex<double>)
       
 #undef NT2_TRTRS
   }
