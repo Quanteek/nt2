@@ -30,6 +30,7 @@ namespace nt2 { namespace ext
     result_type operator()(const A0& a0) const
     {
       typedef typename A0::value_type value_type;
+
       if (!issquare(a0)) return false; 
       for(std::ptrdiff_t j=first_index<2>(a0); j <= last_index<2>(a0) ; ++j)
         {

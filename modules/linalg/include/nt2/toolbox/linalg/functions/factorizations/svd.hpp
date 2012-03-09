@@ -11,7 +11,8 @@
 
 #include <nt2/include/functions/svd.hpp>
 #include <nt2/include/functions/numel.hpp>
-#include <nt2/toolbox/linalg/details/utility/padding.hpp>
+#include <nt2/include/functions/leading_size.hpp>
+#include <nt2/toolbox/linalg/details/utility/tags.hpp>
 #include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
 #include <nt2/toolbox/linalg/details/lapack/svd.hpp>
 #include <nt2/table.hpp>
@@ -38,7 +39,7 @@
 //==============================================================================
 namespace nt2
 {
-  template<class A> struct svd_f;
+  template<class A> struct svd_return;
   struct AllowDestroy {}; 
 } 
 
@@ -49,10 +50,10 @@ namespace nt2 { namespace ext
                               ((expr_< table_<unspecified_<A>,S0>,nt2::tag::terminal_,boost::mpl::long_<0> >))
                               )
   {
-    typedef nt2::svd_f<A> result_type; 
+    typedef nt2::svd_return<A> result_type; 
     BOOST_DISPATCH_FORCE_INLINE result_type operator()(const A& a) const
     {
-      return nt2::svd_f<A>(a);
+      return nt2::svd_return<A>(a);
     }
   };  
 } }
@@ -62,31 +63,30 @@ namespace nt2
   //============================================================================
   // svd actual functor : precompute
   //============================================================================
-  template<class A > struct svd_f
+  template<class A > struct svd_return
   {
     typedef typename A::value_type                   type_t;
     typedef typename A::index_type                  index_t; 
     typedef typename meta::as_real<type_t>::type    btype_t; 
-    typedef nt2::table<type_t, nt2::C_index_>        ctab_t;
-    typedef nt2::table<type_t, nt2::C_index_>       cbtab_t;
+    typedef nt2::table<type_t, nt2::matlab_index_>        ctab_t;
+    typedef nt2::table<type_t, nt2::matlab_index_>       cbtab_t;
     typedef nt2::table<type_t, index_t>               tab_t;
     typedef nt2::table<type_t, index_t>              btab_t;
     
-    template < class XPR > svd_f(const XPR& a_, char jobz_ = 'A'):
+    template < class XPR > svd_return(const XPR& a_, char jobz_ = 'A'):
       jobz(jobz_),
       a(a_),
       ma(a), 
       m(size(a, 1)),
       n(size(a, 2)),
-      //      lda(leading_size(a)), //nt2::details::padding(boost::proto::value(a))),
-      lda(boost::proto::value(a).leading_size()), 
+      lda(leading_size(a)), 
       wrk(inw)
     {
       allocate(); 
       init(); 
     }
     template < class XPR>
-    svd_f(const XPR & a_,
+    svd_return(const XPR & a_,
           nt2::details::workspace < type_t > & w_,
           char jobz_ = 'A'):
       jobz(jobz_),
@@ -94,16 +94,16 @@ namespace nt2
       ma(a),
       m(size(a, 1)),
       n(size(a, 2)),
-      lda(nt2::details::padding(boost::proto::value(a))),
+      lda(leading_size(a)), //(boost::proto::value(a))),
       wrk(w_)        
     {
       allocate(); 
       init(); 
     }
       
-//     template <            > svd_f( A &a,
+//     template <            > svd_return( A &a,
 //                                  nt2::details::workspace < type_t > & w_, 
-//                                  AllowDestroy destroy, char jobz_ = 'A'):
+//                                  details::allowDestroy destroy, char jobz_ = 'A'):
 //       jobz(jobz_),
 //       ma(a),
 //       m(size(a, 1)),
@@ -114,8 +114,8 @@ namespace nt2
 //       allocate(); 
 //       init(); 
 //     }
-//     template <            > svd_f( A &a,
-//                                  AllowDestroy destroy,
+//     template <            > svd_return( A &a,
+//                                  details::allowDestroy destroy,
 //                                  char jobz_ = 'A'):
 //       jobz(jobz_),
 //       ma(a),
@@ -128,7 +128,7 @@ namespace nt2
 //       init(); 
 //     }
     
-    ~svd_f(){}
+    ~svd_return(){}
     // /////////////////////////////////////////////////////////////////////////////
     // accessors
     // /////////////////////////////////////////////////////////////////////////////
@@ -170,15 +170,15 @@ namespace nt2
 //       {
 //         epsi =  epsi < 0 ? nt2::eps(w(1)) : epsi;
 //         // TODO use a reverse iterator on w
-//         int j = length(w)-1; 
-//         for(; (j >= 0) && (w(j)<= epsi); j--);
+//         int j = length(w); 
+//         for(; (j > 0) && (w(j)<= epsi); j--);
 //         j++;
 //         return nt2::fliplr(nt2::trans(vt(nt2::Range(j, End()), _)));
 //       }
       
 //       table_t orth(btype_t epsi =  -1)const
 //       {
-//         return u(_, nt2::Range(0, rank(epsi)-1)); 
+//         return u(_, nt2::Range(1, rank(epsi))); 
 //       }
       
 //       table_t zerosolve()const
@@ -188,7 +188,7 @@ namespace nt2
       
 //       table_t pinv(btype_t epsi = -1 )const
 //       {
-//         epsi = epsi < 0 ? nt2::eps(w(0)) : epsi; 
+//         epsi = epsi < 0 ? nt2::eps(w(1)) : epsi; 
 //         table_t w1 = nt2::trans(getw());
 //         w1 = if_else( (w1 > length(a)*epsi), 1/w1, Zero<btype_t>());
 //         return (nt2::trans(vt)*(nt2::diag(w1)*nt2::trans(u)));
@@ -220,9 +220,9 @@ namespace nt2
             break;
           }
         u.resize(of_size(ldu, ucol));
-        ldu = nt2::details::padding(boost::proto::value(u)); 
+        ldu = leading_size(u); 
         vt.resize(of_size(ldvt, vtcol));
-        ldvt = nt2::details::padding(boost::proto::value(vt)); 
+        ldvt = leading_size(vt); 
         w.resize(of_size(nt2::max(n, m), 1)); 
       }
       inline void init()
@@ -236,17 +236,11 @@ namespace nt2
         
         // gesvd  ne donne pas exactement les même résultat que matlab 7.2 (???JTL) sur hilb(100)
         // légèrement moins bons, la recnstruction est à 8e-16 au lieu de 3e-16
-//         type_t* wp = boost::proto::value(w).begin();
-//         type_t* map= ma.begin();
-//         type_t* mu = boost::proto::value(u).begin();
-//         type_t* mvt= boost::proto::value(vt).begin();
-        nt2::details::gesvd(&jobz, &jobz, &m, &n, boost::proto::value(ma).begin(), &lda,
-                             boost::proto::value(w).begin(),
-                             boost::proto::value(u).begin(), &ldu,
-                             boost::proto::value(vt).begin(), &ldvt,
-                             &info, wrk);
+        nt2::details::gesvd(&jobz, &jobz, &m, &n, ma.raw(), &lda,
+                             w.raw(), u.raw(), &ldu,
+                             vt.raw(), &ldvt, &info, wrk);
         
-         for(size_t i = nt2::min(n, m); i<nt2::numel(w); i++) w(i) = Zero<btype_t>();
+         for(size_t i = nt2::min(n, m)+1; i<= nt2::numel(w); i++) w(i) = Zero<btype_t>();
         //        mc_t::LapackTest(__FILE__, __LINE__, "gesvd", ma, info); 
       }
 

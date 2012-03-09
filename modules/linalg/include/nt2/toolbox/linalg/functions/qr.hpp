@@ -6,14 +6,14 @@
  *                 See accompanying file LICENSE.txt or copy at
  *                     http://www.boost.org/LICENSE_1_0.txt
  ******************************************************************************/
-#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_SVD_HPP_INCLUDED
-#define NT2_TOOLBOX_LINALG_FUNCTIONS_SVD_HPP_INCLUDED
+#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_QR_HPP_INCLUDED
+#define NT2_TOOLBOX_LINALG_FUNCTIONS_QR_HPP_INCLUDED
 
 #include <nt2/include/functor.hpp>
 
 /*!
  * \ingroup algebra
- * \defgroup algebra_svd svd
+ * \defgroup algebra_qr qr
  *
  * \par Description
  * Elementary Least square
@@ -21,13 +21,13 @@
  * \par Header file
  * 
  * \code
- * #include <nt2/include/functions/svd.hpp>
+ * #include <nt2/include/functions/qr.hpp>
  * \endcode
  * 
  * 
  * \synopsis
- * ggsvd_itf.hh
-    (excerpt adapted from xggsvd.f file commentaries)
+ * ggqr_itf.hh
+    (excerpt adapted from xggqr.f file commentaries)
     
     DATA TYPE can mean float, double, std::complex<float>, std::complex<double>
     
@@ -43,7 +43,7 @@
     **  purpose
     **  =======
     **
-    **  xggsvd solves the linear equality-constrained least squares (svd)
+    **  xggqr solves the linear equality-constrained least squares (qr)
     **  problem:
     **
     **          minimize || c - a*x ||_2   subject to   b*x = d
@@ -55,7 +55,7 @@
     **           rank(b) = p and  rank( ( a ) ) = n.
     **                                ( ( b ) )
     **
-    **  these conditions ensure that the svd problem has a unique solution,
+    **  these conditions ensure that the qr problem has a unique solution,
     **  which is obtained using a grq factorization of the matrices b and a.
     **
     **  arguments (the C++ arguments are prefixed with #
@@ -86,7 +86,7 @@
     **
     **  #c       (input/output) DATA TYPE array, dimension (m)
     **          on entry, c contains the right hand side vector for the
-    **          least squares part of the svd problem.
+    **          least squares part of the qr problem.
     **          on exit, the residual sum of squares for the solution
     **          is given by the sum of squares of elements n-p+1 to m of
     **          vector c.
@@ -97,7 +97,7 @@
     **          on exit, d is destroyed.
     **
     **  #x       (output) DATA TYPE array, dimension (n)
-    **          on exit, x is the solution of the svd problem.
+    **          on exit, x is the solution of the qr problem.
     **
     **
     **
@@ -115,7 +115,7 @@
  *
  * \param d the vector d on entry, destroyed on exit
  *  
- * \param x  the solution of the svd problem on exit
+ * \param x  the solution of the qr problem on exit
  *
  * \par Notes
  *   Call the dedicated lapack routines available on the target.
@@ -123,26 +123,26 @@
  *  
 **/
 //==============================================================================
-// svd actual class forward declaration
+// qr actual class forward declaration
 //==============================================================================
 namespace nt2 
 {
-  template<class A> struct svd_return;
+  template<class A> struct qr_return;
 } 
 
 namespace nt2 { namespace tag
   {         
     /*!
-     * \brief Define the tag svd_ of functor svd
+     * \brief Define the tag qr_ of functor qr
      *        in namespace nt2::tag for toolbox algebra
     **/
-    struct svd_ : ext::unspecified_<svd_> { typedef ext::unspecified_<svd_> parent; };
+    struct qr_ : ext::unspecified_<qr_> { typedef ext::unspecified_<qr_> parent; };
   }
 
   template<class A>
-  BOOST_FORCEINLINE nt2::svd_return<A> svd(A &a)
+  BOOST_FORCEINLINE nt2::qr_return<A> qr(A &a)
   {
-    return typename nt2::make_functor<tag::svd_, A>::type()(a);
+    return typename nt2::make_functor<tag::qr_, A>::type()(a);
   }
 
 }

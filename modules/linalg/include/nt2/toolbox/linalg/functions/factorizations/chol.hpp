@@ -11,7 +11,8 @@
 
 #include <nt2/include/functions/chol.hpp>
 #include <nt2/include/functions/numel.hpp>
-#include <nt2/toolbox/linalg/details/utility/padding.hpp>
+#include <nt2/include/functions/leading_size.hpp>
+#include <nt2/toolbox/linalg/details/utility/tags.hpp>
 #include <nt2/toolbox/linalg/details/lapack/chol.hpp>
 #include <nt2/toolbox/linalg/details/lapack/con.hpp>
 #include <nt2/toolbox/linalg/details/lapack/lange.hpp>
@@ -22,12 +23,12 @@
 
 
 //==============================================================================
-// chol actual functor forward declaration
+// chol call result forward declaration
 //==============================================================================
 namespace nt2
 {
-  template<class A> struct chol_f;
-  struct AllowDestroy {}; 
+  template<class A> struct chol_return;
+
 } 
 
 namespace nt2 { namespace ext
@@ -37,10 +38,10 @@ namespace nt2 { namespace ext
                               ((expr_< table_<unspecified_<A>,S0>,nt2::tag::terminal_,boost::mpl::long_<0> >))
                               )
   {
-    typedef nt2::chol_f<A> result_type; 
+    typedef nt2::chol_return<A> result_type; 
     BOOST_DISPATCH_FORCE_INLINE result_type operator()(const A& a) const
     {
-      return nt2::chol_f<A>(a);
+      return nt2::chol_return<A>(a);
     }
   };  
 } }
@@ -50,7 +51,7 @@ namespace nt2
   //============================================================================
   // chol actual functor : precompute
   //============================================================================
-  template<class A > struct chol_f
+  template<class A > struct chol_return
   {
     typedef typename A::value_type                   type_t;
     typedef typename A::index_type                  index_t; 
@@ -60,26 +61,26 @@ namespace nt2
     typedef nt2::table<type_t, index_t>               tab_t;
     typedef nt2::table<type_t, index_t>              btab_t;
     
-      template < class XPR > chol_f(const XPR & a_):
+      template < class XPR > chol_return(const XPR & a_):
         uplo('U'),
         a(a_),
         ma(a),
         n(size(a, 2)),
-        lda(boost::proto::value(a).leading_size()) 
+        lda(leading_size(a))//boost::proto::value(a).leading_size()) 
       {
         //assert issquare a_
         init(); 
       }
-      template < class T, class S > chol_f( table<T, S>&a, AllowDestroy destroy):
+      template < class T, class S > chol_return( table<T, S>&a, details::allowDestroy destroy):
         uplo('U'),
         ma(a),
         n(size(a, 2)),
-        lda(nt2::details::padding(boost::proto::value(a)))
+        lda(leading_size(a))//boost::proto::value(a).leading_size())
       {
         init(); 
       }
       
-      ~chol_f(){}
+      ~chol_return(){}
       // /////////////////////////////////////////////////////////////////////////////
       // accessors
       // /////////////////////////////////////////////////////////////////////////////

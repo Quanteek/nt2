@@ -6,8 +6,8 @@
  *                 See accompanying file LICENSE.txt or copy at
  *                     http://www.boost.org/LICENSE_1_0.txt
  ******************************************************************************/
-#ifndef NT2_TOOLBOX_LINALG_DETAILS_LAPACK_QR_HPP_INCLUDED
-#define NT2_TOOLBOX_LINALG_DETAILS_LAPACK_QR_HPP_INCLUDED
+#ifndef NT2_TOOLBOX_LINALG_DETAILS_LAPACK_QRF_HPP_INCLUDED
+#define NT2_TOOLBOX_LINALG_DETAILS_LAPACK_QRF_HPP_INCLUDED
 #include <nt2/toolbox/linalg/details/utility/f77_wrapper.hpp>
 #include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
 // its a mix or orgqr and ungqr
@@ -41,7 +41,7 @@ namespace nt2
                       const long int* lda,      \
                       T* tau,                   \
                       long int* info,           \
-                nt2::detals::workspace<T> & w)  \
+                nt2::details::workspace<T> & w) \
     {                                           \
       NT2_F77NAME( NAME )(m, n, a, lda, tau,    \
                       w.getw(),w.query(),info); \
@@ -75,5 +75,5 @@ namespace nt2
 #endif
 
 // /////////////////////////////////////////////////////////////////////////////
-// End of qr.hpp
+// End of qrf.hpp
 // /////////////////////////////////////////////////////////////////////////////
