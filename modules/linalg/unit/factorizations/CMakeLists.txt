@@ -12,6 +12,7 @@ SET( SOURCES
   chol.cpp
   qr.cpp
   pqr.cpp
+  plu.cpp
    )
 
 nt2_module_add_tests(linalg.factorizations.unit ${SOURCES})
