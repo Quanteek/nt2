@@ -30,6 +30,10 @@ SET( SOURCES
   issymetric.cpp
   ishermitian.cpp
   istriangular.cpp
+  areofsameheight.cpp
+  areofsamewidth.cpp
+  areofsamedepth.cpp
+  areofsamedimensions.cpp
 # List of test files for toolbox core.settings
    )
 
