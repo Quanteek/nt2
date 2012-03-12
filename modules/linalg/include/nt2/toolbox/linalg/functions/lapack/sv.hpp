@@ -10,7 +10,7 @@
 #define NT2_TOOLBOX_LINALG_FUNCTIONS_LAPACK_SV_HPP_INCLUDED
 #include <nt2/toolbox/linalg/details/utility/padding.hpp>
 #include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
-#include <nt2/toolbox/linalg/details/lapack/sv.hpp>
+#include <nt2/toolbox/linalg/details/lapack/gesv.hpp>
 #include <nt2/table.hpp>
 #include <nt2/core/settings/forward/shape.hpp>
 #include <nt2/core/settings/forward/storage_scheme.hpp>
