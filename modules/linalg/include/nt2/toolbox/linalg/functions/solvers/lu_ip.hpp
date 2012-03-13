@@ -97,7 +97,7 @@ namespace nt2
         la_int lda  = nt2::leading_size(a);
         la_int ldx  = nt2::leading_size(b);
         nt2::details::gesv (&Ml, &K, a.raw(), &lda, ipiv.raw(), b.raw(), &ldx, &info);
-        BOOST_ASSERT_MSG(info!= 0, "Lapack error : gesv in LUSolveIP");
+        BOOST_ASSERT_MSG(info == 0, "Lapack error : gesv in LUSolveIP");
       }
     ~lu_ip_return(){}
 //     tab_t  get_sol()     const { return ma;   }
