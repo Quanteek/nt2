@@ -19,13 +19,13 @@ set(NT2_BLAS_FOUND FALSE)
     if(NT2_ARCH_X86_64)
       find_library(NT2_MKL_LP64 NAMES mkl_intel_lp64 mkl_intel_lp64_dll 
                    PATHS /opt/intel/mkl/lib/ ${NT2_BLAS_ROOT}
-                   PATHS_SUFFIXES ia32 intel64
+                   PATH_SUFFIXES ia32 intel64
                    )
       set(NT2_BLAS_LIBRARIES ${NT2_BLAS_LIBRARIES} ${NT2_MKL_LP64}) 
     elseif(NT2_ARCH_X86)
       find_library(NT2_MKL_32 NAMES mkl_intel mkl_intel_c_dll
                    PATHS /opt/intel/mkl/lib/ ${NT2_BLAS_ROOT}
-                   PATHS_SUFFIXES ia32 intel64
+                   PATH_SUFFIXES ia32 intel64
                    )
       set(NT2_BLAS_LIBRARIES ${NT2_BLAS_LIBRARIES} ${NT2_MKL_32}) 
     endif()
@@ -35,27 +35,27 @@ set(NT2_BLAS_FOUND FALSE)
       set(NT2_ARCH_MULTICORE FALSE)
       find_library(NT2_MKL_SEQ NAMES mkl_sequential mkl_sequential_dll
                    PATHS /opt/intel/mkl/lib/ ${NT2_BLAS_ROOT}
-                   PATHS_SUFFIXES ia32 intel64
+                   PATH_SUFFIXES ia32 intel64
                    )
       set(NT2_BLAS_LIBRARIES ${NT2_BLAS_LIBRARIES} ${NT2_MKL_SEQ})
     else()
       if(NT2_COMPILER_MSVC)
         find_library(NT2_MKL_INTEL_THREAD NAMES mkl_intel_thread_dll
                      PATHS /opt/intel/mkl/lib/ ${NT2_BLAS_ROOT}
-                     PATHS_SUFFIXES ia32 intel64
+                     PATH_SUFFIXES ia32 intel64
                      )
         set(NT2_BLAS_LIBRARIES ${NT2_BLAS_LIBRARIES} ${NT2_ICC_LIB_ROOT}/libiomp5md.lib)
       elseif(NT2_COMPILER_GCC)
         find_library(NT2_MKL_GNU_THREAD NAMES mkl_gnu_thread
                      PATHS /opt/intel/mkl/lib/ ${NT2_BLAS_ROOT}
-                     PATHS_SUFFIXES ia32 intel64
+                     PATH_SUFFIXES ia32 intel64
                     ) 
         set(NT2_BLAS_LIBRARIES ${NT2_BLAS_LIBRARIES} ${NT2_MKL_GNU_THREAD})
         set(NT2_BLAS_LINK_FLAGS ${NT2_BLAS_LINK_FLAGS} ${NT2_OPENMP_LINK_FLAGS})
       elseif(NT2_COMPILER_ICC)
         find_library(NT2_MKL_INTEL_THREAD NAMES mkl_intel_thread mkl_intel_thread_dll
                      PATHS /opt/intel/mkl/lib/ ${NT2_BLAS_ROOT}
-                     PATHS_SUFFIXES ia32 intel64
+                     PATH_SUFFIXES ia32 intel64
                     )
         set(NT2_BLAS_LIBRARIES ${NT2_BLAS_LIBRARIES} ${NT2_MKL_INTEL_THREAD})
         if(UNIX)
@@ -77,7 +77,7 @@ set(NT2_BLAS_FOUND FALSE)
 
     find_library(NT2_MKL_CORE NAMES mkl_core mkl_core_dll
                  PATHS /opt/intel/mkl/lib/ ${NT2_BLAS_ROOT}
-                 PATHS_SUFFIXES ia32 intel64
+                 PATH_SUFFIXES ia32 intel64
                 )
     set(NT2_BLAS_LIBRARIES ${NT2_BLAS_LIBRARIES} ${NT2_MKL_CORE}) 
     
