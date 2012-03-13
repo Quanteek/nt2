@@ -68,10 +68,10 @@ namespace nt2
     typedef typename A::value_type                   type_t;
     typedef typename A::index_type                  index_t; 
     typedef typename meta::as_real<type_t>::type    btype_t; 
-    typedef nt2::table<type_t, nt2::matlab_index_>        ctab_t;
-    typedef nt2::table<type_t, nt2::matlab_index_>       cbtab_t;
+    typedef nt2::table<type_t, nt2::matlab_index_>   ctab_t;
+    typedef nt2::table<btype_t, nt2::matlab_index_> cbtab_t;
     typedef nt2::table<type_t, index_t>               tab_t;
-    typedef nt2::table<type_t, index_t>              btab_t;
+    typedef nt2::table<btype_t, index_t>             btab_t;
     
     template < class XPR > svd_return(const XPR& a_, char jobz_ = 'A'):
       jobz(jobz_),
@@ -94,7 +94,7 @@ namespace nt2
       ma(a),
       m(size(a, 1)),
       n(size(a, 2)),
-      lda(leading_size(a)), //(boost::proto::value(a))),
+      lda(leading_size(a)), 
       wrk(w_)        
     {
       allocate(); 
@@ -134,7 +134,7 @@ namespace nt2
     // /////////////////////////////////////////////////////////////////////////////
     tab_t       getu ()      const { return u; }
     tab_t       getvt()      const { return vt;}
-    btab_t      getsingular()const { std::cout << "in getsingular " << std::endl; return w; }
+    btab_t      getsingular()const { return w; }
     //    btab_t      getw()       const { return nt2::expand(nt2::diag(w), ucol, size(vt, 1));}
     long int    getinfo()    const { return info; }
     

@@ -6,7 +6,7 @@
 //                 See accompanying file LICENSE.txt or copy at                 
 //                     http://www.boost.org/LICENSE_1_0.txt                     
 //==============================================================================
-#define NT2_UNIT_MODULE "nt2 linalg toolbox - svd"
+#define NT2_UNIT_MODULE "nt2 linalg toolbox - lu_ip"
 
 //////////////////////////////////////////////////////////////////////////////
 // unit test behavior of algebra components
@@ -14,7 +14,7 @@
 
 #include <nt2/table.hpp>
 #include <nt2/include/functions/size.hpp>
-#include <nt2/include/functions/svd.hpp>
+#include <nt2/toolbox/linalg/functions/solvers/lu_ip.hpp>
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/make_vector.hpp>
 #include <nt2/sdk/unit/tests.hpp>
@@ -22,52 +22,50 @@
 
 template < class TAB>
 void pt(const TAB & t){}
-NT2_TEST_CASE_TPL ( svd, NT2_REAL_TYPES) 
+NT2_TEST_CASE_TPL ( LUSolveIP, (double)) 
 {
   typedef nt2::table<T> table_t; 
-  table_t b(nt2::of_size(4, 4));
+  table_t a(nt2::of_size(4, 4));
+  table_t x(nt2::of_size(4, 1));
   
-  std::size_t dim1_b = size(b)(1);
-  std::size_t dim2_b = size(b)(2);
-  
-  for(std::size_t i = 1; i <= dim1_b; i++)
-    for(std::size_t j = 1; j <= dim2_b; j++)
-      {
-        b(i, j)= T((i == j)*i);
-      }
-  b(1, dim2_b) = T(1); 
-  for(std::size_t i = 1; i <= size(b, 1); i++)
+  for(std::size_t i = 1; i <= size(a, 1); i++)
     {
-      for(std::size_t j = 1; j <= size(b, 2); j++)
+      x(i, 1) = T(i); 
+      for(std::size_t j = 1; j <= size(a, 2); j++)
         {
-          std::cout << b(i, j) << ", "; 
+          a(i, j)= T((i == j)*i);
         }
-      std::cout << std::endl; 
     }
-  nt2::svd_return<table_t> f = svd(b);
-  table_t u = f.getu();
-  table_t vt= f.getvt();
-  table_t w = f.getsingular(); 
-  for(std::size_t i = 1; i <= size(u, 1); i++)
+  for(std::size_t i = 1; i <= size(a, 1); i++)
     {
-      for(std::size_t j = 1; j <= size(u, 2); j++)
+      for(std::size_t j = 1; j <= size(a, 2); j++)
         {
-          std::cout << u(i, j) << ", "; 
+          std::cout << a(i, j)<< ", "; 
         }
-      std::cout << std::endl; 
+      std::cout << std::endl;
     }
-  std::cout << std::endl; 
-  for(std::size_t i = 1; i <= size(vt, 1); i++)
+  std::cout << std::endl;
+  for(std::size_t i = 1; i <= size(x, 1); i++)
     {
-      for(std::size_t j = 1; j <= size(vt, 2); j++)
-        {
-          std::cout << vt(i, j) << ", "; 
-        }
-      std::cout << std::endl; 
+      std::cout << x(i, 1) << ", "; 
     }
-  std::cout << std::endl; 
-  for(std::size_t i = 1; i <= nt2::numel(w); i++)
-    std::cout << w(i) << ", "; 
+  std::cout << std::endl;
+  nt2::lu_ip_return<table_t, table_t> f = lu_ip(a, x);
+  std::cout <<  "a ->"<< std::endl; 
+  for(std::size_t i = 1; i <= size(a, 1); i++)
+    {
+      for(std::size_t j = 1; j <= size(a, 2); j++)
+        {
+          std::cout << a(i, j)<< ", "; 
+        }
+      std::cout << std::endl;
+    }
+  std::cout << std::endl;
+  std::cout <<  "x -> "; 
+  for(std::size_t i = 1; i <= size(x, 1); i++)
+    {
+      std::cout << x(i) << ", "; 
+    }
 }
 
 
