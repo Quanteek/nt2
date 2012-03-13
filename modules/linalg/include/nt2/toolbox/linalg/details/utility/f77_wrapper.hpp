@@ -14,5 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #define NT2_F77NAME(x) BOOST_PP_CAT(x,_)
+typedef long int la_int;
+typedef void la_complex; 
 
 #endif

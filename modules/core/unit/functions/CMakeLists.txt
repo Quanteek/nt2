@@ -34,6 +34,7 @@ SET( SOURCES
   areofsamewidth.cpp
   areofsamedepth.cpp
   areofsamedimensions.cpp
+  leading_size.cpp
 # List of test files for toolbox core.settings
    )
 

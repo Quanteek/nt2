@@ -9,16 +9,16 @@
 #ifndef NT2_TOOLBOX_LINALG_DETAILS_LAPACK_GESV_HPP_INCLUDED
 #define NT2_TOOLBOX_LINALG_DETAILS_LAPACK_GESV_HPP_INCLUDED
 #include <nt2/toolbox/linalg/details/utility/f77_wrapper.hpp>
+#include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
 namespace nt2
 {
   namespace details
   {
     extern "C"
     {
-#define NT2_COMPLEX void
   void NT2_F77NAME(cgesv)(const long int* n, const long int* nrhs,
-                          NT2_COMPLEX* a, const long int* lda, long int* ipiv,
-                          NT2_COMPLEX* b, const long int* ldb, long int* info);
+                          la_complex* a, const long int* lda, long int* ipiv,
+                          la_complex* b, const long int* ldb, long int* info);
   void NT2_F77NAME(dgesv)(const long int* n, const long int* nrhs,
                           double* a, const long int* lda, long int* ipiv,
                           double* b, const long int* ldb, long int* info);
@@ -26,9 +26,8 @@ namespace nt2
                           float* a, const long int* lda, long int* ipiv,
                           float* b, const long int* ldb, long int* info);
   void NT2_F77NAME(zgesv)(const long int* n, const long int* nrhs,
-                          NT2_COMPLEX* a, const long int* lda, long int* ipiv,
-                          NT2_COMPLEX* b, const long int* ldb, long int* info);
-#undef NT2_COMPLEX
+                          la_complex* a, const long int* lda, long int* ipiv,
+                          la_complex* b, const long int* ldb, long int* info);
     }
     
 #define NT2_GESV(NAME, T)                       \
@@ -40,7 +39,7 @@ namespace nt2
                      T* b,                      \
                      const long int* ldb,       \
                      long int* info,            \
-                     workspace<T> & w)          \
+                     nt2::details::workspace<T> & w)    \
     {                                           \
       NT2_F77NAME( NAME )(n, nrhs, a, lda,      \
                           ipiv, b, ldb, info);  \
@@ -54,7 +53,7 @@ namespace nt2
                      const long int* ldb,       \
                      long int* info)            \
     {                                           \
-      workspace<T> w;                           \
+      nt2::details::workspace<T> w;                           \
       gesv(n, nrhs, a, lda,                     \
            ipiv, b, ldb, info, w);              \
     }                                           \

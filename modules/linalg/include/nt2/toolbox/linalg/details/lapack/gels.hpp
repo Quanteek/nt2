@@ -8,6 +8,8 @@
  ******************************************************************************/
 #ifndef NT2_TOOLBOX_LINALG_DETAILS_LAPACK_GELS_HPP_INCLUDED
 #define NT2_TOOLBOX_LINALG_DETAILS_LAPACK_GELS_HPP_INCLUDED
+#include <nt2/toolbox/linalg/details/utility/f77_wrapper.hpp>
+#include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
 namespace nt2
 {
   namespace details
@@ -42,12 +44,12 @@ namespace nt2
                      long int* info,            \
                      workspace<T> & w)          \
     {                                           \
-      F77NAME( NAME )(trans, m, n, nrhs,        \
+      NT2_F77NAME( NAME )(trans, m, n, nrhs,    \
                       a, lda, b, ldb,           \
                       w.getw(), w.query(),      \
                       info);                    \
       w.resizew(w.neededsize());                \
-      F77NAME( NAME )(trans, m, n, nrhs,        \
+      NT2_F77NAME( NAME )(trans, m, n, nrhs,    \
                       a, lda, b, ldb,           \
                       w.getw(),&w.neededsize(), \
                       info);                    \

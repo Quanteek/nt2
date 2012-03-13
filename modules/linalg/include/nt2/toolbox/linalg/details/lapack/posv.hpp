@@ -19,7 +19,7 @@ namespace nt2
     {
 #define NT2_COMPLEX void
       void NT2_F77NAME(cposv)(const char* uplo, const long int* n, const long int* nrhs,
-                              COMPLEX* a, const long int* lda, COMPLEX* b, const long int* ldb,
+                              NT2_COMPLEX* a, const long int* lda, NT2_COMPLEX* b, const long int* ldb,
                               long int* info);
       void NT2_F77NAME(dposv)(const char* uplo, const long int* n, const long int* nrhs,
                               double* a, const long int* lda, double* b, const long int* ldb,
@@ -28,29 +28,29 @@ namespace nt2
                               float* a, const long int* lda, float* b, const long int* ldb,
                               long int* info);
       void NT2_F77NAME(zposv)(const char* uplo, const long int* n, const long int* nrhs,
-                              COMPLEX* a, const long int* lda, COMPLEX* b, const long int* ldb,
+                              NT2_COMPLEX* a, const long int* lda, NT2_COMPLEX* b, const long int* ldb,
                               long int* info);
 #undef NT2_COMPLEX
     }
 
 #define NT2_POSV(NAME, T)                       \
-    inline void poposv(const char* uplo,        \
-                       const long int* n,       \
-                       const long int* nrhs,    \
-                       T* a,                    \
-                       const long int* lda,     \
-                       T* b,                    \
-                       const long int* ldb,     \
-                       long int* info)          \
-      {                                         \
-        NT2_F77NAME( NAME )(uplo,n,nrhs,        \
-                            a,lda,b,ldb,info);  \
-      }                                         \
+    inline void posv(const char* uplo,          \
+                     const long int* n,         \
+                     const long int* nrhs,      \
+                     T* a,                      \
+                     const long int* lda,       \
+                     T* b,                      \
+                     const long int* ldb,       \
+                     long int* info)            \
+    {                                           \
+      NT2_F77NAME( NAME )(uplo,n,nrhs,          \
+                          a,lda,b,ldb,info);    \
+    }                                           \
           
-    NT2_POPOSV(sposv, float)
-    NT2_POPOSV(dposv, double)
-    NT2_POPOSV(cposv, std::complex<float>)
-    NT2_POPOSV(zposv, std::complex<double>)
+    NT2_POSV(sposv, float)
+    NT2_POSV(dposv, double)
+    NT2_POSV(cposv, std::complex<float>)
+    NT2_POSV(zposv, std::complex<double>)
 
 #undef NT2_POSV
 
