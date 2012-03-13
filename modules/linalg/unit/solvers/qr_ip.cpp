@@ -6,7 +6,7 @@
 //                 See accompanying file LICENSE.txt or copy at                 
 //                     http://www.boost.org/LICENSE_1_0.txt                     
 //==============================================================================
-#define NT2_UNIT_MODULE "nt2 linalg toolbox - lu_ip"
+#define NT2_UNIT_MODULE "nt2 linalg toolbox - qr_ip"
 
 //////////////////////////////////////////////////////////////////////////////
 // unit test behavior of algebra components
@@ -14,7 +14,7 @@
 
 #include <nt2/table.hpp>
 #include <nt2/include/functions/size.hpp>
-#include <nt2/toolbox/linalg/functions/solvers/solve_lu_ip.hpp>
+#include <nt2/toolbox/linalg/functions/solvers/solve_qr_ip.hpp>
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/make_vector.hpp>
 #include <nt2/sdk/unit/tests.hpp>
@@ -26,11 +26,11 @@ NT2_TEST_CASE_TPL ( LUSolveIP, (double))
 {
   typedef nt2::table<T> table_t; 
   table_t a(nt2::of_size(4, 4));
-  table_t x(nt2::of_size(4, 1));
-  
+  table_t b(nt2::of_size(4, 1));
+  table_t x; 
   for(std::size_t i = 1; i <= size(a, 1); i++)
     {
-      x(i, 1) = T(i); 
+      b(i, 1) = T(i); 
       for(std::size_t j = 1; j <= size(a, 2); j++)
         {
           a(i, j)= T((i == j)*i);
@@ -38,8 +38,8 @@ NT2_TEST_CASE_TPL ( LUSolveIP, (double))
     }
   a(1, 4) = T(1);
   a(4, 1) = T(1);
-  x(1) = T(2);
-  x(4) = T(5); 
+  b(1) = T(2);
+  b(4) = T(5); 
   for(std::size_t i = 1; i <= size(a, 1); i++)
     {
       for(std::size_t j = 1; j <= size(a, 2); j++)
@@ -54,7 +54,7 @@ NT2_TEST_CASE_TPL ( LUSolveIP, (double))
       std::cout << x(i, 1) << ", "; 
     }
   std::cout << std::endl;
-  nt2::solve_lu_ip_return<table_t, table_t> f = solve_lu_ip(a, x);
+  nt2::solve_qr_ip_return<table_t, table_t, table_t> f = solve_qr_ip(a, x, b);
   std::cout <<  "a ->"<< std::endl; 
   for(std::size_t i = 1; i <= size(a, 1); i++)
     {

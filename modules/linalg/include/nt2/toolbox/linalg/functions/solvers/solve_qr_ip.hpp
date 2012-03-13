@@ -6,20 +6,14 @@
  *                 See accompanying file LICENSE.txt or copy at
  *                     http://www.boost.org/LICENSE_1_0.txt
  ******************************************************************************/
-#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_SOLVERS_LU_IP_HPP_INCLUDED
-#define NT2_TOOLBOX_LINALG_FUNCTIONS_SOLVERS_LU_IP_HPP_INCLUDED
+#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_SOLVERS_SOLVE_QR_IP_HPP_INCQRDED
+#define NT2_TOOLBOX_LINALG_FUNCTIONS_SOLVERS_SOLVE_QR_IP_HPP_INCQRDED
 
-#include <nt2/include/functions/lu_ip.hpp>
+#include <nt2/include/functions/solve_qr_ip.hpp>
 #include <nt2/include/functions/numel.hpp>
 #include <nt2/include/functions/leading_size.hpp>
-#include <nt2/toolbox/linalg/details/utility/tags.hpp>
-#include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
-#include <nt2/toolbox/linalg/details/lapack/gesv.hpp>
+#include <nt2/toolbox/linalg/details/lapack/gels.hpp>
 #include <nt2/table.hpp>
-#include <nt2/include/constants/zero.hpp>
-#include <nt2/include/constants/mone.hpp>
-#include <nt2/include/functions/eps.hpp>
-#include <nt2/include/functions/rec.hpp>
 #include <nt2/include/functions/max.hpp>
 #include <nt2/include/functions/min.hpp>
 #include <nt2/include/functions/issquare.hpp>
@@ -36,7 +30,6 @@
 // #include <nt2/include/functions/first_index.hpp>
 // #include <nt2/include/functions/last_height_index.hpp>
 #include <iostream>
-#include <vector>
 
 
 //==============================================================================
@@ -44,21 +37,22 @@
 //==============================================================================
 namespace nt2
 {
-  template<class A, class B> struct svd_return;
+  template<class A, class X, class B> struct solve_qr_ip_return;
 } 
 
 namespace nt2 { namespace ext
 {
-  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::lu_ip_, tag::cpu_, 
-                              (A)(SA)(B)(SB),
+  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::solve_qr_ip_, tag::cpu_, 
+                              (A)(SA)(X)(SX)(B)(SB),
                               ((expr_< table_<unspecified_<A>,SA>,nt2::tag::terminal_,boost::mpl::long_<0> >))
+                              ((expr_< table_<unspecified_<X>,SX>,nt2::tag::terminal_,boost::mpl::long_<0> >))   
                               ((expr_< table_<unspecified_<B>,SB>,nt2::tag::terminal_,boost::mpl::long_<0> >))   
                               )
   {
-    typedef nt2::lu_ip_return<A, B> result_type; 
-    BOOST_DISPATCH_FORCE_INLINE result_type operator()(A& a,B& b ) const
+    typedef nt2::solve_qr_ip_return<A, X, B> result_type; 
+    BOOST_DISPATCH_FORCE_INLINE result_type operator()(A& a,X&x, B const & b ) const
     {
-      return nt2::lu_ip_return<A, B>(a, b);
+      return nt2::solve_qr_ip_return<A, X, B>(a, x, b);
     }
   };  
 } }
@@ -68,7 +62,7 @@ namespace nt2
   //============================================================================
   // svd actual functor : precompute
   //============================================================================
-  template<class A, class B> struct lu_ip_return
+  template<class A, class X, class B> struct solve_qr_ip_return
   {
     typedef long int                                 la_int; 
     typedef typename A::value_type                   type_t;
@@ -82,32 +76,46 @@ namespace nt2
     typedef nt2::table<la_int,index_t>               itab_t;
 
     ////////////////////////////////////////////////////////////////////////////
-    // General LU Solver
+    // General QR Solver
     //  A is            N x N
     //  B is            N x nrhs
     ////////////////////////////////////////////////////////////////////////////
-    lu_ip_return(A& a, B& b) : ipiv(nt2::of_size(height(a), 1))
-      {
-        //       std::cout << nt2::type_id<itab_t>() << std::endl; 
-        BOOST_ASSERT_MSG(nt2::issquare(a), "matrix A is not square");
-        BOOST_ASSERT_MSG(nt2::areofsameheight(a, b), "A and X have different heights");
-        la_int info;
-        la_int Ml   = nt2::height(a);
-        la_int K    = nt2::width(b);
-        la_int lda  = nt2::leading_size(a);
-        la_int ldx  = nt2::leading_size(b);
-        nt2::details::gesv (&Ml, &K, a.raw(), &lda, ipiv.raw(), b.raw(), &ldx, &info);
-        BOOST_ASSERT_MSG(info!= 0, "Lapack error : gesv in LUSolveIP");
-      }
-    ~lu_ip_return(){}
-//     tab_t  get_sol()     const { return ma;   }
-//     tab_t  get_lu()      const { return mx;   }
-     itab_t get_piv()     const { return ipiv; }
-//     la_int get_info()    const { return info; }
-    
-//     A&                                   ma;
-//     B&                                   mx;
-    fitab_t                            ipiv;
+    solve_qr_ip_return(A& a, X& x, const B & b)
+    {
+      //       BOOST_ASSERT_MSG(nt2::areofsameheight(a, b), "a and b have different heights");
+      const la_int ml = size(a, 1);
+      const la_int nl = size(a, 2);
+      const int nrhs = size(b, 2);
+      const la_int nrhsl = nrhs;
+      const la_int lda = leading_size(a); 
+      const char trans = 'n';
+      
+      // typically A is non-square, so we need to create tmp X because is
+      //  X is N x nrhs, while B is M x nrhs.  We need to make copies of
+      //  these so that the routine won't corrupt data around X and B
+      
+      if (ml != nl)
+        {
+          int mm =  nt2::max(nt2::max(ml,nl),1l);
+          table<type_t> xtmp = b; //nt2::expand(b, nt2::of_size(mm, nrhs));
+          la_int ldx = leading_size(xtmp); 
+          nt2::details::gels(&trans, &ml, &nl, &nrhsl,
+                             a.raw(), &lda, xtmp.raw(), &ldx, &info);
+          x = xtmp; //(range(1, nl), range(1, nrhs)); 
+          BOOST_ASSERT_MSG(info!= 0, "lapack error : gels in solve_qr_ip(1)");
+        }
+      else
+        {
+          x = b; 
+          la_int ldx = leading_size(x); 
+          nt2::details::gels(&trans, &ml, &nl, &nrhsl,
+                             a.raw(), &lda, x.raw(), &ldx, &info);
+          BOOST_ASSERT_MSG(info == 0, "lapack error : gels in solve_qr_ip(2)");
+        }
+    }
+    ~solve_qr_ip_return(){}
+    la_int get_info()    const { return info; }
+  private:
     la_int                             info; 
     
   };
@@ -116,5 +124,5 @@ namespace nt2
 #endif
 
 // /////////////////////////////////////////////////////////////////////////////
-// End of lu_ip.hpp
+// End of solve_qr_ip.hpp
 // /////////////////////////////////////////////////////////////////////////////

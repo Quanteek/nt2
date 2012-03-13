@@ -60,8 +60,8 @@ namespace nt2
     }                                           \
 
         
-    NT2_GESV(cgesv, float)
-    NT2_GESV(zgesv, double)
+    NT2_GESV(sgesv, float)
+    NT2_GESV(dgesv, double)
     NT2_GESV(cgesv, std::complex<float>)
     NT2_GESV(zgesv, std::complex<double>)
       
