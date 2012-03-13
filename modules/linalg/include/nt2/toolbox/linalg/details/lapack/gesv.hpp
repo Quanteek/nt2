@@ -10,12 +10,9 @@
 #define NT2_TOOLBOX_LINALG_DETAILS_LAPACK_GESV_HPP_INCLUDED
 #include <nt2/toolbox/linalg/details/utility/f77_wrapper.hpp>
 #include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
-namespace nt2
+
+extern "C"
 {
-  namespace details
-  {
-    extern "C"
-    {
   void NT2_F77NAME(cgesv)(const long int* n, const long int* nrhs,
                           la_complex* a, const long int* lda, long int* ipiv,
                           la_complex* b, const long int* ldb, long int* info);
@@ -28,7 +25,12 @@ namespace nt2
   void NT2_F77NAME(zgesv)(const long int* n, const long int* nrhs,
                           la_complex* a, const long int* lda, long int* ipiv,
                           la_complex* b, const long int* ldb, long int* info);
-    }
+}
+
+namespace nt2
+{
+  namespace details
+  {
     
 #define NT2_GESV(NAME, T)                       \
     inline void gesv(const long int* n,         \
@@ -39,7 +41,7 @@ namespace nt2
                      T* b,                      \
                      const long int* ldb,       \
                      long int* info,            \
-                     nt2::details::workspace<T> & w)    \
+                     nt2::details::workspace<T> & )    \
     {                                           \
       NT2_F77NAME( NAME )(n, nrhs, a, lda,      \
                           ipiv, b, ldb, info);  \
@@ -53,9 +55,8 @@ namespace nt2
                      const long int* ldb,       \
                      long int* info)            \
     {                                           \
-      nt2::details::workspace<T> w;                           \
-      gesv(n, nrhs, a, lda,                     \
-           ipiv, b, ldb, info, w);              \
+      NT2_F77NAME( NAME )(n, nrhs, a, lda,      \
+                          ipiv, b, ldb, info);  \
     }                                           \
 
         
