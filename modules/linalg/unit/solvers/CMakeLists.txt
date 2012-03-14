@@ -10,7 +10,10 @@
 SET( SOURCES
   lu_ip.cpp
   qr_ip.cpp
- svd_ip.cpp   
+  svd_ip.cpp   
+  solve_lu.cpp
+  solve_qr.cpp
+  solve_svd.cpp
    )
 
 nt2_module_add_tests(linalg.solvers.unit ${SOURCES})
