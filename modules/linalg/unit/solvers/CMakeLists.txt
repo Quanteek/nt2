@@ -8,12 +8,16 @@
 ##############################################################################
 
 SET( SOURCES
+  chol_ip.cpp
   lu_ip.cpp
   qr_ip.cpp
   svd_ip.cpp   
+  tr_ip.cpp
   solve_lu.cpp
   solve_qr.cpp
   solve_svd.cpp
+  solve_chol.cpp
+  solve_trl.cpp
    )
 
 nt2_module_add_tests(linalg.solvers.unit ${SOURCES})

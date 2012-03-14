@@ -9,40 +9,40 @@
 #ifndef NT2_TOOLBOX_LINALG_DETAILS_LAPACK_TRTRS_HPP_INCLUDED
 #define NT2_TOOLBOX_LINALG_DETAILS_LAPACK_TRTRS_HPP_INCLUDED
 // trtrs
+#include <nt2/toolbox/linalg/details/utility/f77_wrapper.hpp>
+#include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
+
+extern "C"
+{
+  void NT2_F77NAME(ctrtrs)(const char* uplo, const char* trans, const char* diag,
+                           const la_int* n, const la_int* nrhs, const la_complex* a, const la_int* lda,
+                           la_complex* b, const la_int* ldb, la_int* info);
+  void NT2_F77NAME(dtrtrs)(const char* uplo, const char* trans, const char* diag,
+                           const la_int* n, const la_int* nrhs, const double* a, const la_int* lda,
+                           double* b, const la_int* ldb, la_int* info);
+  void NT2_F77NAME(strtrs)(const char* uplo, const char* trans, const char* diag,
+                           const la_int* n, const la_int* nrhs, const float* a, const la_int* lda,
+                           float* b, const la_int* ldb, la_int* info);
+  void NT2_F77NAME(ztrtrs)(const char* uplo, const char* trans, const char* diag,
+                           const la_int* n, const la_int* nrhs, const la_complex* a, const la_int* lda,
+                           la_complex* b, const la_int* ldb, la_int* info);
+}
 
 namespace nt2
 {
   namespace details
   {
-    extern "C"
-    {
-#define NT2_COMPLEX void
-      void NT2_F77NAME(ctrtrs)(const char* uplo, const char* trans, const char* diag,
-                               const long int* n, const long int* nrhs, const NT2_COMPLEX* a, const long int* lda,
-                               NT2_COMPLEX* b, const long int* ldb, long int* info);
-      void NT2_F77NAME(dtrtrs)(const char* uplo, const char* trans, const char* diag,
-                               const long int* n, const long int* nrhs, const double* a, const long int* lda,
-                               double* b, const long int* ldb, long int* info);
-      void NT2_F77NAME(strtrs)(const char* uplo, const char* trans, const char* diag,
-                               const long int* n, const long int* nrhs, const float* a, const long int* lda,
-                               float* b, const long int* ldb, long int* info);
-      void NT2_F77NAME(ztrtrs)(const char* uplo, const char* trans, const char* diag,
-                               const long int* n, const long int* nrhs, const NT2_COMPLEX* a, const long int* lda,
-                               NT2_COMPLEX* b, const long int* ldb, long int* info);
-#undef NT2_COMPLEX
-    }
-    
 #define NT2_TRTRS(NAME, T)                      \
     inline void trtrs(const char* uplo,         \
                       const char* trans,        \
                       const char* diag,         \
-                      const long int* n,        \
-                      const long int* nrhs,     \
+                      const la_int* n,          \
+                      const la_int* nrhs,       \
                       const T* a,               \
-                      const long int* lda,      \
+                      const la_int* lda,        \
                       T* b,                     \
-                      const long int* ldb,      \
-                      long int* info)           \
+                      const la_int* ldb,        \
+                      la_int* info)             \
     {                                           \
       NT2_F77NAME( NAME )(uplo,trans,diag,      \
                           n,nrhs,a,             \

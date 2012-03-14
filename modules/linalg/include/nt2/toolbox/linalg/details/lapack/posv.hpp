@@ -11,27 +11,27 @@
 #include <nt2/toolbox/linalg/details/utility/f77_wrapper.hpp>
 #include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
 
+extern "C"
+{
+  void NT2_F77NAME(cposv)(const char* uplo, const la_int* n, const la_int* nrhs,
+                          la_complex* a, const la_int* lda, la_complex* b, const la_int* ldb,
+                          la_int* info);
+  void NT2_F77NAME(dposv)(const char* uplo, const la_int* n, const la_int* nrhs,
+                          double* a, const la_int* lda, double* b, const la_int* ldb,
+                          la_int* info);
+  void NT2_F77NAME(sposv)(const char* uplo, const la_int* n, const la_int* nrhs,
+                          float* a, const la_int* lda, float* b, const la_int* ldb,
+                          la_int* info);
+  void NT2_F77NAME(zposv)(const char* uplo, const la_int* n, const la_int* nrhs,
+                          la_complex* a, const la_int* lda, la_complex* b, const la_int* ldb,
+                          la_int* info);
+}
+
 namespace nt2
 {
   namespace details
   {
-    extern "C"
-    {
-#define NT2_COMPLEX void
-      void NT2_F77NAME(cposv)(const char* uplo, const long int* n, const long int* nrhs,
-                              NT2_COMPLEX* a, const long int* lda, NT2_COMPLEX* b, const long int* ldb,
-                              long int* info);
-      void NT2_F77NAME(dposv)(const char* uplo, const long int* n, const long int* nrhs,
-                              double* a, const long int* lda, double* b, const long int* ldb,
-                              long int* info);
-      void NT2_F77NAME(sposv)(const char* uplo, const long int* n, const long int* nrhs,
-                              float* a, const long int* lda, float* b, const long int* ldb,
-                              long int* info);
-      void NT2_F77NAME(zposv)(const char* uplo, const long int* n, const long int* nrhs,
-                              NT2_COMPLEX* a, const long int* lda, NT2_COMPLEX* b, const long int* ldb,
-                              long int* info);
-#undef NT2_COMPLEX
-    }
+
 
 #define NT2_POSV(NAME, T)                       \
     inline void posv(const char* uplo,          \
