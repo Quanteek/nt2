@@ -76,13 +76,14 @@ namespace nt2
     typedef nt2::table<la_int,index_t>               itab_t;
 
     ////////////////////////////////////////////////////////////////////////////
-    // General QR Solver
-    //  A is            N x N
-    //  B is            N x nrhs
+    // General SVD solver
+    //  A is            M x N            may be rank-deficient
+    //  X is or will be N x nrhs
+    //  B is            M x nrhs    
     ////////////////////////////////////////////////////////////////////////////
     solve_qr_ip_return(A& a, X& x, const B & b)
     {
-      //       BOOST_ASSERT_MSG(nt2::areofsameheight(a, b), "a and b have different heights");
+      BOOST_ASSERT_MSG(nt2::areofsameheight(a, b), "a and b have different heights");
       const la_int ml = size(a, 1);
       const la_int nl = size(a, 2);
       const int nrhs = size(b, 2);
@@ -90,9 +91,9 @@ namespace nt2
       const la_int lda = leading_size(a); 
       const char trans = 'n';
       
-      // typically A is non-square, so we need to create tmp X because is
-      //  X is N x nrhs, while B is M x nrhs.  We need to make copies of
-      //  these so that the routine won't corrupt data around X and B
+      // typically a is non-square, so we need to create tmp x because is
+      //  x is n x nrhs, while b is m x nrhs.  we need to make copies of
+      //  these so that the routine won't corrupt data around x and b
       
       if (ml != nl)
         {

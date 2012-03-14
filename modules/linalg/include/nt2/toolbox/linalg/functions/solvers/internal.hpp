@@ -31,20 +31,19 @@ namespace nt2
   {
     
     template < class XPR0,  class XPR1,  class XPR2 = XPR1> 
-    class internal_solvers
+    class solvers
     {
     public:
-      typedef typename meta::strip<XPR0>::type                     base_t;
-      typedef typename meta::strip<XPR1>::type                      base1;
-      typedef typename meta::strip<XPR2>::type                      base2;
-      typedef typename meta::value_type_<base_t>::type             type_t;
-      typedef typename meta::as_real<type_t>::type                rtype_t; 
-      typedef meta::reference_<XPR0>                 arg0;
-      typedef meta::reference_<XPR1>                 arg1;
-      typedef meta::reference_<XPR2>                 arg2;
-      typedef nt2::table<long int, nt2::matlab_index_>                                 itab_t; 
-      typedef nt2::table<type_t, nt2::matlab_index_>                                    tab_t; 
-      typedef nt2::table<rtype_t, nt2::matlab_index_>                                  rtab_t; 
+    typedef long int                                 la_int; 
+    typedef typename A::value_type                   type_t;
+    typedef typename A::index_type                  index_t; 
+    typedef typename meta::as_real<type_t>::type    btype_t; 
+    typedef nt2::table<type_t,nt2::matlab_index_>    ftab_t;
+    typedef nt2::table<btype_t,nt2::matlab_index_>  fbtab_t;
+    typedef nt2::table<la_int,nt2::matlab_index_>   fitab_t;
+    typedef nt2::table<type_t,index_t>                tab_t;
+    typedef nt2::table<btype_t,index_t>              btab_t;
+    typedef nt2::table<la_int,index_t>               itab_t;
       
       ////////////////////////////////////////////////////////////////////////////
       // General LU Solver
