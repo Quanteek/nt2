@@ -35,8 +35,8 @@ namespace nt2
     {
     public:
     typedef long int                                 la_int; 
-    typedef typename A::value_type                   type_t;
-    typedef typename A::index_type                  index_t; 
+    typedef typename XPR0::value_type                type_t;
+    typedef typename XPR0::index_type               index_t; 
     typedef typename meta::as_real<type_t>::type    btype_t; 
     typedef nt2::table<type_t,nt2::matlab_index_>    ftab_t;
     typedef nt2::table<btype_t,nt2::matlab_index_>  fbtab_t;

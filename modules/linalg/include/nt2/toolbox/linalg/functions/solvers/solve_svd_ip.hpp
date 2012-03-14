@@ -60,14 +60,13 @@ namespace nt2
   //============================================================================
   // svd actual functor : precompute
   //============================================================================
-  template<class A, class B> struct solve_svd_ip_return
+  template<class A, class X, class B> struct solve_svd_ip_return
   {
-    typedef long int                                 la_int; 
     typedef typename A::value_type                   type_t;
     typedef typename A::index_type                  index_t; 
     typedef typename meta::as_real<type_t>::type    rtype_t; 
     typedef nt2::table<type_t,nt2::matlab_index_>    ftab_t;
-    typedef nt2::table<btype_t,nt2::matlab_index_>  fbtab_t;
+    typedef nt2::table<rtype_t,nt2::matlab_index_>  fbtab_t;
     typedef nt2::table<la_int,nt2::matlab_index_>   fitab_t;
     typedef nt2::table<type_t,index_t>                tab_t;
     typedef nt2::table<rtype_t,index_t>              rtab_t;
@@ -81,11 +80,11 @@ namespace nt2
     ////////////////////////////////////////////////////////////////////////////
     solve_svd_ip_return(A& a, X& x, const B& b)
     {
-      const la_int ml = size(a, 1);
-      const la_int nl = size(a, 2);
+      const la_int ml   = size(a, 1);
+      const la_int nl   = size(a, 2);
       const la_int nrhs = size(b, 2);
-      const la_int lda = leading_size(a); 
-      const la_int ldb = leading_size(b); 
+      const la_int lda  = leading_size(a); 
+      const la_int ldb  = leading_size(b); 
       rtab_t s(of_size(nt2::min(ml, nl), 1)); 
       
       // typically is a non-square, so we need to create tmp x because is 
@@ -99,14 +98,14 @@ namespace nt2
           nt2::details::gelsd(&ml, &nl, &nrhs, a.raw(), &lda, xtmp.raw(), &ldb,
                               s.raw(), &rcond, &rank, &info);                   
           x = xtmp; //(range(1, nl), range(1, nrhs));
-          boost_assert_msg(info!= 0, "lapack error : gelsd in solve_svd_ip(1)");
+          BOOST_ASSERT_MSG(info!= 0, "lapack error : gelsd in solve_svd_ip(1)");
         }
       else
         {
           x = b; 
           nt2::details::gelsd(&ml, &nl, &nrhs, a.raw(), &lda, x.raw(), &ldb,
                               s.raw(), &rcond, &rank, &info);                   
-          boost_assert_msg(info!= 0, "lapack error : gelsd in solve_svd_ip(2)");
+          BOOST_ASSERT_MSG(info == 0, "lapack error : gelsd in solve_svd_ip(2)");
         }
     }
     ~solve_svd_ip_return(){}
@@ -114,9 +113,9 @@ namespace nt2
     la_int get_rank()    const { return rank; }
     la_int get_info()    const { return info; }
   private:
-    la_int                             info;
-    la_int                             rank; 
-    rtype_t                           rcond;                                      
+    la_int            info;
+    la_int            rank; 
+    rtype_t          rcond;                                      
     
   };
 } 

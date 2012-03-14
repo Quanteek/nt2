@@ -64,7 +64,6 @@ namespace nt2
   //============================================================================
   template<class A, class X, class B> struct solve_qr_ip_return
   {
-    typedef long int                                 la_int; 
     typedef typename A::value_type                   type_t;
     typedef typename A::index_type                  index_t; 
     typedef typename meta::as_real<type_t>::type    btype_t; 

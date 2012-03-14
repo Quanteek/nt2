@@ -8,9 +8,9 @@
 ##############################################################################
 
 SET( SOURCES
-  solve.cpp
   lu_ip.cpp
   qr_ip.cpp
+ svd_ip.cpp   
    )
 
 nt2_module_add_tests(linalg.solvers.unit ${SOURCES})

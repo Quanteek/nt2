@@ -68,7 +68,6 @@ namespace nt2
   //============================================================================
   template<class A, class B> struct solve_lu_ip_return
   {
-    typedef long int                                 la_int; 
     typedef typename A::value_type                   type_t;
     typedef typename A::index_type                  index_t; 
     typedef typename meta::as_real<type_t>::type    btype_t; 
@@ -95,7 +94,7 @@ namespace nt2
       la_int lda  = nt2::leading_size(a);
       la_int ldx  = nt2::leading_size(b);
       nt2::details::gesv (&Ml, &K, a.raw(), &lda, ipiv.raw(), b.raw(), &ldx, &info);
-      BOOST_ASSERT_MSG(info == 0, "Lapack error : gesv in LUSolveIP");
+      BOOST_ASSERT_MSG(info == 0, "Lapack error : gesv in solve_lu_ip");
     }
     ~solve_lu_ip_return(){}
     itab_t get_piv()     const { return ipiv; }
