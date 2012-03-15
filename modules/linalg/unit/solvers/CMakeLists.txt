@@ -17,7 +17,9 @@ SET( SOURCES
   solve_qr.cpp
   solve_svd.cpp
   solve_chol.cpp
-  solve_trl.cpp
+  solve_tril.cpp
+  solve_triu.cpp
+  solve.cpp
    )
 
 nt2_module_add_tests(linalg.solvers.unit ${SOURCES})

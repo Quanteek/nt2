@@ -24,32 +24,6 @@ namespace nt2 { namespace ext
   {
      typedef bool result_type;
 
-//     BOOST_DISPATCH_FORCE_INLINE
-//       result_type operator()(const A0& a0, char a1) const
-//     {
-//       typedef typename A0::value_type value_type; 
-//       if (a1 == 'L' or a1 == 'l')
-//         {
-//           for(std::ptrdiff_t j=first_index<2>(a0); j <= last_index<2>(a0) ; ++j)
-//             {
-//               for(std::ptrdiff_t i=j+1; i <= last_index<1>(a0) ; ++i)
-//                 {
-//                   if (value_type(a0(i, j))) return false; 
-//                 }
-//             }
-//         }
-//       else
-//         {
-//           for(std::ptrdiff_t j=first_index<2>(a0); j <= last_index<2>(a0) ; ++j)
-//             {
-//               for(std::ptrdiff_t i=first_index<1>(a0); i < j ; ++i)
-//                 {
-//                   if (value_type(a0(i, j))) return false; 
-//                 }
-//             }
-//         }
-//       return true; 
-//     }
     BOOST_DISPATCH_FORCE_INLINE result_type operator()(const A0& a0) const
     {
       typedef typename A0::value_type value_type;
@@ -58,7 +32,6 @@ namespace nt2 { namespace ext
         {
           for(std::ptrdiff_t j=i+1; j <= last_index<2>(a0) ; ++j)
             {
-              //              std::cout << "a (" << i << ", " << j << ") -> " << value_type(a0(i, j)) << std::endl; 
               if (value_type(a0(i, j)))
                 {
                   ok = false;
@@ -72,13 +45,58 @@ namespace nt2 { namespace ext
         {
           for(std::ptrdiff_t j=first_index<2>(a0); j < i ; ++j)
             {
-              //              std::cout << "b (" << i << ", " << j << ") -> " << value_type(a0(i, j)) << std::endl; 
               if (value_type(a0(i, j))) return false; 
             }
         }
       return true; 
     }
+  };
+  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::istriu_, tag::cpu_
+                              , (A0)
+                              , (unspecified_<A0>)
+                            )
+  {
+    typedef bool result_type;
+    
+    BOOST_DISPATCH_FORCE_INLINE
+    result_type operator()(const A0& a0) const
+    {
+      typedef typename A0::value_type value_type;
+      for(std::ptrdiff_t j=first_index<2>(a0); j <= last_index<2>(a0) ; ++j)
+        {
+          for(std::ptrdiff_t i=first_index<1>(a0); i < j ; ++i)
+            {
+              if (value_type(a0(i, j))) return false; 
+            }
+        }
+      return true; 
+    }
+    
   };    
+  
+  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::istril_, tag::cpu_
+                              , (A0)
+                              , (unspecified_<A0>)
+                            )
+  {
+    typedef bool result_type;
+    
+    BOOST_DISPATCH_FORCE_INLINE
+    result_type operator()(const A0& a0) const
+    {
+      typedef typename A0::value_type value_type;
+      for(std::ptrdiff_t j=first_index<2>(a0); j <= last_index<2>(a0) ; ++j)
+        {
+          for(std::ptrdiff_t i=j+1; i <= last_index<1>(a0) ; ++i)
+            {
+              if (value_type(a0(i, j))) return false; 
+            }
+        }
+      return true; 
+    }
+    
+  };    
+    
 } }
 
 #endif

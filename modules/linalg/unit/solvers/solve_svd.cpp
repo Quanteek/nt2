@@ -14,7 +14,7 @@
 
 #include <nt2/table.hpp>
 #include <nt2/include/functions/size.hpp>
-#include <nt2/toolbox/linalg/functions/solvers/solve.hpp>
+#include <nt2/toolbox/linalg/functions/solvers/internal_solve.hpp>
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/make_vector.hpp>
 #include <nt2/sdk/unit/tests.hpp>

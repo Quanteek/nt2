@@ -88,7 +88,6 @@ namespace nt2
       //       std::cout << nt2::type_id<itab_t>() << std::endl; 
       BOOST_ASSERT_MSG(nt2::issquare(a), "matrix A is not square");
       BOOST_ASSERT_MSG(nt2::areofsameheight(a, b), "A and X have different heights");
-      la_int info;
       la_int Ml   = nt2::height(a);
       la_int K    = nt2::width(b);
       la_int lda  = nt2::leading_size(a);

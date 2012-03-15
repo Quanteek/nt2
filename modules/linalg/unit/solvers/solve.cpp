@@ -6,21 +6,21 @@
 //                 See accompanying file LICENSE.txt or copy at                 
 //                     http://www.boost.org/LICENSE_1_0.txt                     
 //==============================================================================
-#define NT2_UNIT_MODULE "nt2 linalg toolbox - solve_lu"
+#define NT2_UNIT_MODULE "nt2 linalg toolbox - solve"
 
 //////////////////////////////////////////////////////////////////////////////
 // unit test behavior of algebra components
 //////////////////////////////////////////////////////////////////////////////
 
 #include <nt2/table.hpp>
-#include <nt2/include/functions/size.hpp>
+#include <nt2/include/functions/size.hpp> 
 #include <nt2/toolbox/linalg/functions/solvers/internal_solve.hpp>
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/make_vector.hpp>
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 
-NT2_TEST_CASE_TPL ( LUSolve, (double)) 
+NT2_TEST_CASE_TPL ( Solve, (double)) 
 {
   typedef nt2::table<T> table_t; 
   table_t a(nt2::of_size(4, 4));
@@ -54,7 +54,9 @@ NT2_TEST_CASE_TPL ( LUSolve, (double))
   std::cout << std::endl;
   std::cout << "saving data" << std::endl;
   //saving data
-  table_t x = solve_lu(a, b);
+  nt2::methods meth; 
+  table_t x = mldivide(a, b, meth);
+  std::cout << meth << std::endl;
   std::cout <<  "a ->"<< std::endl; 
   for(std::size_t i = 1; i <= size(a, 1); i++)
     {
@@ -76,29 +78,7 @@ NT2_TEST_CASE_TPL ( LUSolve, (double))
       std::cout << x(i) << ", "; 
     }
   std::cout << std::endl;
-  std::cout << "destroying data" << std::endl;
-  //destroying data  
-  x = solve_lu(a, b, nt2::allowdestroy());
-  std::cout <<  "a ->"<< std::endl; 
-  for(std::size_t i = 1; i <= size(a, 1); i++)
-    {
-      for(std::size_t j = 1; j <= size(a, 2); j++)
-        {
-          std::cout << a(i, j)<< ", "; 
-        }
-      std::cout << std::endl;
-    }
-  std::cout << std::endl;
-  std::cout <<  "b -> "; 
-  for(std::size_t i = 1; i <= size(b, 1); i++)
-    {
-      std::cout << b(i) << ", "; 
-    }
-  std::cout <<  "x -> "; 
-  for(std::size_t i = 1; i <= size(x, 1); i++)
-    {
-      std::cout << x(i) << ", "; 
-    }  
+
 }
 
 

@@ -6,7 +6,7 @@
 //                 See accompanying file LICENSE.txt or copy at                 
 //                     http://www.boost.org/LICENSE_1_0.txt                     
 //==============================================================================
-#define NT2_UNIT_MODULE "nt2 linalg toolbox - solve_trl"
+#define NT2_UNIT_MODULE "nt2 linalg toolbox - solve_tril"
 
 //////////////////////////////////////////////////////////////////////////////
 // unit test behavior of algebra components
@@ -14,7 +14,7 @@
 
 #include <nt2/table.hpp>
 #include <nt2/include/functions/size.hpp> 
-#include <nt2/toolbox/linalg/functions/solvers/solve.hpp>
+#include <nt2/toolbox/linalg/functions/solvers/internal_solve.hpp>
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/make_vector.hpp>
 #include <nt2/sdk/unit/tests.hpp>

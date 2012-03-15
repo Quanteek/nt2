@@ -92,7 +92,6 @@ namespace nt2
     {
       BOOST_ASSERT_MSG(nt2::issquare(a), "matrix a is not square");
       BOOST_ASSERT_MSG(nt2::areofsameheight(a, bx), "a and x have different heights");
-      la_int info;
       const la_int m = height(a);
       const la_int k = width(bx);
       const la_int lda = leading_size(a);

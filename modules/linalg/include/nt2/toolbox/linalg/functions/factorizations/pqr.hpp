@@ -21,7 +21,7 @@
 #include <nt2/toolbox/linalg/details/lapack/geqp3.hpp>
 #include <nt2/toolbox/linalg/details/lapack/gqr.hpp>
 #include <nt2/toolbox/linalg/details/lapack/mqr.hpp>
-#include <nt2/toolbox/linalg/details/lapack/trs.hpp>
+#include <nt2/toolbox/linalg/details/lapack/trtrs.hpp>
 
 #include <nt2/table.hpp>
 //#include <iostream>
@@ -49,7 +49,7 @@ namespace nt2 { namespace ext
                               )
   {
     typedef nt2::pqr_return<A> result_type; 
-    BOOST_DISPATCH_FORCE_INLINE result_type operator()(const A& a) const
+    BOOST_DISPATCH_FORCE_INLINE result_type operator()(A& a) const
     {
       return nt2::pqr_return<A>(a);
     }
@@ -68,14 +68,14 @@ namespace nt2
     typedef typename meta::as_real<type_t>::type     base_t; 
     typedef nt2::table<type_t, nt2::matlab_index_>   ftab_t;
     typedef nt2::table<type_t, nt2::matlab_index_>  fbtab_t;
-    typedef nt2::table<long int,nt2::matlab_index_>  iftab_t;
+    typedef nt2::table<la_int,nt2::matlab_index_>  iftab_t;
     typedef nt2::table<type_t, index_t>               tab_t;
     typedef nt2::table<type_t, index_t>              btab_t;
     typedef nt2::table<int32_t,index_t>              itab_t;
     typedef nt2::details::options                 options_t; 
     typedef nt2::details::workspace<type_t>     workspace_t;
     
-    template < class XPR > pqr_return(const XPR& a_,
+    template < class XPR > pqr_return(XPR& a_,
                                       workspace_t & w_):
       a(a_),
       m(size(a, 1)),
@@ -89,7 +89,7 @@ namespace nt2
     {
       init(); 
     }
-    template < class XPR > pqr_return(const XPR & a_):
+    template < class XPR > pqr_return(XPR & a_):
       a(a_),
       m(size(a, 1)),
       n(size(a, 2)),
@@ -106,7 +106,7 @@ namespace nt2
     // /////////////////////////////////////////////////////////////////////////////
     // accessors
     // /////////////////////////////////////////////////////////////////////////////
-    tab_t       getq ()
+    tab_t       get_q ()
     {
       if(is_empty(q))
         {
@@ -115,11 +115,11 @@ namespace nt2
         }
       return q;
     }
-    tab_t        getr()const
+    tab_t        get_r()const
     {
       return triu(a);
     }
-    tab_t       getp()
+    tab_t       get_p()
     {
       if(is_empty(p))
         {
@@ -131,8 +131,8 @@ namespace nt2
         return p; 
       }
       
-    tab_t       getjp()         { return jpvt; }
-    long int    getinfo() const { return info; }
+    tab_t       get_jp()         { return jpvt; }
+    la_int    get_info() const { return info; }
     
     // /////////////////////////////////////////////////////////////////////////////
     size_t     rank(base_t epsi = nt2::Eps<base_t>())const
@@ -154,15 +154,15 @@ namespace nt2
       const char side = 'L';
       const char tr = (opts.getTRANSA()) ? 'N' : !is_real(type_t(1))? 'C':'T';
       //        char tr = !isreal(type_t(1))? 'C':'T';
-      const long int M = nt2::size(b, 1), N = nt2::size(b, 2); 
-      const long int ldbb = nt2::leading_size(bb);
+      const la_int M = nt2::size(b, 1), N = nt2::size(b, 2); 
+      const la_int ldbb = nt2::leading_size(bb);
       nt2::details::mqr(&side, &tr, &M, &N, &k, a.raw(), &lda, tau.raw(), bb.raw(), &ldbb, &info, w);
-      const long int nrhs = size(bb, 2); 
+      const la_int nrhs = size(bb, 2); 
       const char uplo =  'U', d = 'N';
       const char tr1 = (opts.getTRANSA()) ?  !is_real(type_t(1))? 'C':'T' : 'N';
       //        tr =  'N'; 
-      const long int rk = rank(epsi); 
-      nt2::details::trtrs(&uplo, &tr1, &d, &rk, &nrhs, a.raw(), &lda, bb.raw(), &ldbb, &info, w);
+      const la_int rk = rank(epsi); 
+      nt2::details::trtrs(&uplo, &tr1, &d, &rk, &nrhs, a.raw(), &lda, bb.raw(), &ldbb, &info);
       return permute(bb);
     }
       
@@ -184,11 +184,11 @@ namespace nt2
     ftab_t                  a;
     ftab_t                  q;
     ftab_t                  p; 
-    const long int    m, n, k;
+    const la_int      m, n, k;
     iftab_t              jpvt;
-    const long int        lda; 
+    const la_int          lda; 
     ftab_t                tau; 
-    long int             info;
+    la_int               info;
     options_t           mopts; 
     workspace_t           inw; 
     workspace_t            &w;

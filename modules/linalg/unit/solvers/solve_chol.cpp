@@ -14,7 +14,7 @@
 
 #include <nt2/table.hpp>
 #include <nt2/include/functions/size.hpp>
-#include <nt2/toolbox/linalg/functions/solvers/solve.hpp>
+#include <nt2/toolbox/linalg/functions/solvers/internal_solve.hpp>
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/make_vector.hpp>
 #include <nt2/sdk/unit/tests.hpp>
@@ -54,8 +54,9 @@ NT2_TEST_CASE_TPL ( CHOLSolve, (double))
   std::cout << std::endl;
   std::cout << "saving data" << std::endl;
   //saving data
-  table_t x = solve_chol(a, b);
-  std::cout <<  "a ->"<< std::endl; 
+  la_int info = 0; 
+  table_t x = solve_chol(a, b, info);
+  std::cout <<  "info " << info << "a ->"<< std::endl; 
   for(std::size_t i = 1; i <= size(a, 1); i++)
     {
       for(std::size_t j = 1; j <= size(a, 2); j++)
