@@ -60,6 +60,7 @@ namespace nt2
       {
         BOOST_ASSERT_MSG(false, "The current lapack matrices forms/storages\
                                    is not supported by any sv lapack call");
+        return 0; 
       }
     };
     

@@ -8,8 +8,8 @@
 ##############################################################################
 
 SET( SOURCES
-  lse.cpp
-  sv.cpp
+#  lse.cpp
+#  sv.cpp
    )
 
 nt2_module_add_tests(linalg.lapack.unit ${SOURCES})

@@ -19,6 +19,7 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////
+// At the exception of ml and mrdivide, 
 // all routines listed are called as solve_xxx(a, b) [ solve_xxx(a, b, info)]
 // or solve_xxx(a, b, allowdestroy()) [ solve_xxx(a, b, info, allowdestroy())]
 // xxx being lu, qr, svd, tril, triu, chol
@@ -264,7 +265,7 @@ namespace nt2
   NT2_SOLVER(svd)
   NT2_SOLVER(chol)
   NT2_SOLVER(tril)
-  NT2_SOLVER(triu)  
+  NT2_SOLVER(triu)
 #undef NT2_SOLVER
     
   template < class A, class B> typename solve<A, B>::tab_t      
@@ -280,7 +281,3 @@ namespace nt2
 
 
 #endif
-
-// /////////////////////////////////////////////////////////////////////////////
-// End of solve_lu.hpp
-// /////////////////////////////////////////////////////////////////////////////

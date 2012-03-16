@@ -103,7 +103,6 @@ namespace nt2
     la_int get_info()    const { return info; }
   private:
     la_int  info; 
-    
   };
 } 
 
