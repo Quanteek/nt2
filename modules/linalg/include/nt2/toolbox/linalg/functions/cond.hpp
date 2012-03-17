@@ -6,14 +6,13 @@
  *                 See accompanying file LICENSE.txt or copy at
  *                     http://www.boost.org/LICENSE_1_0.txt
  ******************************************************************************/
-#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_SVD_HPP_INCLUDED
-#define NT2_TOOLBOX_LINALG_FUNCTIONS_SVD_HPP_INCLUDED
-
+#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_COND_HPP_INCLUDED
+#define NT2_TOOLBOX_LINALG_FUNCTIONS_COND_HPP_INCLUDED
 #include <nt2/include/functor.hpp>
 
 /*!
  * \ingroup algebra
- * \defgroup algebra_svd svd
+ * \defgroup algebra_cond cond
  *
  * \par Description
  * Elementary Least square
@@ -21,7 +20,7 @@
  * \par Header file
  * 
  * \code
- * #include <nt2/include/functions/svd.hpp>
+ * #include <nt2/include/functions/cond.hpp>
  * \endcode
  * 
  * 
@@ -29,33 +28,27 @@
  *
  * \param a the matrix a on entry, destroyed on exit
  *
+ * \param b the second member(s) b on entry, solution on exit
+ * 
  * \par Notes
  *   Call the dedicated lapack routines available on the target.
  * \par
  *  
 **/
 //==============================================================================
-// svd actual class forward declaration
+// cond actual class forward declaration
 //==============================================================================
-namespace nt2 
-{
-  template<class A> struct svd_return;
-} 
 
 namespace nt2 { namespace tag
   {         
     /*!
-     * \brief Define the tag svd_ of functor svd
+     * \brief Define the tag cond_ of functor cond
      *        in namespace nt2::tag for toolbox algebra
     **/
-    struct svd_ : ext::unspecified_<svd_> { typedef ext::unspecified_<svd_> parent; };
+    struct cond_ : ext::unspecified_<cond_> { typedef ext::unspecified_<cond_> parent; };
   }
-
-  template<class A>
-  BOOST_FORCEINLINE nt2::svd_return<A> svd(A &a, const char & jobz = 'A')
-  {
-    return typename nt2::make_functor<tag::svd_, A>::type()(a, jobz);
-  }
+  
+  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::cond_, cond, 1)
 
 }
 
