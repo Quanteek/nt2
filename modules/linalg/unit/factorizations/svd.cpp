@@ -45,9 +45,9 @@ NT2_TEST_CASE_TPL ( svd, NT2_REAL_TYPES)
       std::cout << std::endl; 
     }
   nt2::svd_return<table_t> f = svd(b);
-  table_t u = f.getu();
-  table_t vt= f.getvt();
-  table_t w = f.getsingular(); 
+  table_t u = f.get_u();
+  table_t vt= f.get_vt();
+  table_t w = f.get_singular(); 
   for(std::size_t i = 1; i <= size(u, 1); i++)
     {
       for(std::size_t j = 1; j <= size(u, 2); j++)

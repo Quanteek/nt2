@@ -35,6 +35,7 @@ SET( SOURCES
   areofsamedepth.cpp
   areofsamedimensions.cpp
   leading_size.cpp
+  tril.cpp
 # List of test files for toolbox core.settings
    )
 

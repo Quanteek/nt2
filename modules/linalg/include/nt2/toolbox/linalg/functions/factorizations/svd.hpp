@@ -14,6 +14,7 @@
 #include <nt2/include/functions/leading_size.hpp>
 #include <nt2/toolbox/linalg/details/utility/tags.hpp>
 #include <nt2/toolbox/linalg/details/lapack/workspace.hpp>
+#include <nt2/toolbox/linalg/details/utility/lower.hpp>
 #include <nt2/toolbox/linalg/details/lapack/svd.hpp>
 #include <nt2/table.hpp>
 #include <nt2/include/constants/zero.hpp>
@@ -46,8 +47,9 @@ namespace nt2
 namespace nt2 { namespace ext
 {
   NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::svd_, tag::cpu_, 
-                              (A)(S0),
+                              (A)(S0)(B),
                               ((expr_< table_<unspecified_<A>,S0>,nt2::tag::terminal_,boost::mpl::long_<0> >))
+                              (scalar_<integer_<B> > )
                               )
   {
     typedef nt2::svd_return<A> result_type; 
@@ -134,15 +136,15 @@ namespace nt2
     // /////////////////////////////////////////////////////////////////////////////
     tab_t       get_u ()      const
     {
-      BOOST_ASSERT_MSG(lower(jobz_ == 'a'), "please call svd wit jobz = 'A', 'S' or 'O'"); 
+      BOOST_ASSERT_MSG(nt2::details::lower(jobz) != 'n', "please call svd wit jobz = 'A', 'S' or 'O'"); 
       return u;
     }
     tab_t       get_vt()      const {
-      BOOST_ASSERT_MSG(lower(jobz_ == 'a'), "please call svd wit jobz = 'A', 'S' or 'O'");     
+      BOOST_ASSERT_MSG(nt2::details::lower(jobz) != 'n', "please call svd wit jobz = 'A', 'S' or 'O'");     
       return vt;
     }
     btab_t      get_singular()const { return w; }
-    btab_t      get_w()       const { return nt2::expand(nt2::diag(w), ucol, height(vt));}
+    btab_t      get_w()       const { return w; /*nt2::expand(nt2::diag(w), ucol, height(vt));*/}
     long int    get_info()    const { return info; }
     
     // /////////////////////////////////////////////////////////////////////////////
@@ -151,56 +153,56 @@ namespace nt2
     btype_t     cond()       const { return  w(0)/w(nt2::min(m, n)-1); }
     size_t      rank(btype_t epsi = -1) const
     {
-      return nt2::globalsum(w > (epsi < 0 ? nt2::max(n, m)*nt2::eps(w(1)): epsi));
+      return 0; /*nt2::globalsum(w > (epsi < 0 ? nt2::max(n, m)*nt2::eps(w(1)): epsi));*/
     }
     
     
     // /////////////////////////////////////////////////////////////////////////////
     // resolutions
     // /////////////////////////////////////////////////////////////////////////////
-    template < class XPR > ms_t solve(const XPR & b, btype_t epsi = Mone<btype_t>() )const{
-      epsi =  epsi < 0 ? nt2::eps(w(1)) : epsi; 
-      tab_t w1 = if_else( (w > epsi), nt2::rec(w), Zero<btype_t>());
-      return (nt2::trans(vt)*(nt2::diag(w1)*nt2::trans(u)))*b; 
-      //        return prodtMM(vt, prodMtM(diag(w1), u))*b;
-      }
+//     template < class XPR >tab_t solve(const XPR & b, btype_t epsi = Mone<btype_t>() )const{
+//       epsi =  epsi < 0 ? nt2::eps(w(1)) : epsi; 
+//       tab_t w1 = if_else( (w > epsi), nt2::rec(w), Zero<btype_t>());
+//       return (nt2::trans(vt)*(nt2::diag(w1)*nt2::trans(u)))*b; 
+//       //        return prodtMM(vt, prodMtM(diag(w1), u))*b;
+//       }
       
-      template < class XPR > void solveip(XPR & b, btype_t epsi = -1 )const{
-        epsi =  epsi < 0 ? nt2::eps(w(1)) : epsi; 
-        ctab_t w1 = get_w();
-        w1 = if_else( (w1 > epsi), nt2::rec(w1), Zero<btype_t>());
-        b =  (nt2::trans(vt)*(nt2::diag(w1)*nt2::trans(u)))*b; 
-        //        b = prodtMM(vt, prodMtM(w1, u))*b;
-      }
+//       template < class XPR > void solveip(XPR & b, btype_t epsi = -1 )const{
+//         epsi =  epsi < 0 ? nt2::eps(w(1)) : epsi; 
+//         ctab_t w1 = get_w();
+//         w1 = if_else( (w1 > epsi), nt2::rec(w1), Zero<btype_t>());
+//         b =  (nt2::trans(vt)*(nt2::diag(w1)*nt2::trans(u)))*b; 
+//         //        b = prodtMM(vt, prodMtM(w1, u))*b;
+//       }
       
-      tab_t null(btype_t epsi = -1 )const
-      {
-        epsi =  epsi < 0 ? nt2::eps(w(1)) : epsi;
-        // TODO use a reverse iterator on w
-        int j = length(w); 
-        for(; (j > 0) && (w(j)<= epsi); j--);
-        j++;
-        return nt2::fliplr(nt2::trans(vt(nt2::Range(j, End()), _)));
-      }
+//       tab_t null(btype_t epsi = -1 )const
+//       {
+//         epsi =  epsi < 0 ? nt2::eps(w(1)) : epsi;
+//         // TODO use a reverse iterator on w
+//         int j = length(w); 
+//         for(; (j > 0) && (w(j)<= epsi); j--);
+//         j++;
+//         return nt2::fliplr(nt2::trans(vt(nt2::Range(j, End()), _)));
+//       }
       
-      table_t orth(btype_t epsi =  -1)const
-      {
-        return u(_, nt2::Range(1, rank(epsi))); 
-      }
+//       tab_t orth(btype_t epsi =  -1)const
+//       {
+//         return u(_, nt2::Range(1, rank(epsi))); 
+//       }
       
-      table_t zerosolve()const
-      {
-        return nt2::trans(vt(vt.last_height_index(), _));
-      }
+//       tab_t zerosolve()const
+//       {
+//         return nt2::trans(vt(vt.last_height_index(), _));
+//       }
       
-      table_t pinv(btype_t epsi = -1 )const
-      {
-        epsi = epsi < 0 ? nt2::eps(w(1)) : epsi; 
-        table_t w1 = nt2::trans(get_w());
-        w1 = if_else( (w1 > length(a)*epsi), rec(w1), Zero<btype_t>());
-        return (nt2::trans(vt)*(nt2::diag(w1)*nt2::trans(u)));
-        //        return prodtMM(vt, prodMtM(w1, u)); 
-      }
+//       tab_t pinv(btype_t epsi = -1 )const
+//       {
+//         epsi = epsi < 0 ? nt2::eps(w(1)) : epsi; 
+//         tab_t w1 = nt2::trans(get_w());
+//         w1 = if_else( (w1 > length(a)*epsi), rec(w1), Zero<btype_t>());
+//         return (nt2::trans(vt)*(nt2::diag(w1)*nt2::trans(u)));
+//         //        return prodtMM(vt, prodMtM(w1, u)); 
+//       }
       
     private :
       inline void allocate()
