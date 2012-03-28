@@ -22,13 +22,15 @@
 #include <nt2/toolbox/linalg/details/lapack/getri.hpp>
 #include <nt2/toolbox/linalg/details/lapack/gesvx.hpp>
 #include <nt2/toolbox/linalg/details/lapack/getrf.hpp>
+#include <nt2/include/functions/triu.hpp>
+#include <nt2/include/functions/tri1l.hpp>
+#include <nt2/include/functions/eye.hpp>
 
 #include <nt2/table.hpp>
 //#include <iostream>
 //#include <nt2/include/functions/expand.hpp>
 //#include <nt2/include/functions/diag.hpp>
 //#include <nt2/include/functions/prod.hpp>
-//#include <nt2/include/functions/triu.hpp>
 //#include <nt2/include/functions/range.hpp>
 
 
@@ -75,17 +77,19 @@ namespace nt2
     typedef nt2::details::workspace<type_t>       workspace_t;
     typedef nt2::details::options                   options_t;
     
-      template < class XPR > plu_return(const XPR & a_):
-        a(a_), 
-        lu(a_),
-        m(size(a, 1)),
-        n(size(a, 2)),
-        lda(leading_size(a)), 
-        ipiv(nt2::of_size(nt2::min(n, m), 1)), 
-        r(of_size(n, 1)),
-        c(of_size(n, 1)), 
-        rc(-1), 
-        w(inw)
+    template < class XPR > plu_return(const XPR & a_):
+      a(a_), 
+      lu(a_),
+      m(size(a, 1)),
+      n(size(a, 2)),
+      lda(leading_size(a)), 
+      ipiv(nt2::of_size(nt2::min(n, m), 1)), 
+      r(of_size(n, 1)),
+      c(of_size(n, 1)), 
+      rc(-1), 
+      w(inw), 
+      p_computed(false),
+      pt_computed(false)
     {
       init();
     }
@@ -100,7 +104,9 @@ namespace nt2
       r(of_size(n, 1)),
       c(of_size(n, 1)), 
       rc(-1), 
-      w(w_)
+      w(w_), 
+      p_computed(false),
+      pt_computed(false)
     {
       init();
     }
@@ -110,39 +116,43 @@ namespace nt2
     // accessors
     // /////////////////////////////////////////////////////////////////////////////
     tab_t     geta()  {return a; }
-    //   tab_t     getu()  {return triu(lu(Range(1, std::min(n, m)),_) );  }
-    //    tab_t     getl()  {return  tri1l(lu(_,Range(1, std::min(n, m)))); }
+    tab_t     getu()  {return triu(lu/*(Range(1, std::min(n, m)),_) */);  }
+    tab_t     getl()  {return  tri1l(lu/*(_,Range(1, std::min(n, m)))*/ ); }
     itab_t    getip() {return ipiv; }
     itab_t    getp()  { //TODO optimize the call
-      if (nt2::isempty(p))
+      if (pt_computed) return trans(p); 
+      if (!p_computed)
         {
-          //          p = nt2::eye(m, m);
+          p = nt2::eye(m, m, meta::as_<base_t>());
           for(size_t i=1; i <= numel(ipiv); ++i){
             tab_t c = p(i, _);
             p(i,_) = p(ipiv(i),_);
             p(ipiv(i),_) = c; 
           }
+          p_computed = true; 
           return p; 
         }
       else
         {
-          return p; //nt2::trans(p);
+          return p; 
         }
     } 
     tab_t     getpt(){//TODO optimize the call
-      if (is_empty(p))
+      if (p_computed) return trans(p); 
+      if (!pt_computed)
         {
-          //         p = nt2::eye(m, m);
+          p = nt2::eye(m, m, meta::as_<base_t>());
           for(size_t i=1; i <= numel(ipiv); ++i){
             tab_t c = p(_,i);
             p(_,i) = p(_,ipiv(i));
             p(_,ipiv(i)) = c; 
           }
+          pt_computed = true; 
           return p; 
         }
       else
         {
-          return trans(p);
+          return p;
         }
     } 
       
@@ -244,10 +254,12 @@ namespace nt2
     tab_t                   vt;
     btab_t       r,c,ferr,berr; 
     long int              info; 
-    itab_t                   p; 
+    btab_t                   p; 
     base_t                  rc;
     workspace_t            inw; 
     workspace_t             &w;
+    bool            p_computed;
+    bool           pt_computed; 
   };
 } 
 #endif

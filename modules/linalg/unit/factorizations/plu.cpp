@@ -36,11 +36,13 @@ NT2_TEST_CASE_TPL ( plu, NT2_REAL_TYPES)
         b(i, j)= T((i == j)*i);
       }
   nt2::plu_return<table_t> f = plu(b);
-//   std::cout << "1" << std::endl; 
-//   table_t q = f.getq();
-//   std::cout << "2" << std::endl; 
-//   table_t r= f.getr();
-//   std::cout << "3" << std::endl; 
+  std::cout << "1" << std::endl; 
+  table_t u = f.getu();
+  std::cout << "2" << std::endl; 
+  table_t r= f.getl();
+//   std::cout << "3" << std::endl;
+//   table_t p= f.getp();
+  
 //   for(std::size_t i = 1; i <= size(q, 1); i++)
 //     {
 //       for(std::size_t j = 1; j <= size(q, 2); j++)
