@@ -11,10 +11,10 @@
 
 #include <nt2/core/settings/option.hpp>
 
-namespace nt2 
-{ 
+namespace nt2
+{
   //============================================================================
-  /*! The default container shape. Data are laid out in a hypercube 
+  /*! The default container shape. Data are laid out in a hypercube
    *  of N dimensions and contains only non-trivial values.
    **/
   //============================================================================
@@ -22,14 +22,19 @@ namespace nt2
   struct symetric_;
   struct hermitian_;
 
-  namespace tag 
-  { 
+  struct upper_triangular_ {};
+  struct lower_triangular_ {};
+  struct band_diagonal_    {};
+  struct diagonal_         {};
+
+  namespace tag
+  {
     //==========================================================================
     /*!
      * Option tag for shape options
      **/
     //==========================================================================
-    struct shape_ {}; 
+    struct shape_ {};
   }
 
 }

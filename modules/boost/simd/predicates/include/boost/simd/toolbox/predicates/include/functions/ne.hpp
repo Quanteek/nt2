@@ -6,20 +6,7 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-
-#include <iostream>
-#include <nt2/sdk/error/assert.hpp>
-
-#if !defined(NT2_NO_EXCEPTIONS)
-
-namespace nt2
-{
-  void assert_exception::display(std::ostream& os) const throw()
-  {
-    os  << "Assertion: "
-        << *boost::get_error_info<nt2::details::assert_info>(*this)
-        << " failed.\n";
-  }
-}
-
+#ifndef BOOST_SIMD_TOOLBOX_PREDICATES_INCLUDE_FUNCTIONS_NE_HPP_INCLUDED
+#define BOOST_SIMD_TOOLBOX_PREDICATES_INCLUDE_FUNCTIONS_NE_HPP_INCLUDED
+#include <boost/simd/toolbox/predicates/include/functions/is_not_equal.hpp>
 #endif
