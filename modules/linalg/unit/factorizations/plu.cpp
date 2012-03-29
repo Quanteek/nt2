@@ -33,13 +33,41 @@ NT2_TEST_CASE_TPL ( plu, NT2_REAL_TYPES)
   for(std::size_t i = 1; i <= dim1_b; i++)
     for(std::size_t j = 1; j <= dim2_b; j++)
       {
-        b(i, j)= T((i == j)*i);
+        b(i, j)= T((i >= j)*i);
       }
+  for(std::size_t i = 1; i <= dim1_b; i++)
+    {
+    for(std::size_t j = 1; j <= dim2_b; j++)
+      {
+        std::cout << b(i, j) << "\t";
+      }
+    std::cout << std::endl;
+    }
+    std::cout << std::endl;
+  
   nt2::plu_return<table_t> f = plu(b);
   std::cout << "1" << std::endl; 
   table_t u = f.getu();
+  for(std::size_t i = 1; i <= dim1_b; i++)
+    {
+    for(std::size_t j = 1; j <= dim2_b; j++)
+      {
+        std::cout << u(i, j) << "\t";
+      }
+    std::cout << std::endl;
+    }
+    std::cout << std::endl;
   std::cout << "2" << std::endl; 
-  table_t r= f.getl();
+  table_t l= f.getl();
+  for(std::size_t i = 1; i <= dim1_b; i++)
+    {
+    for(std::size_t j = 1; j <= dim2_b; j++)
+      {
+        std::cout << l(i, j) << "\t";
+      }
+    std::cout << std::endl;
+    }
+    std::cout << std::endl;
 //   std::cout << "3" << std::endl;
 //   table_t p= f.getp();
   
