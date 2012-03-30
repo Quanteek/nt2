@@ -28,7 +28,7 @@ namespace nt2 { namespace ext
     BOOST_FORCEINLINE result_type operator()(const A0& a0, const A1&) const
     {
       typedef typename boost::mpl::
-              at_c< typename A0::index_type::type, A1::value-1>::type base;
+              at_c< typename A0::index_type::type, (A1::value<2) ? 0 : A1::value-1>::type base;
       return (base::value-1) + result_type(nt2::size(a0,A1::value));
     }
   };

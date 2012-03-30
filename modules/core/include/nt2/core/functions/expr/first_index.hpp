@@ -23,7 +23,7 @@ namespace nt2 { namespace ext
                             )
   {
     typedef typename boost::mpl::
-            at_c< typename A0::index_type::type, A1::value-1>::type
+            at_c< typename A0::index_type::type, (A1::value<2) ? 0 : A1::value-1>::type
     result_type;
 
     BOOST_FORCEINLINE result_type operator()(const A0& a0, const A1&) const

@@ -55,7 +55,7 @@ namespace nt2 { namespace ext
     result_type operator()(const A0& a0,const A1& a1) const
     {
       std::size_t nb_dims = nt2::extent(a0).size();
-      return std::size_t(a1-1) < nb_dims ? nt2::extent(a0)[a1-1] : 1;
+      return (a1 == 0) ? numel(a0) :( (std::size_t(a1-1) < nb_dims) ? nt2::extent(a0)[a1-1] : 1);
     }
   };
 } }
