@@ -26,7 +26,6 @@
 //#include <nt2/include/functions/expand.hpp>
 //#include <nt2/include/functions/diag.hpp>
 //#include <nt2/include/functions/prod.hpp>
-//#include <nt2/include/functions/triu.hpp>
 //#include <nt2/include/functions/range.hpp>
 
 

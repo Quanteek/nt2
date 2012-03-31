@@ -17,10 +17,9 @@
 #include <nt2/toolbox/linalg/details/lapack/potrs.hpp>   
 #include <nt2/toolbox/linalg/details/lapack/pocon.hpp>
 #include <nt2/toolbox/linalg/details/lapack/lange.hpp>
-
+#include <nt2/include/functions/triu.hpp>
 #include <nt2/table.hpp>
 //#include <iostream>
-//#include <nt2/include/functions/triu.hpp>
 
 
 //==============================================================================
@@ -85,7 +84,7 @@ namespace nt2
       // /////////////////////////////////////////////////////////////////////////////
       // accessors
       // /////////////////////////////////////////////////////////////////////////////
-    tab_t       getu () const   { return ma; }//triu(ma); }
+    tab_t       getu () const   { return triu(ma); }
       long int    getinfo() const { return info;     }
 
 
