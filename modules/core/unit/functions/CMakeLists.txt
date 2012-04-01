@@ -40,6 +40,9 @@ SET( SOURCES
   band.cpp
   tri1u.cpp
   tri1l.cpp
+  ric.cpp
+  rif.cpp
+  rows.cpp
 # List of test files for toolbox core.settings
    )
 

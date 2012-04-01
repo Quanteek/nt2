@@ -27,6 +27,9 @@ namespace nt2
   NT2_FUNCTION_IMPLEMENTATION(nt2::tag::rif_, rif, 1)
   NT2_FUNCTION_IMPLEMENTATION(nt2::tag::rif_, rif, 2)
   NT2_FUNCTION_IMPLEMENTATION(nt2::tag::rif_, rif, 3)
+  NT2_FUNCTION_IMPLEMENTATION(nt2::tag::rif_, matlab_rows, 1)
+  NT2_FUNCTION_IMPLEMENTATION(nt2::tag::rif_, matlab_rows, 2)
+  NT2_FUNCTION_IMPLEMENTATION(nt2::tag::rif_, matlab_rows, 3)
 }
 
 namespace nt2 { namespace container { namespace ext
