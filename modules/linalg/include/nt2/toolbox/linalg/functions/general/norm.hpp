@@ -27,7 +27,7 @@ namespace nt2
     BOOST_SIMD_FUNCTOR_IMPLEMENTATION( nt2::tag::norm_, tag::cpu_,
                                        (A0)(SA)(C), 
                                        ((expr_< table_<unspecified_<A0>,SA>,nt2::tag::terminal_,boost::mpl::long_<0> >))
-                                       (scalar_<aritmetic_<C> > )
+                                       (scalar_<arithmetic_<C> > )
                                        )
   {
     typedef typename A:value_type result_type; 

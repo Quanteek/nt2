@@ -9,6 +9,7 @@
 #ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_GENERAL_COND_HPP_INCLUDED
 #define NT2_TOOLBOX_LINALG_FUNCTIONS_GENERAL_COND_HPP_INCLUDED
 #include <nt2/include/functions/cond.hpp>
+#include <nt2/include/functions/svd.hpp>
 
 namespace nt2
 {
@@ -20,7 +21,7 @@ namespace nt2
     typedef typename A:value_type result_type; 
     BOOST_SIMD_FUNCTOR_CALL(1)
     {
-      return svd<A>(a, 'N').cond()); 
+      return svd<A>(a, 'N').cond(); 
     }
   };
 
@@ -28,7 +29,3 @@ namespace nt2
 
 
 #endif
-
-// /////////////////////////////////////////////////////////////////////////////
-// End of cond.hpp<2>
-// /////////////////////////////////////////////////////////////////////////////

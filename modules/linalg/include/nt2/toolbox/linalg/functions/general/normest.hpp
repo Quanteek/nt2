@@ -34,23 +34,25 @@ namespace nt2
                                        (scalar_<floating_<C> > )
                                        )
   {
-    typedef typename A:value_type result_type;
+    typedef typename A:value_type value_type;
+    typedef typename meta::as_real<value_type> result_type;
     BOOST_DISPATCH_FORCE_INLINE result_type operator()(const A0& s, const result_type &tol) const
     {
-      typedef table<value_type> tab_t; 
+      typedef table<result_type> tab_t;
+      typedef table<value_type>  vtab_t; 
       tab_t x =  nt2::sum(nt2::abs(s));
       size_t cnt = 0;
       result_type e =  globalNorm_eucl(x);
       if (is_eqz(e)) return e;
-      x /=  e;
+      x /= e;
       result_type e0 =  Zero<result_type>();
        while (nt2::abs(e-e0) > tol*e)
          {
            e0 = e;
-           tab_t  sx =  x*trans(s);
+           vtab_t  sx = x*trans(s);
            e =  globalNorm_eucl(sx);
            x = sx*s; ;
-           if (all(nt2::abs(sx))== 0) sx = rand(size(sx), meta::as<result_type>());
+           if (nt2::all(nt2::abs(sx))== 0 , meta::as<result_type>()){ sx = rand(size(sx); }
            x /= globalNorm_eucl(x);
            if (++cnt > 100) break; 
          }
