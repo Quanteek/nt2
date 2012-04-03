@@ -6,46 +6,44 @@
  *                 See accompanying file LICENSE.txt or copy at
  *                     http://www.boost.org/LICENSE_1_0.txt
  ******************************************************************************/
-#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_VANDERMONDE_HPP_INCLUDED
-#define NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_VANDERMONDE_HPP_INCLUDED
+#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_MAGIC_HPP_INCLUDED
+#define NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_MAGIC_HPP_INCLUDED
 #include <nt2/include/functor.hpp>
 
 /*! 
  * \ingroup algebra
- * \defgroup algebra_vandermonde vandermonde
+ * \defgroup algebra_magic magic
  *
  * \par Description
- * vandermonde matrix
+ * compute a magic matrix
  *
  * \par Header file
  * 
  * \code
- * #include <nt2/include/functions/vandermonde.hpp>
+ * #include <nt2/include/functions/magic.hpp>
  * \endcode
  * 
  * 
  * \synopsis
  *
- * \param x the fundamental column of the matrix,
- *        x is always treated as a big column vector
- *
- * \param n (optinnal) the number of column of the matrix (default is numel(x(_))
+ * \param n order of the matrix output
+ * 
  *  
 **/
 //==============================================================================
-// vandermonde actual class forward declaration
+// magic actual class forward declaration
 //==============================================================================
 
 namespace nt2 { namespace tag
   {         
     /*!
-     * \brief Define the tag vandermonde_ of functor vandermonde
+     * \brief Define the tag magic_ of functor magic
      *        in namespace nt2::tag for toolbox algebra
     **/
-    struct vandermonde_ : ext::unspecified_<vandermonde_> { typedef ext::unspecified_<vandermonde_> parent; };
+    struct magic_ : ext::unspecified_<magic_> { typedef ext::unspecified_<magic_> parent; };
   }
   
-  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::vandermonde_, vandermonde, 2)
+  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::magic_, magic, 1)
 
 }
 

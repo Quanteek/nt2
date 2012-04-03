@@ -29,9 +29,10 @@ namespace nt2
     typedef table<value_type, index_type> result_type; 
     BOOST_SIMD_FUNCTOR_CALL(2)
       {
-      if (w ==  size_t(-1)) w =  x1.numel(); 
-      return nt2::pow(colvect(x1)(_, Repeat(Begin(), a1)), fliplr(ci(numel(a0),a1)));
-        
+        size_t nl = numel(a0);
+        size_t w = (a1 ==  size_t(-1)) ? nl : size_t(a1); 
+        return nt2::pow(repmat(colvect(a0), 1u, w), scaled_rows(nl, w, nl-1, -1)); 
+        //        return nt2::pow(colvect(x1)(_, Repeat(Begin(), a1)), fliplr(ci(numel(a0),a1)));
       }
   };
 
@@ -45,16 +46,12 @@ namespace nt2
     typedef table<value_type, index_type> result_type; 
     BOOST_SIMD_FUNCTOR_CALL(1)
       {
-      size_t a1 = numel(a0); 
-      return nt2::pow(colvect(x1)(_, Repeat(Begin(), a1)), fliplr(ci(numel(a0),a1)));
-        
+        size_t nl = numel(a0);
+        //      return nt2::pow(colvect(x1)(_, Repeat(Begin(), a1)), fliplr(ci(numel(a0),a1)));
+        return nt2::pow(repmat(colvect(a0), 1u, nl), scaled_rows(n1, n1, nl, -1)        
       }
   };  
 }
 
 
 #endif
-
-// /////////////////////////////////////////////////////////////////////////////
-// End of vandermonde.hpp<2>
-// /////////////////////////////////////////////////////////////////////////////
