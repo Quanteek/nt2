@@ -23,7 +23,7 @@ namespace nt2
     BOOST_SIMD_FUNCTOR_CALL(2)
       {
         typedef typename A1::value_type value_type; 
-        return rec(rif(n, A1)+cif(n, A1)-Ones<value_type>());
+        return rec(rif(n, A1())+cif(n, A1())-Ones<value_type>());
       }
   };
   

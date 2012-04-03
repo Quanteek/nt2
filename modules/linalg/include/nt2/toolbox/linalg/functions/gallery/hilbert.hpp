@@ -43,7 +43,7 @@ namespace nt2 { namespace tag
     struct hilbert_ : ext::unspecified_<hilbert_> { typedef ext::unspecified_<hilbert_> parent; };
   }
   
-  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::hilbert_, hilbert, 2)
+  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::hilbert_, hilbert, 1)
 
 }
 
