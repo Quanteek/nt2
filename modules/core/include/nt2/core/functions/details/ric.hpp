@@ -6,8 +6,8 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#ifndef NT2_CORE_FUNCTIONS_DETAILS_RIF_HPP_INCLUDED
-#define NT2_CORE_FUNCTIONS_DETAILS_RIF_HPP_INCLUDED
+#ifndef NT2_CORE_FUNCTIONS_DETAILS_RIC_HPP_INCLUDED
+#define NT2_CORE_FUNCTIONS_DETAILS_RIC_HPP_INCLUDED
 
 #include <boost/fusion/include/at.hpp>
 #include <nt2/include/functions/if_else.hpp>
@@ -19,19 +19,19 @@
 namespace nt2 { namespace details
 {
   //============================================================================
-  // rif actual functor 
+  // ric actual functor 
   //============================================================================
-  struct rif
+  struct ric
   {
-    rif() {}
+    ric() {}
 
     template<class Pos, class Size, class Target>
     typename Target::type
     operator()(Pos const& p, Size const&, Target const&) const
     {
-      static const int b = One<int>(); //- boost::mpl::at_c< typename Pos::index_type, 0>::type::value; 
       typedef typename Target::type type;
-      return nt2::enumerate<type>(boost::fusion::at_c<0>(p)+b); 
+      static const int b = One<int>()-boost::mpl::at_c< typename Pos::index_type, 0>::type::value; 
+      return nt2::enumerate<type>(boost::fusion::at_c<0>(p)-b); 
     }
 
   };

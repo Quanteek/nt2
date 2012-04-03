@@ -55,6 +55,41 @@ namespace nt2 { namespace ext
                                       );
     }
   };
+
+//   NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::rows_scaled_, tag::cpu_
+//                               , (A0)(T)(T1)
+//                             , (ast_<A0>)
+//                               (scalar_< arithmetic_<T> >)
+//                               (scalar_< arithmetic_<T1> > )
+//                             )
+//   {
+//     typedef typename  boost::proto::
+//       result_of::make_expr< nt2::tag::rows_
+//       , container::domain
+//       , box<_2D>
+//       , box<nt2::details::rows_scaled<T, T1> >
+//       , meta::as_<T>
+//       >::type             result_type;
+
+//     BOOST_FORCEINLINE result_type operator()(A0 const& a0, T const& start, T1 const& h) const
+//     {
+//       // Expression must be a row vector
+//       BOOST_ASSERT_MSG
+//       ( nt2::isrow(a0) && (nt2::ndims(a0) <= 2)
+//       , "Error using rows: Size vector must be a 2D row vector."
+//       );
+
+//       _2D sizee;
+//       std::copy(a0.raw(), a0.raw()+2, &sizee[0]);
+
+//       return boost::proto::make_expr< nt2::tag::rows_scaled_
+//                                     , container::domain
+//                                     > ( boxify(sizee)
+//                                       , boxify(nt2::details::rows_scaled<T, T1>(start, h))
+//                                         , meta::as_<T>()
+//                                       );
+//     }
+//   };  
 } }
 
 #endif

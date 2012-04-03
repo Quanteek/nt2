@@ -14,6 +14,7 @@
 #include <nt2/include/functions/is_equal.hpp>
 #include <nt2/include/functions/splat.hpp>
 #include <nt2/include/functions/enumerate.hpp>
+#include <nt2/include/functions/arith.hpp>
 #include <nt2/include/constants/one.hpp>
 
 namespace nt2 { namespace details
@@ -37,6 +38,23 @@ namespace nt2 { namespace details
     T start_; 
   };
 
+
+//   template < class T, class T1>
+//   struct rows_scaled
+//   {
+//     rows_scaled()                : start_(T()), h_(One<T>())  {}
+//     rows_scaled(const T & start, const T1 & h) : start_(start), h_(h){}
+//     template<class Pos, class Size, class Target>
+//     typename Target::type operator()(Pos const& p, Size const&, Target const& ) const
+//     {
+//       typedef typename Target::type result_type;
+//       typedef typename meta::scalar_of<result_type>::type s_type; 
+//       return nt2::arith<result_type>(boost::fusion::at_c<0>(p)+s_type(start_), s_type(h_)); 
+//     }
+//   private :
+//     T start_;
+//     T h_; 
+//   };
 } }
 
 #endif

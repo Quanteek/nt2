@@ -131,3 +131,10 @@ NT2_TEST_CASE_TPL( rows_nd_typed, NT2_TYPES )
 //   for(int i=1;i<=4;++i) for(int j=1;j<=5;++j) NT2_TEST_EQUAL( T(i), T(x2(i, j)));
 
 // }
+
+
+// NT2_TEST_CASE_TPL( rows_scaled, NT2_REAL_TYPES )
+//  {
+//    nt2::table<T> x2 = nt2::rows(nt2::of_size(4,4), T(4), T(-1));
+//    for(int i=1;i<=8;++i) for(int j=1;j<=4;++j) NT2_TEST_EQUAL( T(22.5+i), T(x2(i, j)) );
+//  }

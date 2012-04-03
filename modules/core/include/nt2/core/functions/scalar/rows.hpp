@@ -74,7 +74,38 @@ namespace nt2 { namespace ext
                             ,  meta::as_<T>()
                           );
     }
-  };  
+  };
+
+  //============================================================================
+  // Generates rows from fusion sequence + types (support of_size calls)
+  //============================================================================
+//   NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::rows_scaled_, tag::cpu_
+//                               , (Seq)(T)(T1)
+//                             , (fusion_sequence_<Seq>)
+//                               (scalar_< arithmetic_<T> >)
+//                               (scalar_< arithmetic_<T1> >)
+//                             )
+//   {
+//     typedef typename meta::strip<Seq>::type seq_t;
+//     typedef typename  boost::proto::
+//       result_of::make_expr< nt2::tag::rows_scaled_
+//       , container::domain
+//       , box<seq_t>
+//       , box<nt2::details::rows_scaled<T, T1> >
+//       , meta::as_<T>
+//       >::type             result_type;
+
+//     BOOST_FORCEINLINE result_type operator()(Seq const& seq, T const& start, T1 const & h) const
+//     {
+//       return  boost::proto::
+//               make_expr<  nt2::tag::rows_scaled_
+//                         , container::domain
+//                         > ( boxify(seq)
+//                           , boxify(nt2::details::rows_scaled<T, T1>(start, h))
+//                             ,  meta::as_<T>()
+//                           );
+//     }
+//   };    
 } }
 
 #endif
