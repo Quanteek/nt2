@@ -24,7 +24,7 @@
 #include <nt2/toolbox/linalg/details/lapack/getrf.hpp>
 #include <nt2/include/functions/triu.hpp>
 #include <nt2/include/functions/tril.hpp>
-//#include <nt2/include/functions/tri1l.hpp>
+#include <nt2/include/functions/tri1l.hpp>
 #include <nt2/include/functions/eye.hpp>
 
 #include <nt2/table.hpp>

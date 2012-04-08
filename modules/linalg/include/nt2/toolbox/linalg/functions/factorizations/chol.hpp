@@ -61,77 +61,77 @@ namespace nt2
     typedef nt2::table<type_t, index_t>               tab_t;
     typedef nt2::table<type_t, index_t>              btab_t;
     
-      template < class XPR > chol_return(const XPR & a_):
-        uplo('U'),
-        a(a_),
-        ma(a),
-        n(size(a, 2)),
-        lda(leading_size(a))//boost::proto::value(a).leading_size()) 
-      {
-        //assert issquare a_
-        init(); 
-      }
-      template < class T, class S > chol_return( table<T, S>&a, details::allowDestroy destroy):
-        uplo('U'),
-        ma(a),
-        n(size(a, 2)),
-        lda(leading_size(a))//boost::proto::value(a).leading_size())
-      {
-        init(); 
-      }
-      
-      ~chol_return(){}
-      // /////////////////////////////////////////////////////////////////////////////
-      // accessors
-      // /////////////////////////////////////////////////////////////////////////////
+    template < class XPR > chol_return(const XPR & a_):
+      uplo('U'),
+      a(a_),
+      ma(a),
+      n(size(a, 2)),
+      lda(leading_size(a))//boost::proto::value(a).leading_size()) 
+    {
+      //assert issquare a_
+      init(); 
+    }
+    template < class T, class S > chol_return( table<T, S>&a, details::allowDestroy destroy):
+      uplo('U'),
+      ma(a),
+      n(size(a, 2)),
+      lda(leading_size(a))//boost::proto::value(a).leading_size())
+    {
+      init(); 
+    }
+    
+    ~chol_return(){}
+    // /////////////////////////////////////////////////////////////////////////////
+    // accessors
+    // /////////////////////////////////////////////////////////////////////////////
     tab_t       getu () const   { return triu(ma); }
-      long int    getinfo() const { return info;     }
-
-
-      // /////////////////////////////////////////////////////////////////////////////
-      // computations
-      // /////////////////////////////////////////////////////////////////////////////
-      size_t negativity(){ return (info < 0) ? 0 : info; }
-      base_t rcond()
-      {
-        char norm = '1';
-        base_t res;
-        base_t anorm = nt2::details::lange(&norm,  &n,  &n, a.raw(), &lda); 
-        nt2::details::pocon(&uplo, &n, a.raw(), &lda, &anorm, &res, &info); 
-        return res;  
-      }
-     
-      // /////////////////////////////////////////////////////////////////////////////
-      // resolutions
-      // /////////////////////////////////////////////////////////////////////////////
-      template < class XPR > ftab_t solve(const XPR & b ){
-        ftab_t bb = b; 
-        long int nrhs = size(bb, 1);
-        long int ldb  = leading_size(bb);
-        nt2::details::potrs(&uplo, &n, &nrhs, ma.raw(), &lda, bb.raw(), &ldb, &info);
-        return bb; 
-      }
-      
-      template < class XPR > void solveip(XPR & b ){
-        long int nrhs = size(b, 1);
-        long int ldb  = leading_size(b);
-        nt2::details::potrs(&uplo, &n, &nrhs, ma.raw(), &lda, b.raw(), &ldb, &info);
-     }
-      
-      
-    private :
-
-      inline void init()
-      {
-        nt2::details::potrf(&uplo, &n, ma.raw(), &lda, &info);
-        //        mc_t::LapackTest(__FILE__, __LINE__, "potrf", ma, info); 
-      }
-      const char     uplo;
-      A                 a;
-      A&               ma; //ma has to be a view
-      const long int    n;
-      const long int  lda; 
-      long int       info;
-    };
+    long int    getinfo() const { return info;     }
+    
+    
+    // /////////////////////////////////////////////////////////////////////////////
+    // computations
+    // /////////////////////////////////////////////////////////////////////////////
+    size_t negativity(){ return (info < 0) ? 0 : info; }
+    base_t rcond()
+    {
+      char norm = '1';
+      base_t res;
+      base_t anorm = nt2::details::lange(&norm,  &n,  &n, a.raw(), &lda); 
+      nt2::details::pocon(&uplo, &n, a.raw(), &lda, &anorm, &res, &info); 
+      return res;  
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////
+    // resolutions
+    // /////////////////////////////////////////////////////////////////////////////
+    template < class XPR > ftab_t solve(const XPR & b ){
+      ftab_t bb = b; 
+      long int nrhs = size(bb, 1);
+      long int ldb  = leading_size(bb);
+      nt2::details::potrs(&uplo, &n, &nrhs, ma.raw(), &lda, bb.raw(), &ldb, &info);
+      return bb; 
+    }
+    
+    template < class XPR > void solveip(XPR & b ){
+      long int nrhs = size(b, 1);
+      long int ldb  = leading_size(b);
+      nt2::details::potrs(&uplo, &n, &nrhs, ma.raw(), &lda, b.raw(), &ldb, &info);
+    }
+    
+    
+  private :
+    
+    inline void init()
+    {
+      nt2::details::potrf(&uplo, &n, ma.raw(), &lda, &info);
+      //        mc_t::LapackTest(__FILE__, __LINE__, "potrf", ma, info); 
+    }
+    const char     uplo;
+    A                 a;
+    A&               ma; //ma has to be a view
+    const long int    n;
+    const long int  lda; 
+    long int       info;
+  };
 } 
 #endif

@@ -53,34 +53,34 @@ namespace nt2
             - boost::mpl::at_c<typename P::index_type,dim_t::value>::type::value;
     }
   };
-  struct symetric_
-  {
-    template<class T, class S>
-    struct apply
-    {
-      typedef typename meta::option<S,tag::buffer_>::type           buffer_t;
+//   struct symetric_
+//   {
+//     template<class T, class S>
+//     struct apply
+//     {
+//       typedef typename meta::option<S,tag::buffer_>::type           buffer_t;
 
-      typedef memory::iliffe_buffer < boost::mpl::_2
-                                    , boost::mpl::_3
-                                    >                               model_t;
+//       typedef memory::iliffe_buffer < boost::mpl::_2
+//                                     , boost::mpl::_3
+//                                     >                               model_t;
 
-      typedef typename buffer_t::template apply<model_t,T,S>::type  type;
-    };
-  };
-  struct hermitian_
-  {
-    template<class T, class S>
-    struct apply
-    {
-      typedef typename meta::option<S,tag::buffer_>::type           buffer_t;
+//       typedef typename buffer_t::template apply<model_t,T,S>::type  type;
+//     };
+//   };
+//   struct hermitian_
+//   {
+//     template<class T, class S>
+//     struct apply
+//     {
+//       typedef typename meta::option<S,tag::buffer_>::type           buffer_t;
 
-      typedef memory::iliffe_buffer < boost::mpl::_2
-                                    , boost::mpl::_3
-                                    >                               model_t;
+//       typedef memory::iliffe_buffer < boost::mpl::_2
+//                                     , boost::mpl::_3
+//                                     >                               model_t;
 
-      typedef typename buffer_t::template apply<model_t,T,S>::type  type;
-    };
-  };  
+//       typedef typename buffer_t::template apply<model_t,T,S>::type  type;
+//     };
+//   };  
 }
 
 #endif

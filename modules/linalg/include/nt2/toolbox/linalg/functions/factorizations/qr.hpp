@@ -17,13 +17,13 @@
 #include <nt2/include/functions/leading_size.hpp>
 #include <nt2/toolbox/linalg/details/lapack/qr.hpp>
 #include <nt2/toolbox/linalg/details/lapack/qrf.hpp>
+#include <nt2/include/functions/triu.hpp>
 
 #include <nt2/table.hpp>
 //#include <iostream>
 //#include <nt2/include/functions/expand.hpp>
 //#include <nt2/include/functions/diag.hpp>
 //#include <nt2/include/functions/prod.hpp>
-//#include <nt2/include/functions/triu.hpp>
 //#include <nt2/include/functions/range.hpp>
 
 
