@@ -21,7 +21,7 @@ namespace nt2 { namespace ext
 {
   NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::issymetric_, tag::cpu_
                             , (A0)
-                            , (unspecified_<A0>)
+                            , (ast_<A0>)
                             )
   {
     typedef bool result_type;
