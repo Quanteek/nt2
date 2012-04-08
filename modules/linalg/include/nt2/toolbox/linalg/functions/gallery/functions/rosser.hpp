@@ -14,21 +14,15 @@
 namespace nt2
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( nt2::tag::magic_, tag::cpu_,
-                                     (A0), 
-                                     (scalar_<integer_<A0> > )
+                                     (T), 
+                                     (target_<scalar_<floating_<T> > > )
                                      )
   {
-    typedef table< ptrdiff_t > result_type; 
-    inline result_type operator()()
+    typedef typename T::value_type value_type; 
+    typedef table< value_type > result_type; 
+    inline result_type operator(const T&)()
       {
-        //  The matrix is 8-by-8 with integer elements.
-        //  It has:
-        //      * A double eigenvalue.
-        //      * Three nearly equal eigenvalues.
-        //      * Dominant eigenvalues of opposite sign.
-        //      * A zero eigenvalue.
-        //      * A small, nonzero eigenvalue.
-        static ptrdiff_t r[] = {
+        static value_type r[] = {
           611,  196, -192,  407, -8,  -52,  -49,   29, 
           196,  899,  113, -192,  -71,  -43,   -8,  -44, 
           -192,  113,  899,  196, 61,   49,    8,   52, 
@@ -37,7 +31,7 @@ namespace nt2
           -52,  -43,   49,   44, -599,  411,  208,  208, 
           -49,  -8,    8,   59,  208,  208,   99, -911, 
           29,  -44,   52,  -23,   208,  208,  -911,   99};
-        return table < ptrdiff_t > (&r[0], of_size_<8, 8>); 
+        return result_type (&r[0], of_size_<8, 8>); 
     }
   };
   

@@ -21,30 +21,8 @@ namespace nt2
   {
     typedef typename A0::value_type value_type; 
     typedef table<value_type, S0> result_type; 
-    template < class T > inline
     BOOST_SIMD_FUNCTOR_CALL(2)
       {
-        //CAUCHY Cauchy matrix.
-        //   c = cauchy(x,y), where X and Y are N-vectors, is the
-        //   N-by-N matrix with C(i,j) = 1/(X(i)+Y(j)). By default, Y = X.
-        //   If X is a scalar, GALLERY('CAUCHY',X) is the same as
-        //   GALLERY('CAUCHY',1:X).
-        //
-        //   Explicit formulas are known for the elements of INV(C) and DET(C).
-        //   DET(C) is nonzero if X and Y both have distinct elements.
-        //   C is totally positive if 0 < X(1) < ... < X(N) and
-        //                            0 < Y(1) < ... < Y(N).
-        
-        //   References:
-        //   [1] D. E. Knuth, The Art of Computer Programming, Volume 1,
-        //       Fundamental Algorithms, third edition, Addison-Wesley, Reading,
-        //       Massachusetts, 1997.
-        //   [2] E. E. Tyrtyshnikov, Cauchy-Toeplitz matrices and some applications,
-        //       Linear Algebra and Appl., 149 (1991), pp. 1-18.
-        //   [3] O. Taussky and M. Marcus, Eigenvalues of finite matrices, in
-        //       Survey of Numerical Analysis, J. Todd, ed., McGraw-Hill, New York,
-        //       1962, pp. 279-313. (The totally positive property is on p. 295.)
-        //
         BOOST_ASSERT_MSG(numel(a0) == numel(y), "a0 and y have not the same number of elements"); 
         return rec(bsxfun(nt2::tag::plus_, rowvect(a1), colvect(a0)));
       }
@@ -59,8 +37,7 @@ namespace nt2
   {
     typedef typename A0::value_type value_type; 
     typedef table<value_type, S0> result_type; 
-    template < class T > inline
-      BOOST_SIMD_FUNCTOR_CALL(2)
+    BOOST_SIMD_FUNCTOR_CALL(2)
       {      
         return rec(bsxfun(nt2::tag::plus_, rowvect(colon(1, a0)), colvect(a1)));
       }
@@ -75,15 +52,31 @@ namespace nt2
   {
     typedef typename A0::value_type value_type; 
     typedef table<value_type, S0> result_type; 
-    template < class T > inline
-      BOOST_SIMD_FUNCTOR_CALL(2)
+    BOOST_SIMD_FUNCTOR_CALL(2)
       {
         return rec(bsxfun(nt2::tag::plus_, rowvect(a0), colvect(colon(1, a1))));
       }
-
+    
   };
-
-
+  
+  BOOST_SIMD_FUNCTOR_IMPLEMENTATION( nt2::tag::cauchy_, tag::cpu_,
+                                     (A0)(A1)(T),
+                                     (scalar_<integer_<A0> >)  
+                                     (scalar_<integer_<A1> >)
+                                     (target_<scalar_<integer_<T> > > )
+                                     
+                                     )
+  {
+    typedef typename T::value_type value_type; 
+    typedef table<value_type> result_type; 
+    BOOST_SIMD_FUNCTOR_CALL(3)
+      {
+        return rec(bsxfun(nt2::tag::plus_, rowvect(a0), colvect(colon(1, a1))));
+      }
+    
+  };
+  
+  
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( nt2::tag::cauchy_, tag::cpu_,
                                      (A0)(S0),
                                      ((expr_< table_<unspecified_<A0>,S0>,nt2::tag::terminal_,boost::mpl::long_<0> >)), 
@@ -91,7 +84,6 @@ namespace nt2
   {
     typedef typename A0::value_type value_type; 
     typedef table<value_type, S0> result_type; 
-    template < class T > inline
     BOOST_SIMD_FUNCTOR_CALL(1)
       {
         return rec(bsxfun(nt2::tag::plus_, rowvect(a0), colvect(a0)));
@@ -106,7 +98,6 @@ namespace nt2
   {
     typedef typename A0::value_type value_type; 
     typedef table<value_type, S0> result_type; 
-    template < class T > inline
     BOOST_SIMD_FUNCTOR_CALL(1)
       {
         return rec(bsxfun(nt2::tag::plus_, colon(1, a0), colvect(colon(1, a0))));

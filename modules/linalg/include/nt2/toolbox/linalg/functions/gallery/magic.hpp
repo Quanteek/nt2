@@ -15,7 +15,10 @@
  * \defgroup algebra_magic magic
  *
  * \par Description
- * compute a magic matrix
+ *   magic  magic square.
+ *   magic(n) is an n-by-n matrix constructed from the integers
+ *   1 through n^2 with equal row, column, and diagonal sums.
+ *   produces valid magic squares for all n > 0 except n = 2.
  *
  * \par Header file
  * 
@@ -26,7 +29,7 @@
  * 
  * \synopsis
  *
- * \param n order of the matrix output
+ * \param n order of the matrix output (n != 2)
  * 
  *  
 **/

@@ -6,50 +6,58 @@
  *                 See accompanying file LICENSE.txt or copy at
  *                     http://www.boost.org/LICENSE_1_0.txt
  ******************************************************************************/
-#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_ROSSER_HPP_INCLUDED
-#define NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_ROSSER_HPP_INCLUDED
+#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_WILKINSON_HPP_INCLUDED
+#define NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_WILKINSON_HPP_INCLUDED
 #include <nt2/include/functor.hpp>
 
 /*! 
  * \ingroup algebra
- * \defgroup algebra_rosser rosser
+ * \defgroup algebra_wilkinson wilkinson
  *
  * \par Description
- * compute a rosser matrix
+ * compute a wilkinson matrix
+ * wilkinson(n) is J. H. Wilkinson's eigenvalue test matrix, Wn+.
+ * It is a symmetric, tridiagonal matrix with pairs of nearly,
+ * but not exactly, equal eigenvalues.
+ * The most frequently used case is wilkinson(21).
+ * for example, wilkinson(7) is
+ * 
+ * 3  1  0  0  0  0  0
+ * 1  2  1  0  0  0  0
+ * 0  1  1  1  0  0  0
+ * 0  0  1  0  1  0  0
+ * 0  0  0  1  1  1  0
+ * 0  0  0  0  1  2  1
+ * 0  0  0  0  0  1  3
  *
- * A double eigenvalue.
- * Three nearly equal eigenvalues.
- * Dominant eigenvalues of opposite sign.
- * A zero eigenvalue.
- * A small, nonzero eigenvalue.
-  
  * \par Header file
  * 
  * \code
- * #include <nt2/include/functions/rosser.hpp>
+ * #include <nt2/include/functions/wilkinson.hpp>
  * \endcode
  * 
  * 
  * \synopsis
+ 
  *
  * \param n order of the matrix output
  * 
  *  
 **/
 //==============================================================================
-// rosser actual class forward declaration
+// wilkinson actual class forward declaration
 //==============================================================================
 
 namespace nt2 { namespace tag
   {         
     /*!
-     * \brief Define the tag rosser_ of functor rosser
+     * \brief Define the tag wilkinson_ of functor wilkinson
      *        in namespace nt2::tag for toolbox algebra
     **/
-    struct rosser_ : ext::unspecified_<rosser_> { typedef ext::unspecified_<rosser_> parent; };
+    struct wilkinson_ : ext::unspecified_<wilkinson_> { typedef ext::unspecified_<wilkinson_> parent; };
   }
   
-  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::rosser_, rosser, 0)
+  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::wilkinson_, wilkinson, 1)  
 
 }
 

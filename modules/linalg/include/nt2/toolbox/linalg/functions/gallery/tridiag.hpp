@@ -6,50 +6,44 @@
  *                 See accompanying file LICENSE.txt or copy at
  *                     http://www.boost.org/LICENSE_1_0.txt
  ******************************************************************************/
-#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_ROSSER_HPP_INCLUDED
-#define NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_ROSSER_HPP_INCLUDED
+#ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_TRIDIAG_HPP_INCLUDED
+#define NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_TRIDIAG_HPP_INCLUDED
 #include <nt2/include/functor.hpp>
 
 /*! 
  * \ingroup algebra
- * \defgroup algebra_rosser rosser
+ * \defgroup algebra_tridiag tridiag
  *
  * \par Description
- * compute a rosser matrix
+ * compute a tridiag matrix expression from the three diagonals
  *
- * A double eigenvalue.
- * Three nearly equal eigenvalues.
- * Dominant eigenvalues of opposite sign.
- * A zero eigenvalue.
- * A small, nonzero eigenvalue.
-  
  * \par Header file
  * 
  * \code
- * #include <nt2/include/functions/rosser.hpp>
+ * #include <nt2/include/functions/tridiag.hpp>
  * \endcode
  * 
  * 
  * \synopsis
  *
- * \param n order of the matrix output
+ * \param c, d, e superdiag,  diag,  underdiag
  * 
  *  
 **/
 //==============================================================================
-// rosser actual class forward declaration
+// tridiag actual class forward declaration
 //==============================================================================
 
 namespace nt2 { namespace tag
   {         
     /*!
-     * \brief Define the tag rosser_ of functor rosser
+     * \brief Define the tag tridiag_ of functor tridiag
      *        in namespace nt2::tag for toolbox algebra
     **/
-    struct rosser_ : ext::unspecified_<rosser_> { typedef ext::unspecified_<rosser_> parent; };
+    struct tridiag_ : ext::unspecified_<tridiag_> { typedef ext::unspecified_<tridiag_> parent; };
   }
   
-  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::rosser_, rosser, 0)
+  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::tridiag_, tridiag, 3)  
 
 }
 

@@ -14,7 +14,7 @@
 namespace nt2
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( nt2::tag::hilbert_, tag::cpu_,
-                                     (A0)(A1), 
+                                     (A0)(T), 
                                      (scalar_<integer_<A1> > )
                                      (target_<floating<T> >)
                                      )
@@ -23,7 +23,8 @@ namespace nt2
     BOOST_SIMD_FUNCTOR_CALL(2)
       {
         typedef typename A1::value_type value_type; 
-        return rec(rif(n, A1())+cif(n, A1())-Ones<value_type>());
+        return rec(rif(n, T())+ci(n, T()));
+        // return bsxfun(tag::plus_, cif(1, n), ri(n, 1));  //Is it better ?
       }
   };
   
