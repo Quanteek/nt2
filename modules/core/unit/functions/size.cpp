@@ -8,11 +8,8 @@
  ******************************************************************************/
 #define NT2_UNIT_MODULE "nt2::size function"
 
-#include <iostream>
+#include <nt2/table.hpp>
 #include <nt2/include/functions/size.hpp>
-#include <nt2/include/functions/height.hpp>
-#include <nt2/include/functions/width.hpp>
-#include <nt2/include/functions/depth.hpp>
 
 #include <nt2/sdk/unit/module.hpp>
 #include <nt2/sdk/unit/tests/basic.hpp>
@@ -29,9 +26,7 @@ NT2_TEST_CASE( fundamental_size )
   NT2_TEST_EQUAL( std::size_t( size( 3 )(2)), 1u);
   NT2_TEST_EQUAL( size( 3 , 1 ), 1u);
   NT2_TEST_EQUAL( size( 3 , 2 ), 1u);
-//   NT2_TEST_EQUAL( nt2::height(3), 1u);
-//   NT2_TEST_EQUAL( nt2::width(3), 1u);
-   NT2_TEST_EQUAL( nt2::depth(3), 1u);
+  NT2_TEST_EQUAL( size( 3 , 3 ), 1u);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,9 +45,7 @@ NT2_TEST_CASE( size_table )
   NT2_TEST_EQUAL( nt2::size( x , 1), 4u);
   NT2_TEST_EQUAL( nt2::size( x , 2), 5u);
   NT2_TEST_EQUAL( nt2::size( x , 3), 6u);
-  NT2_TEST_EQUAL( nt2::height(x), 4u);
-  NT2_TEST_EQUAL( nt2::width(x), 5u);
-  NT2_TEST_EQUAL( nt2::depth(x), 6u);}
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // size of expression
@@ -70,9 +63,6 @@ NT2_TEST_CASE( size_expression )
   NT2_TEST_EQUAL( nt2::size( x+x/3.f , 1), 4u);
   NT2_TEST_EQUAL( nt2::size( x+x/3.f , 2), 5u);
   NT2_TEST_EQUAL( nt2::size( x+x/3.f , 3), 6u);
-  NT2_TEST_EQUAL( nt2::height(x+x/3.f), 4u);
-  NT2_TEST_EQUAL( nt2::width(x+x/3.f), 5u);
-  NT2_TEST_EQUAL( nt2::depth(x+x/3.f), 6u);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -97,9 +87,9 @@ NT2_TEST_CASE( size_size )
 
   nt2::table<int> a( nt2::of_size(4,5) );
   NT2_TEST_EQUAL( std::size_t( nt2::size(nt2::size(a), 1)), 1u);
-  NT2_TEST_EQUAL( std::size_t( nt2::size(nt2::size(a), 2)), 4u);  
+  NT2_TEST_EQUAL( std::size_t( nt2::size(nt2::size(a), 2)), 4u);
   NT2_TEST_EQUAL( std::size_t( nt2::size(nt2::size(a))(1)), 1u);
-  NT2_TEST_EQUAL( std::size_t( nt2::size(nt2::size(a))(2)), 4u);  
+  NT2_TEST_EQUAL( std::size_t( nt2::size(nt2::size(a))(2)), 4u);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -116,9 +106,6 @@ NT2_TEST_CASE( size_static_table2D )
 
   NT2_TEST_EQUAL( nt2::size(x, 1), 5u);
   NT2_TEST_EQUAL( nt2::size(x, 2), 2u);
-  NT2_TEST_EQUAL( nt2::height(x), 5u);
-  NT2_TEST_EQUAL( nt2::width(x), 2u);
-  NT2_TEST_EQUAL( nt2::depth(x), 1u);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -137,9 +124,7 @@ NT2_TEST_CASE( size_cont )
 
   NT2_TEST_EQUAL( nt2::size(x, 1), 5u);
   NT2_TEST_EQUAL( nt2::size(x, 2), 1u);
-  NT2_TEST_EQUAL( nt2::height(x), 5u);
-  NT2_TEST_EQUAL( nt2::width(x), 1u);
-  NT2_TEST_EQUAL( nt2::depth(x), 1u);
+
 }
 ////////////////////////////////////////////////////////////////////////////////
 // size of static table 1D

@@ -15,16 +15,15 @@
  */
 
 #include <nt2/include/functor.hpp>
-#include <nt2/core/container/dsl/details/permutative.hpp>
+#include <nt2/core/container/dsl/details/reshaping.hpp>
 
 namespace nt2
 {
   namespace tag
   {
-    struct colvect_ : ext::elementwise_<colvect_>
+    struct colvect_ : ext::reshaping_<colvect_>
     {
-      typedef ext::elementwise_<colvect_> parent;
-      typedef upper_triangular_        shape_type;
+      typedef ext::reshaping_<colvect_> parent;
     };
   }
 
@@ -41,14 +40,14 @@ namespace nt2
 namespace nt2 { namespace container { namespace ext
 {
   template<class Domain, class Expr>
-  struct  generator<nt2::tag::colvect_,Domain,1,Expr>
-        : permutative_generator<Expr>
+  struct  generator<nt2::tag::colvect_,Domain,2,Expr>
+        : reshaping_generator<Expr>
   {};
 
 
   template<class Domain, class Expr>
-  struct  size_of<nt2::tag::colvect_,Domain,1,Expr>
-        : permutative_size_of<Expr>
+  struct  size_of<nt2::tag::colvect_,Domain,2,Expr>
+        : reshaping_size_of<Expr>
   {};
 
 } } }
