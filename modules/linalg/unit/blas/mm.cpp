@@ -24,6 +24,7 @@ NT2_TEST_CASE_TPL ( mm, NT2_REAL_TYPES)
 {
   using nt2::meta::make_container; 
   using nt2::of_size_;
+  using nt2::size; 
   using nt2::mm;
   const int N = 5;
   const int M = 5;

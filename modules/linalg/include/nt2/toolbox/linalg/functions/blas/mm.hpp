@@ -22,6 +22,7 @@
 #include <nt2/include/constants/one.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <nt2/sdk/error/assert.hpp>
+#include <iostream>
 
 namespace nt2 {
   template < class T > T trans(T const & a){ return a; }// this is fake transpose
