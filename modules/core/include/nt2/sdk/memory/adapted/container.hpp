@@ -11,8 +11,11 @@
 
 #include <nt2/sdk/meta/is_container.hpp>
 #include <nt2/sdk/meta/add_settings.hpp>
+#include <nt2/core/container/dsl/forward.hpp>
 #include <boost/dispatch/meta/model_of.hpp>
 #include <boost/dispatch/meta/value_of.hpp>
+#include <boost/dispatch/meta/hierarchy_of.hpp>
+#include <boost/dispatch/meta/terminal_of.hpp>
 
 //==============================================================================
 // Forward declaration
@@ -70,6 +73,12 @@ namespace boost { namespace dispatch { namespace meta
   {
     typedef typename nt2::memory::container<T, S>::semantic_t     semantic_t;
     typedef typename semantic_t::template apply<T,S,Origin>::type type;
+  };
+
+  template<class T, class S>
+  struct terminal_of< nt2::memory::container<T,S> >
+  {
+    typedef nt2::container::table<T, S> type;
   };
 } } }
 

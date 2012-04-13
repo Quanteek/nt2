@@ -14,8 +14,6 @@
 #include <nt2/include/functions/last_index.hpp>
 #include <nt2/include/functions/first_index.hpp>
 #include <nt2/include/functions/is_not_equal.hpp>
-// #include <nt2/sdk/details/type_id.hpp>
-// #include <iostream>
 
 namespace nt2 { namespace ext
 {
