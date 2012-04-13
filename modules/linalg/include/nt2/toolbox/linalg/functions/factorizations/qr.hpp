@@ -102,7 +102,7 @@ namespace nt2
       }
       return q;
     }
-    tab_t       getr()    const { return triu(a/*(Range(0, k-1), _)*/); }
+    tab_t       getr()    const { return triu(a/*(_(1, k), _)*/); }
     long int    getinfo() const { return info; }
     
     // /////////////////////////////////////////////////////////////////////////////

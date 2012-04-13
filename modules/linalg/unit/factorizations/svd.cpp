@@ -27,8 +27,8 @@ NT2_TEST_CASE_TPL ( svd, NT2_REAL_TYPES)
   typedef nt2::table<T> table_t; 
   table_t b(nt2::of_size(4, 4));
   
-  std::size_t dim1_b = size(b)(1);
-  std::size_t dim2_b = size(b)(2);
+  std::size_t dim1_b = size(b, 1);
+  std::size_t dim2_b = size(b, 2);
   
   for(std::size_t i = 1; i <= dim1_b; i++)
     for(std::size_t j = 1; j <= dim2_b; j++)

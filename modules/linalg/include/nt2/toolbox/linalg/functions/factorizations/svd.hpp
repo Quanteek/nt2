@@ -182,12 +182,12 @@ namespace nt2
 //         int j = length(w); 
 //         for(; (j > 0) && (w(j)<= epsi); j--);
 //         j++;
-//         return nt2::fliplr(nt2::trans(vt(nt2::Range(j, End()), _)));
+//         return nt2::fliplr(nt2::trans(vt(_(j, End()), _)));
 //       }
       
 //       tab_t orth(btype_t epsi =  -1)const
 //       {
-//         return u(_, nt2::Range(1, rank(epsi))); 
+//         return u(_, nt2::_(1, rank(epsi))); 
 //       }
       
 //       tab_t zerosolve()const
