@@ -176,7 +176,7 @@ namespace nt2
     inline ftab_t permute(const ftab_t& bb) const {
       ftab_t res(nt2::of_size(nt2::numel(jpvt), nt2::size(bb, 2)));
       const size_t m =  nt2::min(size(bb, 1), numel(jpvt)); 
-      //   res(jpvt(Range(1, m)), _) = bb; 
+      //   res(jpvt(_(1, m)), _) = bb; 
       return res; 
     }
     

@@ -116,7 +116,7 @@ namespace nt2
             long int ldx = leading_size(Xtmp); 
             nt2::details::gels (&trans, &Ml, &Nl, &nrhsl,
                                 A.raw(), &lda, Xtmp.raw(), &ldx, &info);
-            X = Xtmp; //(Range(1, Nl), Range(1, nrhs)); 
+            X = Xtmp; //(_(1, Nl), _(1, nrhs)); 
             BOOST_ASSERT_MSG(info!= 0, "Lapack error : gels in QRSolveIP(1)");
           }
         else

@@ -117,8 +117,8 @@ namespace nt2
     // accessors
     // /////////////////////////////////////////////////////////////////////////////
     tab_t     geta()  {return a; }
-    tab_t     getu()  {return triu(lu/*(Range(1, std::min(n, m)),_) */);  }
-    tab_t     getl()  {return  tri1l(lu/*tri1l(lu(_,Range(1, std::min(n, m)))*/ ); }
+    tab_t     getu()  {return triu(lu/*(_(1, std::min(n, m)),_) */);  }
+    tab_t     getl()  {return  tri1l(lu/*tri1l(lu(_,_(1, std::min(n, m)))*/ ); }
     itab_t    getip() {return ipiv; }
     itab_t    getp()  { //TODO optimize the call
       if (pt_computed) return trans(p); 
