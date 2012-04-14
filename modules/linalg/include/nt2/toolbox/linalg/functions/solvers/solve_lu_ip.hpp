@@ -24,18 +24,6 @@
 #include <nt2/include/functions/areofsameheight.hpp>
 #include <nt2/include/functions/height.hpp>
 #include <nt2/include/functions/width.hpp>
-//TO DO !!
-// #include <nt2/include/functions/diag.hpp>
-// #include <nt2/include/functions/expand.hpp>
-// #include <nt2/include/functions/fliplr.hpp>
-// #include <nt2/include/functions/globalsum.hpp>
-// #include <nt2/include/functions/trans.hpp>
-// #include <nt2/include/functions/range.hpp>
-// #include <nt2/include/functions/first_index.hpp>
-// #include <nt2/include/functions/last_height_index.hpp>
-#include <iostream>
-#include <vector>
-
 
 //==============================================================================
 // svd actual functor forward declaration

@@ -20,17 +20,6 @@
 #include <nt2/include/functions/areofsameheight.hpp>
 #include <nt2/include/functions/height.hpp>
 #include <nt2/include/functions/width.hpp>
-//TO DO !!
-// #include <nt2/include/functions/diag.hpp>
-// #include <nt2/include/functions/expand.hpp>
-// #include <nt2/include/functions/fliplr.hpp>
-// #include <nt2/include/functions/globalsum.hpp>
-// #include <nt2/include/functions/trans.hpp>
-// #include <nt2/include/functions/range.hpp>
-// #include <nt2/include/functions/first_index.hpp>
-// #include <nt2/include/functions/last_height_index.hpp>
-#include <iostream>
-
 
 //==============================================================================
 // svd actual functor forward declaration
@@ -101,7 +90,7 @@ namespace nt2
           la_int ldx = leading_size(xtmp); 
           nt2::details::gels(&trans, &ml, &nl, &nrhsl,
                              a.raw(), &lda, xtmp.raw(), &ldx, &info);
-          x = xtmp; //(range(1, nl), range(1, nrhs)); 
+          x = xtmp; //(_(1, nl), _(1, nrhs)); 
           BOOST_ASSERT_MSG(info!= 0, "lapack error : gels in solve_qr_ip(1)");
         }
       else

@@ -36,7 +36,7 @@ namespace nt2
       oa = orth(oa);
       ob = orth(ob);
       for (size_t k=0; k < nt2::width(oa);  ++k){
-         ob -= oa(_,k)*prodtMM(conj(oa(_,k)), ob);
+        ob -= oa(_,k)*(trans(conj(oa(_,k)))*ob);
        }
        // Make sure it's magnitude is less than 1.
       return nt2::asin(nt2::min(1,(nt2::norm(ob, 2))));

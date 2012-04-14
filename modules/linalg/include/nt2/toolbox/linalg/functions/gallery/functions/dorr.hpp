@@ -44,7 +44,7 @@ namespace nt2
         c(i) = e(i) + (Half<value_type>()-i*h)/h;
         d(i) = -(c(i) + e(i));
         
-        return  tridiag (c(AllFrom(2)), d, e(AllTo(n-1)));
+        return  tridiag (c(allFrom(2)), d, e(allTo(n-1)));
       }
   };
 }

@@ -182,7 +182,7 @@ namespace nt2
 //         int j = length(w); 
 //         for(; (j > 0) && (w(j)<= epsi); j--);
 //         j++;
-//         return nt2::fliplr(nt2::trans(vt(_(j, End()), _)));
+//         return nt2::fliplr(nt2::trans(vt(_(j, last_index<1>(vt)), _)));
 //       }
       
 //       tab_t orth(btype_t epsi =  -1)const
@@ -239,8 +239,8 @@ namespace nt2
         
         // gesdd se comporte moins bien que gesvd sur la matrice de hilbert 100x100
         // et plante pour jobz =  'N' (???JTL)
-        //         gesdd(&jobz, &m, &n, ma.begin(), &lda, w.begin(),
-        //               u.begin(), &ldu, vt.begin(), &ldvt,
+        //         gesdd(&jobz, &m, &n, ma.raw(), &lda, w.raw(),
+        //               u.raw(), &ldu, vt.raw(), &ldvt,
         //               &info, wrk);
         
         // gesvd  ne donne pas exactement les même résultat que matlab 7.2 (???JTL) sur hilb(100)

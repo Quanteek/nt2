@@ -18,17 +18,6 @@
 #include <nt2/include/functions/areofsameheight.hpp>
 #include <nt2/include/functions/height.hpp>
 #include <nt2/include/functions/width.hpp>
-//TO DO !!
-// #include <nt2/include/functions/diag.hpp>
-// #include <nt2/include/functions/expand.hpp>
-// #include <nt2/include/functions/fliplr.hpp>
-// #include <nt2/include/functions/globalsum.hpp>
-// #include <nt2/include/functions/trans.hpp>
-// #include <nt2/include/functions/range.hpp>
-// #include <nt2/include/functions/first_index.hpp>
-// #include <nt2/include/functions/last_height_index.hpp>
-#include <iostream>
-#include <vector>
 
 
 //==============================================================================
@@ -90,11 +79,11 @@ namespace nt2
       la_int lda = nt2::leading_size(a);
       la_int ldb = nt2::leading_size(b);
       BOOST_ASSERT_MSG( (n == nt2::width(b)),"In lse calls the number of columns of a must match the number of columns of b");
-        BOOST_ASSERT_MSG( (n >= p),"In lse calls the number of columns of a must be greater or equal to the number of rows of b");
-        BOOST_ASSERT_MSG( (n == nt2::numel(x)),"In lse calls the number of columns of a must match the number of elements of x)");
-        BOOST_ASSERT_MSG( (n <= m+p),"In lse calls n <= m+p");
-        BOOST_ASSERT_MSG( (p == nt2::numel(d)),"In lse calls the number of rows of b must match the number of elements of d");
-        nt2::details::gglse(&m, &n, &p, a.raw(), &lda, b.raw(), &ldb, c.raw(), d.raw(), x.raw(), &info);
+      BOOST_ASSERT_MSG( (n >= p),"In lse calls the number of columns of a must be greater or equal to the number of rows of b");
+      BOOST_ASSERT_MSG( (n == nt2::numel(x)),"In lse calls the number of columns of a must match the number of elements of x)");
+      BOOST_ASSERT_MSG( (n <= m+p),"In lse calls n <= m+p");
+      BOOST_ASSERT_MSG( (p == nt2::numel(d)),"In lse calls the number of rows of b must match the number of elements of d");
+      nt2::details::gglse(&m, &n, &p, a.raw(), &lda, b.raw(), &ldb, c.raw(), d.raw(), x.raw(), &info);
     }
     ~lsq_lse_ip_return(){}
     la_int get_info()    const { return info; }

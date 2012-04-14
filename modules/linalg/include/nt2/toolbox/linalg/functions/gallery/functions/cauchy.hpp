@@ -8,6 +8,10 @@
  ******************************************************************************/
 #ifndef NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_FUNCTIONS_CAUCHY_HPP_INCLUDED
 #define NT2_TOOLBOX_LINALG_FUNCTIONS_GALLERY_FUNCTIONS_CAUCHY_HPP_INCLUDED
+#include <nt2/include/functions/rowvect.hpp>
+#include <nt2/include/functions/colvect.hpp>
+#include <nt2/include/functions/colon.hpp>
+//#include <nt2/include/functions/bsxfun.hpp>
 
 
 
@@ -39,7 +43,7 @@ namespace nt2
     typedef table<value_type, S0> result_type; 
     BOOST_SIMD_FUNCTOR_CALL(2)
       {      
-        return rec(bsxfun(nt2::tag::plus_, rowvect(colon(1, a0)), colvect(a1)));
+        return rec(bsxfun(nt2::tag::plus_, rowvect(_(1, a0)), colvect(a1)));
       }
     
   };
@@ -54,7 +58,7 @@ namespace nt2
     typedef table<value_type, S0> result_type; 
     BOOST_SIMD_FUNCTOR_CALL(2)
       {
-        return rec(bsxfun(nt2::tag::plus_, rowvect(a0), colvect(colon(1, a1))));
+        return rec(bsxfun(nt2::tag::plus_, rowvect(a0), colvect(_(1, a1))));
       }
     
   };

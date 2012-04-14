@@ -43,7 +43,7 @@ namespace nt2
       { 
         typedef meta::as_integer<A1>::type i_type; 
         result_type z2 = zeros(1, n); z2(0) = alpha;  z2(1) = 1; 
-        result_type z1 = pow(alpha, colon(itype(1), itype(n))); 
+        result_type z1 = pow(alpha, _(itype(1), itype(n))); 
         result_type r =  toeplitz( z1, z2 ) + delta*eye(n, n);
         return r; 
       };  

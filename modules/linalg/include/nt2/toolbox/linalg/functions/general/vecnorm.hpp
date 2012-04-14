@@ -33,7 +33,7 @@ namespace nt2
       if (a1 == 2){
         return norm_eucl(a0(_));
       } else if (nt2::is_finite(a1)){
-        return nt2::pow(globalNormp(a1(_), p), nt2::rec(result_type(p)));
+        return nt2::pow(normp(a1(_), p), nt2::rec(result_type(p)));
       } else if (is_gtz(a1)){
         return nt2::max(abs(a0(_)));
       } else {

@@ -53,7 +53,7 @@ namespace nt2
         c =  c1; 
         deb+= k; 
       }
-     a = c(_, AllTo(n-1));
+     a = c(_, allTo(n-1));
       return a;
       };  
   }
