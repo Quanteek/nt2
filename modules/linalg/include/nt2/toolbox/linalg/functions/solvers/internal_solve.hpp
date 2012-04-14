@@ -15,6 +15,8 @@
 #include <nt2/include/functions/solve_tr_ip.hpp>
 #include <nt2/include/functions/pqr.hpp>
 #include <nt2/include/functions/istriangular.hpp>
+#include <nt2/include/functions/istriu.hpp>
+#include <nt2/include/functions/istril.hpp>
 #include <nt2/include/functions/ishermitian.hpp>
 #include <iostream>
 

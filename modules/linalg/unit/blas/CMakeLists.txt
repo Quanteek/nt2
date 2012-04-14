@@ -8,7 +8,7 @@
 ##############################################################################
 
 SET( SOURCES
-     mm.cpp
+#     mm.cpp
    )
 
 nt2_module_add_tests(linalg.blas.unit ${SOURCES})
