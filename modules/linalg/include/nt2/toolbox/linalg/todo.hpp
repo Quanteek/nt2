@@ -8,7 +8,7 @@
 // freqspace       Frequency spacing for frequency response                        | done differently
 // ind2sub         Subscripts from linear index                                    | done
 // linspace        Generate linearly spaced vectors                                | done
-// logspace        Generate logarithmically spaced vectors                         |      
+// logspace        Generate logarithmically spaced vectors                         | done     
 // ndgrid          Rectangular grid in N-D space                                   | 
 // ones            Create array of all ones                                        | done 
 // rand            Uniformly distributed pseudorandom numbers                      |     
