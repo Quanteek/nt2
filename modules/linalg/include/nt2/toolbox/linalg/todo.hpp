@@ -22,21 +22,21 @@
 // Matrix Analysis
 // cond              Condition number with respect to inversion                    | done
 // condeig           Condition number with respect to eigenvalues                  |
-// det               Matrix determinant                                            | done TODO better version
+// det               Matrix determinant                                            | done also 2 versions of absdet one with no overflow
 // norm              Vector and matrix norms                                       | done
 // normest           2-norm estimate                                               | done
 // null              Null space                                                    | done
 // orth              Range space of matrix                                         | done
 // rank              Rank of matrix                                                | done
 // rcond             Matrix reciprocal condition number estimate                   | done
-// rref              Reduced row echelon form                                      | easy to do from plu 
+// rref              Reduced row echelon form                                      | done
 // subspace          Angle between two subspacestraceSum of diagonal elements      | done
                                                                                 
 // Linear Equations                                                             
 // chol              Cholesky factorization
 // cholinc           Sparse incomplete Cholesky and Cholesky-Infinity              |  SPARSE
 // cond              Condition number with respect to inversion                    | done
-// condest           1-norm condition number estimate                              |
+// condest           1-norm condition number estimate                              | done 
 // funm              Evaluate general matrix function                              |
 // ichol             Incomplete Cholesky factorization                             |  SPARSE
 // ilu               Sparse incomplete LU factorization                            |  SPARSE
