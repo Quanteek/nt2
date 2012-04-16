@@ -45,42 +45,6 @@
 // multiply with the sign of the determinant of P and you obtain the determinant of A from the 
 // A=PLU factorization. 
 
-// There is determinant computation in LINPACK, see for example the routine DGEDI. 
-// http://www.netlib.org/linpack/dgedi.f 
-// Computing a determinant is likely to overflow, the LINPACK's routine is specially careful 
-// about that.
-// c        det     double precision(2)
-// c                determinant of original matrix if requested.
-// c                otherwise not referenced.
-// c                determinant = det(1) * 10.0**det(2)
-// c                with  1.0 .le. dabs(det(1)) .lt. 10.0
-// c                or  det(1) .eq. 0.0 .
-// c     compute determinant
-// c
-// TODO perhaps a version using ldexp frexp 2^n rather that 10^n
-//       if (job/10 .eq. 0) go to 70
-//          det(1) = 1.0d0
-//          det(2) = 0.0d0
-//          ten = 10.0d0
-//          do 50 i = 1, n
-//             if (ipvt(i) .ne. i) det(1) = -det(1)
-//             det(1) = a(i,i)*det(1)
-// c        ...exit
-//             if (det(1) .eq. 0.0d0) go to 60
-//    10       if (dabs(det(1)) .ge. 1.0d0) go to 20
-//                det(1) = ten*det(1)
-//                det(2) = det(2) - 1.0d0
-//             go to 10
-//    20       continue
-//    30       if (dabs(det(1)) .lt. ten) go to 40
-//                det(1) = det(1)/ten
-//                det(2) = det(2) + 1.0d0
-//             go to 30
-//    40       continue
-//    50    continue
-//    60    continue
-//    70 continue
-
 
 //==============================================================================
 // plu call result forward declaration
@@ -113,17 +77,18 @@ namespace nt2
   //============================================================================
   template<class A > struct plu_return
   {
-    typedef typename A::value_type                     type_t;
-    typedef typename A::index_type                    index_t; 
-    typedef typename meta::as_real<type_t>::type       base_t; 
-    typedef nt2::table<type_t, nt2::matlab_index_>     ftab_t;
-    typedef nt2::table<type_t, nt2::matlab_index_>    fbtab_t;
-    typedef nt2::table<long int, nt2::matlab_index_>  iftab_t;
-    typedef nt2::table<type_t, index_t>                 tab_t;
-    typedef nt2::table<long int, index_t>              itab_t;
-    typedef nt2::table<type_t, index_t>                btab_t;
-    typedef nt2::details::workspace<type_t>       workspace_t;
-    typedef nt2::details::options                   options_t;
+    typedef typename A::value_type                           type_t;
+    typedef typename A::index_type                          index_t; 
+    typedef typename meta::as_real<type_t>::type             base_t;
+    typedef typename meta::as_integer<<type_t,signed>::type itype_t;       
+    typedef nt2::table<type_t, nt2::matlab_index_>           ftab_t;
+    typedef nt2::table<type_t, nt2::matlab_index_>          fbtab_t;
+    typedef nt2::table<long int, nt2::matlab_index_>        iftab_t;
+    typedef nt2::table<type_t, index_t>                       tab_t;
+    typedef nt2::table<long int, index_t>                    itab_t;
+    typedef nt2::table<type_t, index_t>                      btab_t;
+    typedef nt2::details::workspace<type_t>             workspace_t;
+    typedef nt2::details::options                         options_t;
     
     template < class XPR > plu_return(const XPR & a_):
       a(a_), 
@@ -226,15 +191,6 @@ namespace nt2
       return 0; //globalSum( abs(diag(getu())) > std::max(n, m)*epsi*globalMax(abs(diag(getu()))) );
     }
     
-    //       base_t absdet(){
-    //         //        mc_t::SquareTest(__FILE__, __LINE__, a);
-    //         return globalProd(abs(diag(getu())));
-    //       }
-    
-    //       type_t det(){
-    //         //       mc_t::SquareTest(__FILE__, __LINE__, a);
-    //         return globalProd(diag(getu()))*((globalSum(ipiv != ne::convert<long>(colvect((colon(1, numel(ipiv))))))%2 == 1) ? -1 : 1); 
-    //       }
     
     tab_t inv(bool noWarn =  false)
     {
@@ -296,7 +252,41 @@ namespace nt2
       nt2::details::gecon(&norm, &n, lu.raw(), &lda, &anorm, &res, &info); 
       return res;  
     }
+
+    //       base_t absdet(){
+    //          BOOST_ASSERT_MSG(!issquare(a), 'non square matrix in determinant computation'); 
+    //         return globalProd(abs(diag(getu())));
+    //       }
     
+    //       type_t det(){
+    //          BOOST_ASSERT_MSG(!issquare(a), 'non square matrix in determinant computation'); 
+    //         return globalProd(diag(getu()))*((globalSum(ipiv != ne::convert<long>(colvect((colon(1, numel(ipiv))))))%2 == 1) ? -1 : 1); 
+    //         return prod(diag(getu())*(if_else(ipiv == colvect(_(One<long int>(), n)), One<type_t>, Mone<type_t>())))
+    //       }
+
+    type_t absdet(itype_t & e1)
+    {
+      BOOST_ASSERT_MSG(!issquare(a), 'non square matrix in determinant computation'); 
+      // compute e and m for matrix determinant such that det = ldexp(m, e)
+      // if no overflow or underflow can occur,  with 0.5 < abs(m) < 1 
+      // the returned result is enough to know absolute value of the determinant is
+      // beteen 0.5*2^e and 2^e
+      // This routine is inspired from linpack http://www.netlib.org/linpack/dgedi.f
+      // that use ten power factor instead 
+      type_t   m1 = One<type_t>();
+      e1 = Zero<itype_t>()
+      for(size_t i = 1;  i < n; ++i)
+        {
+          itype_t e; 
+          m1 *=  nt2::frexp(nt2::abs(lu(i, i)), e);
+          e1+= e;
+        }
+      if (iseqz(m1)){
+        e1 = Zero<itype_t>();
+      }
+      return m1; 
+    }
+
   private :
     inline void init()
     {
