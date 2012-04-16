@@ -156,97 +156,106 @@ namespace nt2
           return p;
         }
     } 
-      
-      long int getinfo(){return info; }
-      
-      // /////////////////////////////////////////////////////////////////////////////
-      // computations
-      // /////////////////////////////////////////////////////////////////////////////
-      base_t rcond(char c = '1')
-      {
-        if (c !=  '1' || rc == -1)
-          {
-            char norm = c;
-            base_t anorm = nt2::details::lange(&norm,  &n,  &n, lu.raw(), &lda, w); 
-            nt2::details::gecon(&norm, &n,  lu.raw(), &lda, &anorm, &rc, &info, w);
-          }
-        return rc;  
-      }
-
-      
+    
+    long int getinfo(){return info; }
+    
+    // /////////////////////////////////////////////////////////////////////////////
+    // computations
+    // /////////////////////////////////////////////////////////////////////////////
+    base_t rcond(char c = '1')
+    {
+      if (c !=  '1' || rc == -1)
+        {
+          char norm = c;
+          base_t anorm = nt2::details::lange(&norm,  &n,  &n, lu.raw(), &lda, w); 
+          nt2::details::gecon(&norm, &n,  lu.raw(), &lda, &anorm, &rc, &info, w);
+        }
+      return rc;  
+    }
+    
+    
     size_t rank(base_t epsi = nt2::Eps<base_t>())
-      {
-        return 0; //globalSum( abs(diag(getu())) > std::max(n, m)*epsi*globalMax(abs(diag(getu()))) );
-      }
-      
-//       base_t absdet(){
-//         //        mc_t::SquareTest(__FILE__, __LINE__, a);
-//         return globalProd(abs(diag(getu())));
-//       }
-      
-//       type_t det(){
-//         //       mc_t::SquareTest(__FILE__, __LINE__, a);
-//         return globalProd(diag(getu()))*((globalSum(ipiv != ne::convert<long>(colvect((colon(1, numel(ipiv))))))%2 == 1) ? -1 : 1); 
-//       }
-      
-      tab_t inv(bool noWarn =  false)
-      {
-        tab_t i = lu;
-        base_t rc; 
-        if (!noWarn && (rc = rcond()) < nt2::Eps<base_t>())
-          {
-            std::cerr << " Warning : Na::Matrix is close to singular or badly scaled." << std::endl; 
-            std::cerr << "           Results may be inaccurate. RCOND = " << rc << "." << std::endl;
-          }
-        nt2::details::getri(&n, i.raw(), &lda, ipiv.raw(), &info, w);
-        return i; 
-      }  
-      
-      // /////////////////////////////////////////////////////////////////////////////
-      // resolutions
-      // /////////////////////////////////////////////////////////////////////////////
-      template < class XPR >
-      tab_t solve(const XPR & b, bool noWarn =  false)
-      {
-        tab_t x(size(b)), bb(b); 
-        long int nrhs =  size(b, 2);
-        long int ldb  =  leading_size(b);
-        long int ldx  =  leading_size(x); 
-        long int lda  =  leading_size(a);
-        long int ldlu =  leading_size(lu);  
-        if (isempty(berr))
-          {
-            berr.resize(of_size(nrhs, 1));
-            ferr.resize(of_size(nrhs, 1));
-          }
-        nt2::details::gesvx((char*)&options_t::opt('F'),
-                            (char*)&options_t::opt('N'),
-                            &n, &nrhs,
-                            a.raw(), &lda,
-                            lu.raw(), &ldlu,
-                            ipiv.raw(),
-                            (char*)&options_t::opt('N'), 
-                            r.raw(), c.raw(),
-                            bb.raw(), &ldb,
-                            x.raw(), &ldx,
-                            &rc,
-                            ferr.raw(),
-                            berr.raw(),
-                            &info, w);
-        if(!noWarn && (info > n || rc < nt2::Eps<base_t>())){
+    {
+      return 0; //globalSum( abs(diag(getu())) > std::max(n, m)*epsi*globalMax(abs(diag(getu()))) );
+    }
+    
+    //       base_t absdet(){
+    //         //        mc_t::SquareTest(__FILE__, __LINE__, a);
+    //         return globalProd(abs(diag(getu())));
+    //       }
+    
+    //       type_t det(){
+    //         //       mc_t::SquareTest(__FILE__, __LINE__, a);
+    //         return globalProd(diag(getu()))*((globalSum(ipiv != ne::convert<long>(colvect((colon(1, numel(ipiv))))))%2 == 1) ? -1 : 1); 
+    //       }
+    
+    tab_t inv(bool noWarn =  false)
+    {
+      tab_t i = lu;
+      base_t rc; 
+      if (!noWarn && (rc = rcond()) < nt2::Eps<base_t>())
+        {
           std::cerr << " Warning : Na::Matrix is close to singular or badly scaled." << std::endl; 
           std::cerr << "           Results may be inaccurate. RCOND = " << rc << "." << std::endl;
         }
-        //        mc_t::LapackTest(__FILE__, __LINE__, "gesvx", a, info); 
-        return x;
+      nt2::details::getri(&n, i.raw(), &lda, ipiv.raw(), &info, w);
+      return i; 
+    }  
+    
+    // /////////////////////////////////////////////////////////////////////////////
+    // resolutions
+    // /////////////////////////////////////////////////////////////////////////////
+    template < class XPR >
+    tab_t solve(const XPR & b, bool noWarn =  false)
+    {
+      tab_t x(size(b)), bb(b); 
+      long int nrhs =  size(b, 2);
+      long int ldb  =  leading_size(b);
+      long int ldx  =  leading_size(x); 
+      long int lda  =  leading_size(a);
+      long int ldlu =  leading_size(lu);  
+      if (isempty(berr))
+        {
+          berr.resize(of_size(nrhs, 1));
+          ferr.resize(of_size(nrhs, 1));
+        }
+      nt2::details::gesvx((char*)&options_t::opt('F'),
+                          (char*)&options_t::opt('N'),
+                          &n, &nrhs,
+                          a.raw(), &lda,
+                          lu.raw(), &ldlu,
+                          ipiv.raw(),
+                          (char*)&options_t::opt('N'), 
+                          r.raw(), c.raw(),
+                          bb.raw(), &ldb,
+                          x.raw(), &ldx,
+                          &rc,
+                          ferr.raw(),
+                          berr.raw(),
+                          &info, w);
+      if(!noWarn && (info > n || rc < nt2::Eps<base_t>())){
+        std::cerr << " Warning : Na::Matrix is close to singular or badly scaled." << std::endl; 
+        std::cerr << "           Results may be inaccurate. RCOND = " << rc << "." << std::endl;
       }
-      
-    private :
-      inline void init()
-      {
-        nt2::details::getrf(&m, &n, lu.raw(), &lda, ipiv.raw(), &info, w);
-        //        mc_t::LapackTest(__FILE__, __LINE__, "getrf", lu, info); 
-      }
+      //        mc_t::LapackTest(__FILE__, __LINE__, "gesvx", a, info); 
+      return x;
+    }
+
+    base_t rcond()
+    {
+      char norm = '1';
+      base_t res;
+      base_t anorm = nt2::details::lange(&norm,  &n,  &n, a.raw(), &lda); 
+      nt2::details::gecon(&norm, &n, lu.raw(), &lda, &anorm, &res, &info); 
+      return res;  
+    }
+    
+  private :
+    inline void init()
+    {
+      nt2::details::getrf(&m, &n, lu.raw(), &lda, ipiv.raw(), &info, w);
+      //        mc_t::LapackTest(__FILE__, __LINE__, "getrf", lu, info); 
+    }
     tab_t                 a,lu;
     const long int         m,n;
     const long int         lda; 
