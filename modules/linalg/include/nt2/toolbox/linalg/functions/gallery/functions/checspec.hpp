@@ -65,7 +65,7 @@ namespace nt2
         }
         c(n,n) = -c(0);
         if (k == 1){
-          table_t c1 =  c(Range(1, n), Range(1, n));
+          table_t c1 =  c(_(1, n), _(1, n));
           return c1; 
         }
         return c; 

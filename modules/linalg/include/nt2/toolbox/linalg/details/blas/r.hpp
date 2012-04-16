@@ -17,7 +17,6 @@
 // _SYR  ( UPLO,                 N, ALPHA, X, INCX,          A, LDA ) S, D
 // _HER2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, A, LDA ) C, Z
 // _SYR2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, A, LDA ) S, D
-// _SYR2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, A, LDA ) S, D
 // _HPR2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, AP )     C, Z
 // _SPR2 ( UPLO,                 N, ALPHA, X, INCX, Y, INCY, AP )     S, D
 // _SPR  ( UPLO,                 N, ALPHA, X, INCX,          AP )     S, D
@@ -59,15 +58,13 @@ namespace nt2
 #define NT2_R(T, PREFIX, PREFIX2)                                   \
       inline void BOOST_PP_CAT(PREFIX2,r)(                          \
                     const char * uplo,                              \
-                    const long int *m,                              \
                     const long int *n,                              \
                     const T *al,                                    \
                     const T *x, const long int *incx,               \
-                    const T *be,                                    \
                     T *a, const long int *lda )                     \
     {                                                               \
       BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,BOOST_PP_CAT(PREFIX2,r),_))  \
-        (ta,m,n,al,x,incx,y,incy,a,lda);                            \
+        (uplo,n,al,x,incx,a,lda);                                 \
     }                                                               \
         
     NT2_R(std::complex<double>, z, he)
@@ -80,15 +77,13 @@ namespace nt2
 #define NT2_R(T, PREFIX, PREFIX2)                                   \
       inline void BOOST_PP_CAT(PREFIX2,r)(                          \
                     const char * uplo,                              \
-                    const long int *m,                              \
                     const long int *n,                              \
                     const T *al,                                    \
                     const T *x, const long int *incx,               \
-                    const T *be,                                    \
                     T *ap )                                         \
     {                                                               \
       BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,BOOST_PP_CAT(PREFIX2,r),_))  \
-        (ta,m,n,al,x,incx,y,incy,ap);                               \
+        (uplo,n,al,x,incx,ap);                                      \
     }                                                               \
         
     NT2_R(std::complex<double>, z, hp)
@@ -102,16 +97,14 @@ namespace nt2
 #define NT2_R(T, PREFIX, PREFIX2)                                   \
   inline void BOOST_PP_CAT(PREFIX2,r2)(                             \
                     const char * uplo,                              \
-                    const long int *m,                              \
                     const long int *n,                              \
                     const T *al,                                    \
                     const T *x, const long int *incx,               \
                     const T *y, const long int *incy,               \
-                    const T *be,                                    \
                     T *a, const long int *lda)                      \
     {                                                               \
       BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,BOOST_PP_CAT(PREFIX2,r2),_)) \
-        (ta,m,n,al,x,incx,y,incy,a, lda);                           \
+        (uplo,n,al,x,incx,y,incy,a, lda);                           \
     }                                                               \
         
     NT2_R(std::complex<double>, z, he)
@@ -120,15 +113,14 @@ namespace nt2
     NT2_R(std::complex<float>,  d, sy)
 #undef NT2_R
 
-    //hpr spr
+    //hpr2 spr2
 #define NT2_R(T, PREFIX, PREFIX2)                                   \
-      inline void BOOST_PP_CAT(PREFIX2,r)(                          \
+      inline void BOOST_PP_CAT(PREFIX2,r2)(                         \
                     const char * uplo,                              \
-                    const long int *m,                              \
                     const long int *n,                              \
                     const T *al,                                    \
                     const T *x, const long int *incx,               \
-                    const T *be,                                    \
+                    const T *y, const long int *incy,               \
                     T *ap )                                         \
     {                                                               \
       BOOST_PP_CAT(BOOST_PP_CAT(PREFIX,BOOST_PP_CAT(PREFIX2,r2),_)) \

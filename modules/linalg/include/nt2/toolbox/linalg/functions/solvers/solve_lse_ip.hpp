@@ -18,18 +18,6 @@
 #include <nt2/include/functions/areofsameheight.hpp>
 #include <nt2/include/functions/height.hpp>
 #include <nt2/include/functions/width.hpp>
-//TO DO !!
-// #include <nt2/include/functions/diag.hpp>
-// #include <nt2/include/functions/expand.hpp>
-// #include <nt2/include/functions/fliplr.hpp>
-// #include <nt2/include/functions/globalsum.hpp>
-// #include <nt2/include/functions/trans.hpp>
-// #include <nt2/include/functions/range.hpp>
-// #include <nt2/include/functions/first_index.hpp>
-// #include <nt2/include/functions/last_height_index.hpp>
-#include <iostream>
-#include <vector>
-
 
 //==============================================================================
 // lse actual functor forward declaration
@@ -100,7 +88,7 @@ namespace nt2
         BOOST_ASSERT_MSG( (p == nt2::numel(d)),
                           "In lse calls the number of rows of b must match the number of elements of d");
         //      std::cout << "conventional" << std::endl;
-        nt2::details::gglse(&m, &n, &p, a.begin(), &lda, b.begin(), &ldb, c.begin(), d.begin(), x.begin(), &info);
+        nt2::details::gglse(&m, &n, &p, a.raw(), &lda, b.raw(), &ldb, c.raw(), d.raw(), x.raw(), &info);
     }
     ~solve_lse_ip_return(){}
     la_int get_info()    const { return info; }

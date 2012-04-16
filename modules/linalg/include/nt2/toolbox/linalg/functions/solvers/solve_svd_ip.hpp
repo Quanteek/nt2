@@ -18,18 +18,6 @@
 #include <nt2/include/functions/areofsameheight.hpp>
 #include <nt2/include/functions/height.hpp>
 #include <nt2/include/functions/width.hpp>
-//TO DO !!
-// #include <nt2/include/functions/diag.hpp>
-// #include <nt2/include/functions/expand.hpp>
-// #include <nt2/include/functions/fliplr.hpp>
-// #include <nt2/include/functions/globalsum.hpp>
-// #include <nt2/include/functions/trans.hpp>
-// #include <nt2/include/functions/range.hpp>
-// #include <nt2/include/functions/first_index.hpp>
-// #include <nt2/include/functions/last_height_index.hpp>
-#include <iostream>
-#include <vector>
-
 
 //==============================================================================
 // svd actual functor forward declaration
@@ -97,7 +85,7 @@ namespace nt2
           tab_t xtmp = b; //nt2::expand(b, nt2::of_size(mm, nrhs));
           nt2::details::gelsd(&ml, &nl, &nrhs, a.raw(), &lda, xtmp.raw(), &ldb,
                               s.raw(), &rcond, &rank, &info);                   
-          x = xtmp; //(range(1, nl), range(1, nrhs));
+          x = xtmp; //(_(1, nl), _(1, nrhs));
           BOOST_ASSERT_MSG(info!= 0, "lapack error : gelsd in solve_svd_ip(1)");
         }
       else

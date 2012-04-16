@@ -53,7 +53,7 @@ namespace nt2
             char c = 'F'; 
             return nt2::details::lange(&c, &m, &n, (base_t*)const_cast<A0&>(l1).raw(), &lda0);
           } else if (!isfinite(a1)){
-            return globalMax(sum(abs(trans(l1))));         
+            return nt2::max(sum(abs(l1), 2));         
           } else {
             assert(false, "Sorry Not Yet Implemented"); 
           }

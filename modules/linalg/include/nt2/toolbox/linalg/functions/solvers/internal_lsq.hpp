@@ -56,25 +56,25 @@ namespace nt2
     }
   }; 
   
-#define NT2_LSQ(S)                                           \
-  template < class A, class B> typename lsq<A, B>::tab_t      \
-  BOOST_PP_CAT(lsq_, S)(const A &a, const B &b, la_int& info) \
-  {                                                             \
-    return lsq<A, B>::BOOST_PP_CAT(lsq_,S)(a,b,info);       \
-  }                                                             \
-  template < class A, class B> typename lsq<A, B>::tab_t      \
+#define NT2_LSQ(S)                                                      \
+  template < class A, class B> typename lsq<A, B>::tab_t                \
+  BOOST_PP_CAT(lsq_, S)(const A &a, const B &b, la_int& info)           \
+  {                                                                     \
+    return lsq<A, B>::BOOST_PP_CAT(lsq_,S)(a,b,info);                   \
+  }                                                                     \
+  template < class A, class B> typename lsq<A, B>::tab_t                \
   BOOST_PP_CAT(lsq_, S)(A &a, B &b, la_int& info, const allowdestroy &) \
   {                                                                     \
     return lsq<A, B>::BOOST_PP_CAT(BOOST_PP_CAT(lsq_,S),_ip)(a,b,info); \
   }                                                                     \
-  template < class A, class B> typename lsq<A, B>::tab_t            \
-  BOOST_PP_CAT(lsq_, S)(const A &a, const B &b)                       \
+  template < class A, class B> typename lsq<A, B>::tab_t                \
+  BOOST_PP_CAT(lsq_, S)(const A &a, const B &b)                         \
   {                                                                     \
     la_int  info;                                                       \
-    return lsq<A, B>::BOOST_PP_CAT(lsq_,S)(a,b,info);               \
+    return lsq<A, B>::BOOST_PP_CAT(lsq_,S)(a,b,info);                   \
   }                                                                     \
-  template < class A, class B> typename lsq<A, B>::tab_t            \
-  BOOST_PP_CAT(lsq_, S)(A &a, B &b, const allowdestroy &)             \
+  template < class A, class B> typename lsq<A, B>::tab_t                \
+  BOOST_PP_CAT(lsq_, S)(A &a, B &b, const allowdestroy &)               \
   {                                                                     \
     la_int  info;                                                       \
     return lsq<A, B>::BOOST_PP_CAT(BOOST_PP_CAT(lsq_,S),_ip)(a,b,info); \
