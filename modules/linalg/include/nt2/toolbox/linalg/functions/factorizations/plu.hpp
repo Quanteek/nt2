@@ -34,6 +34,53 @@
 //#include <nt2/include/functions/prod.hpp>
 //#include <nt2/include/functions/range.hpp>
 
+// rref computation
+// The U matrix in an LU decomposition is a ref. Dividing each row by the leading entry will convert a ref to a rref. 
+
+// plu rank is in status
+
+// To get the sign of the determinant of the permutation matrix, you start with + and you go 
+// through the IPIV array for I=1 to N and you change sign each time IPIV(I) is not I. (You might 
+// want stop at N-1 and not N since IPIV(N)=N.) Then you product the diagonal term of U and 
+// multiply with the sign of the determinant of P and you obtain the determinant of A from the 
+// A=PLU factorization. 
+
+// There is determinant computation in LINPACK, see for example the routine DGEDI. 
+// http://www.netlib.org/linpack/dgedi.f 
+// Computing a determinant is likely to overflow, the LINPACK's routine is specially careful 
+// about that.
+// c        det     double precision(2)
+// c                determinant of original matrix if requested.
+// c                otherwise not referenced.
+// c                determinant = det(1) * 10.0**det(2)
+// c                with  1.0 .le. dabs(det(1)) .lt. 10.0
+// c                or  det(1) .eq. 0.0 .
+// c     compute determinant
+// c
+// TODO perhaps a version using ldexp frexp 2^n rather that 10^n
+//       if (job/10 .eq. 0) go to 70
+//          det(1) = 1.0d0
+//          det(2) = 0.0d0
+//          ten = 10.0d0
+//          do 50 i = 1, n
+//             if (ipvt(i) .ne. i) det(1) = -det(1)
+//             det(1) = a(i,i)*det(1)
+// c        ...exit
+//             if (det(1) .eq. 0.0d0) go to 60
+//    10       if (dabs(det(1)) .ge. 1.0d0) go to 20
+//                det(1) = ten*det(1)
+//                det(2) = det(2) - 1.0d0
+//             go to 10
+//    20       continue
+//    30       if (dabs(det(1)) .lt. ten) go to 40
+//                det(1) = det(1)/ten
+//                det(2) = det(2) + 1.0d0
+//             go to 30
+//    40       continue
+//    50    continue
+//    60    continue
+//    70 continue
+
 
 //==============================================================================
 // plu call result forward declaration

@@ -23,17 +23,26 @@
 #include <nt2/include/functions/rec.hpp>
 #include <nt2/include/functions/max.hpp>
 #include <nt2/include/functions/min.hpp>
-//TO DO !!
-// #include <nt2/include/functions/diag.hpp>
-// #include <nt2/include/functions/expand.hpp>
-// #include <nt2/include/functions/fliplr.hpp>
-// #include <nt2/include/functions/globalsum.hpp>
-// #include <nt2/include/functions/trans.hpp>
-// #include <nt2/include/functions/range.hpp>
-// #include <nt2/include/functions/first_index.hpp>
-// #include <nt2/include/functions/last_height_index.hpp>
+
 #include <iostream>
 
+
+
+// The rank function provides an estimate of the number of linearly independent rows or columns of a full matrix.
+
+// k = rank(A) returns the number of singular values of A that are larger than the default tolerance, max(size(A))*eps(norm(A)).
+
+// k = rank(A,tol) returns the number of singular values of A that are larger than tol.
+// Tips
+
+
+
+// There are a number of ways to compute the rank of a matrix. MATLAB software uses the method based on the singular value decomposition, or SVD. The SVD algorithm is the most time consuming, but also the most reliable.
+
+// The rank algorithm is
+// s = svd(A);
+// tol = max(size(A))*eps(max(s));
+// r = sum(s > tol)
 
 //==============================================================================
 // svd actual functor forward declaration
