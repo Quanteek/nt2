@@ -10,7 +10,7 @@
 #define NT2_CORE_CONTAINER_DSL_DETAILS_TERMINAL_HPP_INCLUDED
 
 #include <nt2/core/container/dsl/generator.hpp>
-#include <nt2/include/functions/terminal.hpp>
+#include <nt2/dsl/functions/terminal.hpp>
 #include <boost/proto/traits.hpp>
 #include <boost/type_traits/remove_const.hpp>
 
@@ -38,7 +38,7 @@ namespace nt2 { namespace container { namespace ext
   struct generator<Tag, Domain, 0, Expr>
   {
     typedef expression< typename boost::remove_const<Expr>::type
-                      , typename meta::call<typename Expr::proto_tag(typename boost::proto::result_of::value<Expr>::type)>::type
+                      , typename meta::call<Tag(typename boost::proto::result_of::value<Expr>::type)>::type
                       > result_type;
 
     BOOST_FORCEINLINE result_type operator()(Expr& e) const
