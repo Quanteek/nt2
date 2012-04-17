@@ -36,6 +36,8 @@ SET( SOURCES
   areofsamewidth.cpp
   areofsamedepth.cpp
   areofsamedimensions.cpp
+  istril.cpp
+  istriu.cpp
   eye.cpp
   triu.cpp
   tril.cpp
